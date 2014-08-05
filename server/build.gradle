@@ -25,8 +25,9 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
-  appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.6'
-  compile 'javax.servlet:servlet-api:2.5'
+    appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.6'
+    compile 'javax.servlet:servlet-api:2.5'
+    compile project(':common')
 }
 
 appengine {

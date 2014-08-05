@@ -22,7 +22,7 @@
         android:layout_centerVertical="true">
 
         <EditText
-            android:id="@+id/idEditText"
+            android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -34,8 +34,8 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:inputType="textPassword"
-            android:layout_alignLeft="@id/idEditText"
-            android:layout_below="@id/idEditText" />
+            android:layout_alignLeft="@id/usernameEditText"
+            android:layout_below="@id/usernameEditText" />
 
         <Button
             android:id="@+id/loginButton"
