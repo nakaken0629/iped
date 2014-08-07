@@ -1,33 +1,23 @@
 package com.iped_system.iped.server.apps.api;
 
+import com.iped_system.iped.common.BaseRequest;
+import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.LoginRequest;
 import com.iped_system.iped.common.LoginResponse;
-
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by kenji on 2014/08/04.
  */
-public class LoginServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doExecute(req, resp);
-    }
+public class LoginServlet extends BaseServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doExecute(req, resp);
-    }
+    protected BaseResponse execute(BaseRequest baseRequest) {
+        LoginRequest request = (LoginRequest) baseRequest;
+        String username = request.getUsername();
+        String password = request.getPassword();
 
-    private void doExecute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setStatus("SUCCESS");
-
-        resp.setContentType("application/json");
-        resp.getWriter().print(loginResponse.toJSON());
+        LoginResponse response = new LoginResponse();
+        response.setStatus("password".equals(password) ? "SUCCESS" : "FAIL");
+        return response;
     }
 }

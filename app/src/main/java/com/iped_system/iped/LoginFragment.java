@@ -1,6 +1,7 @@
 package com.iped_system.iped;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -45,7 +46,7 @@ public class LoginFragment extends Fragment {
 
     class LoginButtonListener implements View.OnClickListener {
         private String getEditTextValue(int id) {
-            return ((EditText) getView().findViewById(id)).getText().toString();
+            return ((EditText) getView().findViewById(id)).getText().toString().trim();
         }
 
         @Override
@@ -54,45 +55,42 @@ public class LoginFragment extends Fragment {
             String password = getEditTextValue(R.id.passwordEditText);
             setEnabled(false);
 
-            LoginAsyncTask task = new LoginAsyncTask(username, password);
-            task.execute();
+            LoginRequest request = new LoginRequest();
+            request.setUsername(username);
+            request.setPassword(password);
+            LoginAsyncTask task = new LoginAsyncTask();
+            task.execute(request);
         }
     }
 
-    class LoginAsyncTask extends AsyncTask<Void, Void, Void> {
-        private LoginRequest loginRequest;
-
-        public LoginAsyncTask(String username, String password) {
-            this.loginRequest = new LoginRequest();
-            this.loginRequest.setUsername(username);
-            this.loginRequest.setPassword(password);
-        }
+    class LoginAsyncTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            android.util.Log.d(TAG, "call doInBackground");
+        protected LoginResponse doInBackground(LoginRequest... requests) {
             try {
-                doNetworkAccess();
+                LoginRequest request = requests[0];
+                return doNetworkAccess(request);
             } catch (IOException e) {
                 android.util.Log.e(TAG, "error", e);
                 cancel(true);
+                return null;
             }
-            return null;
         }
 
-        private void doNetworkAccess() throws IOException {
+        private LoginResponse doNetworkAccess(LoginRequest request) throws IOException {
             URL url = new URL("http://10.0.2.2:8080/api/login");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setRequestMethod("POST");
-            String parameter = "parameter=" + this.loginRequest.toJSON();
+            String parameter = "parameter=" + request.toJSON();
             PrintWriter writer = new PrintWriter(connection.getOutputStream());
             writer.print(parameter);
             writer.close();
 
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
             LoginResponse response = (LoginResponse) BaseResponse.fromJSON(reader, LoginResponse.class);
+            return response;
         }
 
         @Override
@@ -101,13 +99,21 @@ public class LoginFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(LoginResponse response) {
             setEnabled(true);
 
-            /* TODO: 本当はActivityに通知する実装が良い */
-            Activity activity = getActivity();
-            Intent intent = new Intent(activity, MainActivity.class);
-            activity.startActivity(intent);
+            if ("SUCCESS".equals(response.getStatus())) {
+                /* TODO: 本当はActivityに通知する実装が良い */
+                Activity activity = getActivity();
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("ユーザ名かパスワードが正しくありません");
+                builder.setPositiveButton("確認", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
     }
 }
