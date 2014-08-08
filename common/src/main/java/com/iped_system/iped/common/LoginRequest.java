@@ -4,15 +4,15 @@ package com.iped_system.iped.common;
  * Created by kenji on 2014/08/06.
  */
 public class LoginRequest extends BaseRequest {
-    private String username;
+    private String userId;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {

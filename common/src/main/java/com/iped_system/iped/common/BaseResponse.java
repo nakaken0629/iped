@@ -9,13 +9,13 @@ import java.io.Reader;
  * Created by kenji on 2014/08/04.
  */
 public abstract class BaseResponse {
-    private String status;
+    private ResponseStatus status;
 
-    public String getStatus() {
+    public ResponseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ResponseStatus status) {
         this.status = status;
     }
 

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.LoginRequest;
 import com.iped_system.iped.common.LoginResponse;
+import com.iped_system.iped.common.ResponseStatus;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +40,7 @@ public class LoginFragment extends Fragment {
     }
 
     public void setEnabled(boolean enabled) {
-        getView().findViewById(R.id.usernameEditText).setEnabled(enabled);
+        getView().findViewById(R.id.userIdEditText).setEnabled(enabled);
         getView().findViewById(R.id.passwordEditText).setEnabled(enabled);
         getView().findViewById(R.id.loginButton).setEnabled(enabled);
     }
@@ -51,12 +52,12 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            String username = getEditTextValue(R.id.usernameEditText);
+            String userId = getEditTextValue(R.id.userIdEditText);
             String password = getEditTextValue(R.id.passwordEditText);
             setEnabled(false);
 
             LoginRequest request = new LoginRequest();
-            request.setUsername(username);
+            request.setUserId(userId);
             request.setPassword(password);
             LoginAsyncTask task = new LoginAsyncTask();
             task.execute(request);
@@ -102,7 +103,7 @@ public class LoginFragment extends Fragment {
         protected void onPostExecute(LoginResponse response) {
             setEnabled(true);
 
-            if ("SUCCESS".equals(response.getStatus())) {
+            if (response.getStatus() == ResponseStatus.SUCCESS) {
                 /* TODO: 本当はActivityに通知する実装が良い */
                 Activity activity = getActivity();
                 Intent intent = new Intent(activity, MainActivity.class);

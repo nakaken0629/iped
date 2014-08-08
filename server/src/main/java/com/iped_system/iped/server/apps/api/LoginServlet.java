@@ -9,6 +9,7 @@ import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.LoginRequest;
 import com.iped_system.iped.common.LoginResponse;
+import com.iped_system.iped.common.ResponseStatus;
 
 /**
  * Created by kenji on 2014/08/04.
@@ -18,10 +19,10 @@ public class LoginServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         LoginRequest request = (LoginRequest) baseRequest;
-        String username = request.getUsername();
+        String userId = request.getUserId();
         String password = request.getPassword();
 
-        Query.Filter filter = new Query.FilterPredicate("username", Query.FilterOperator.EQUAL, username);
+        Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.EQUAL, userId);
         Query query = new Query("User").setFilter(filter);
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery preparedQuery = service.prepare(query);
@@ -29,9 +30,9 @@ public class LoginServlet extends BaseServlet {
 
         LoginResponse response = new LoginResponse();
         if (user != null && password.equals(user.getProperty("password"))) {
-            response.setStatus("SUCCESS");
+            response.setStatus(ResponseStatus.SUCCESS);
         } else {
-            response.setStatus("FAIL");
+            response.setStatus(ResponseStatus.FAIL);
         }
         return response;
     }

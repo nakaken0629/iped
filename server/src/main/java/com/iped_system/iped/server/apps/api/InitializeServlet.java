@@ -18,9 +18,9 @@ public class InitializeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Entity user = new Entity("User");
-        user.setProperty("lastname", "中垣");
-        user.setProperty("firstname", "健志");
-        user.setProperty("username", "nakaken0629@gmail.com");
+        user.setProperty("lastName", "中垣");
+        user.setProperty("firstName", "健志");
+        user.setProperty("userId", "nakaken0629@gmail.com");
         user.setProperty("password", "password");
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
