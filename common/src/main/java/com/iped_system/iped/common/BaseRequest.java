@@ -12,16 +12,16 @@ public abstract class BaseRequest {
     public abstract Class<? extends BaseResponse> getResponseClass();
 
     @JSONHint(ignore = true)
-    public long getTokenId() {
+    public final long getTokenId() {
         return tokenId;
     }
 
     @JSONHint(ignore = true)
-    public void setTokenId(long tokenId) {
+    public final void setTokenId(long tokenId) {
         this.tokenId = tokenId;
     }
 
-    public String toJSON() {
+    public final String toJSON() {
         return JSON.encode(this);
     }
 }

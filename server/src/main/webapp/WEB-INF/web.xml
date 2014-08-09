@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <!-- define servlets -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.LoginServlet</servlet-class>
@@ -12,6 +13,16 @@
         <servlet-name>RegisterMeetingServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.RegisterRemarkServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>IndexServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.UsersServlet</servlet-class>
+    </servlet>
+
+    <!-- define servlet mappings -->
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/api/login</url-pattern>
@@ -24,11 +35,22 @@
         <servlet-name>RegisterMeetingServlet</servlet-name>
         <url-pattern>/api/secure/register-meeting</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern>/backend/index</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/backend/users</url-pattern>
+    </servlet-mapping>
 
+    <!-- define filters -->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.iped_system.iped.server.api.filter.AuthenticationFilter</filter-class>
     </filter>
+
+    <!-- define filter mappings -->
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/api/secure/*</url-pattern>

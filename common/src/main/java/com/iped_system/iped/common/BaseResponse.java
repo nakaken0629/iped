@@ -11,19 +11,19 @@ import java.io.Reader;
 public abstract class BaseResponse {
     private ResponseStatus status = ResponseStatus.FAIL;
 
-    public ResponseStatus getStatus() {
+    public final ResponseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ResponseStatus status) {
+    public final void setStatus(ResponseStatus status) {
         this.status = status;
     }
 
-    public String toJSON() {
+    public final String toJSON() {
         return JSON.encode(this);
     }
 
-    public static BaseResponse fromJSON(Reader reader, Class<? extends BaseResponse> clazz) {
+    public static final BaseResponse fromJSON(Reader reader, Class<? extends BaseResponse> clazz) {
         try {
             return JSON.decode(reader, clazz);
         } catch (IOException e) {
