@@ -9,7 +9,7 @@ import java.io.Reader;
  * Created by kenji on 2014/08/04.
  */
 public abstract class BaseResponse {
-    private ResponseStatus status;
+    private ResponseStatus status = ResponseStatus.FAIL;
 
     public ResponseStatus getStatus() {
         return status;

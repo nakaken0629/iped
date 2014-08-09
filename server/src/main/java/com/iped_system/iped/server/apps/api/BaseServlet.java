@@ -2,7 +2,6 @@ package com.iped_system.iped.server.apps.api;
 
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.LoginRequest;
 
 import net.arnx.jsonic.JSON;
 
@@ -29,12 +28,13 @@ public abstract class BaseServlet extends HttpServlet {
 
     private void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String parameter = request.getParameter("parameter");
-        BaseRequest baseRequest = JSON.decode(parameter, LoginRequest.class);
+        BaseRequest baseRequest = JSON.decode(parameter, getRequestClass());
         BaseResponse baseResponse = execute(baseRequest);
 
         response.setContentType("application/json");
         response.getWriter().print(baseResponse.toJSON());
     }
 
+    protected abstract Class<? extends BaseRequest> getRequestClass();
     protected abstract BaseResponse execute(BaseRequest baseRequest);
 }

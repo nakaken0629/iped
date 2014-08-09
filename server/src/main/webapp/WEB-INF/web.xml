@@ -8,6 +8,10 @@
         <servlet-name>InitializeServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.apps.api.InitializeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterMeetingServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.apps.api.RegisterMeetingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/api/login</url-pattern>
@@ -16,4 +20,17 @@
         <servlet-name>InitializeServlet</servlet-name>
         <url-pattern>/api/initialize</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterMeetingServlet</servlet-name>
+        <url-pattern>/api/secure/register-meeting</url-pattern>
+    </servlet-mapping>
+
+    <!--<filter>-->
+        <!--<filter-name>AuthenticationFilter</filter-name>-->
+        <!--<filter-class>com.iped_system.iped.server.apps.api.AuthenticationFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>AuthenticationFilter</filter-name>-->
+        <!--<url-pattern>/api/secure/*</url-pattern>-->
+    <!--</filter-mapping>-->
 </web-app>

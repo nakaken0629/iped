@@ -4,9 +4,18 @@ package com.iped_system.iped.common;
  * Created by kenji on 2014/08/04.
  */
 public class LoginResponse extends BaseResponse {
+    private long tokenId;
     private String userId;
     private String lastName;
     private String firstName;
+
+    public long getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(long tokenId) {
+        this.tokenId = tokenId;
+    }
 
     public String getUserId() {
         return userId;
