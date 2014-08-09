@@ -31,6 +31,9 @@ public class LoginServlet extends BaseServlet {
         LoginResponse response = new LoginResponse();
         if (user != null && password.equals(user.getProperty("password"))) {
             response.setStatus(ResponseStatus.SUCCESS);
+            response.setUserId(userId);
+            response.setLastName((String) user.getProperty("lastName"));
+            response.setFirstName((String) user.getProperty("firstName"));
         } else {
             response.setStatus(ResponseStatus.FAIL);
         }

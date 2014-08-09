@@ -1,4 +1,4 @@
-<android.support.v4.app.FragmentTabHost
+<com.iped_system.iped.FragmentTabHostEx
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="match_parent"
@@ -30,4 +30,4 @@
 
     </LinearLayout>
 
-</android.support.v4.app.FragmentTabHost>
+</com.iped_system.iped.FragmentTabHostEx>

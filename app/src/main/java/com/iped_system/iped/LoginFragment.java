@@ -106,13 +106,16 @@ public class LoginFragment extends Fragment {
             if (response.getStatus() == ResponseStatus.SUCCESS) {
                 /* TODO: 本当はActivityに通知する実装が良い */
                 Activity activity = getActivity();
+                IpedApplication application = (IpedApplication) activity.getApplication();
+                application.authorize(response);
                 Intent intent = new Intent(activity, MainActivity.class);
                 activity.startActivity(intent);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("ユーザ名かパスワードが正しくありません");
-                builder.setPositiveButton("確認", null);
-                AlertDialog dialog = builder.create();
+                AlertDialog dialog = builder.setTitle("メッセージ")
+                        .setMessage("ユーザ名かパスワードが正しくありません")
+                        .setPositiveButton("確認", null)
+                        .create();
                 dialog.show();
             }
         }
