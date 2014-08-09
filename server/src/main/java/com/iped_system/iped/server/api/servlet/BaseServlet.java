@@ -7,11 +7,11 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.server.api.value.UserValue;
 
 import net.arnx.jsonic.JSON;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseServlet extends HttpServlet {
     private String userId;
 
-    protected UserValue getCurrentUserValue() {
+    protected Map<String, Object> getCurrentUserValue() {
         if (userId == null || userId.length() == 0) {
             return null;
         }
@@ -35,9 +35,7 @@ public abstract class BaseServlet extends HttpServlet {
         PreparedQuery preparedQuery = service.prepare(query);
         Entity user = preparedQuery.asSingleEntity();
 
-        UserValue userValue = new UserValue();
-        userValue.putAll(user.getProperties());
-        return userValue;
+        return user.getProperties();
     }
 
     @Override

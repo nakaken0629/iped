@@ -32,12 +32,6 @@ public class MeetingFragment extends Fragment implements LoaderManager.LoaderCal
         MeetingAdapter adapter = new MeetingAdapter(getActivity().getApplicationContext(), 0);
         meetingListView.setAdapter(adapter);
 
-        Remark item = new Remark();
-        item.setText("これはテストです");
-        adapter.add(item);
-        adapter.add(item);
-        adapter.add(item);
-
         return rootView;
     }
 

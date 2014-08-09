@@ -8,7 +8,8 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RegisterRemarkRequest;
 import com.iped_system.iped.common.RegisterRemarkResponse;
 import com.iped_system.iped.common.ResponseStatus;
-import com.iped_system.iped.server.api.value.UserValue;
+
+import java.util.Map;
 
 /**
  * Created by kenji on 2014/08/09.
@@ -23,7 +24,7 @@ public class RegisterRemarkServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         RegisterRemarkRequest request = (RegisterRemarkRequest) baseRequest;
-        UserValue userValue = getCurrentUserValue();
+        Map<String, Object> userValue = getCurrentUserValue();
         String patientId = (String) userValue.get("patientId");
         String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
 
