@@ -85,6 +85,6 @@ public class MeetingFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-        setEnabled(true);
+        /* nop */
     }
 }

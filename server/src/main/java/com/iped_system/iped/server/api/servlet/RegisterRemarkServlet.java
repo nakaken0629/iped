@@ -24,11 +24,13 @@ public class RegisterRemarkServlet extends BaseServlet {
     protected BaseResponse execute(BaseRequest baseRequest) {
         RegisterRemarkRequest request = (RegisterRemarkRequest) baseRequest;
         UserValue userValue = getCurrentUserValue();
+        String patientId = (String) userValue.get("patientId");
+        String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Entity remark = new Entity("remark");
-        remark.setProperty("patientId", userValue.get("patientId"));
-        remark.setProperty("authorName", request.getAuthorName());
+        remark.setProperty("patientId", patientId);
+        remark.setProperty("authorName", authorName);
         remark.setProperty("text", request.getText());
         service.put(remark);
 

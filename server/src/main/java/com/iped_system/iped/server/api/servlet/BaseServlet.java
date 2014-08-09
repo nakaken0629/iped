@@ -36,7 +36,7 @@ public abstract class BaseServlet extends HttpServlet {
         Entity user = preparedQuery.asSingleEntity();
 
         UserValue userValue = new UserValue();
-        user.getProperties().putAll(userValue);
+        userValue.putAll(user.getProperties());
         return userValue;
     }
 
@@ -51,7 +51,7 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     private void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userId = (String) request.getAttribute("userId");
+        this.userId = (String) request.getAttribute("userId");
 
         String parameter = request.getParameter("parameter");
         BaseRequest baseRequest = JSON.decode(parameter, getRequestClass());
