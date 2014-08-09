@@ -18,6 +18,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -39,13 +40,21 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        /* check parameters */
         long tokenId;
         try {
-            tokenId = Long.valueOf(request.getParameter("tokenId"));
+            tokenId = Long.valueOf(httpServletRequest.getHeader("X-IPED-TOKEN-ID"));
         } catch (NumberFormatException e) {
             sendUnAuthorized(response, "invalid token id");
             return;
         }
+        String userId = httpServletRequest.getHeader("X-IPED-USER-ID");
+        if (userId == null || userId.length() == 0) {
+            sendUnAuthorized(response, "userId is not exist");
+        }
+
+        /* check token */
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Key tokenKey = KeyFactory.createKey("token", tokenId);
         Entity token;
@@ -55,12 +64,18 @@ public class AuthenticationFilter implements Filter {
             sendUnAuthorized(response, "no token");
             return;
         }
+        if(!userId.equals(token.getProperty("userId"))) {
+            sendUnAuthorized(response, "different userId");
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -30);
         if(calendar.before(token.getProperty("refreshDate"))) {
             sendUnAuthorized(response, "expired token");
             return;
         }
+
+        /* refresh token */
         token.setProperty("refreshDate", new Date());
         service.put(token);
         chain.doFilter(request, response);

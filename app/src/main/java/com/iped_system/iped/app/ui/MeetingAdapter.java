@@ -12,7 +12,7 @@ import com.iped_system.iped.R;
 /**
  * Created by kenji on 2014/08/09.
  */
-public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
+public class MeetingAdapter extends ArrayAdapter<Remark> {
     private LayoutInflater inflater;
 
     public MeetingAdapter(Context context, int resource) {
@@ -22,10 +22,10 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MeetingItem item = (MeetingItem) getItem(position);
+        Remark item = (Remark) getItem(position);
 
         if (convertView == null) {
-            convertView = this.inflater.inflate(R.layout.meeting_item, null);
+            convertView = this.inflater.inflate(R.layout.remark, null);
         }
 
         TextView textTextView = (TextView) convertView.findViewById(R.id.textTextView);

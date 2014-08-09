@@ -59,7 +59,8 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
         ArrayList<String> parameters = new ArrayList<String>();
         if (this.isSecure) {
             IpedApplication application = (IpedApplication) getContext().getApplicationContext();
-            parameters.add("tokenId=" + application.getTokenId());
+            connection.setRequestProperty("X-IPED-USER-ID", application.getUserId());
+            connection.setRequestProperty("X-IPED-TOKEN-ID", Long.toString(application.getTokenId()));
         }
         parameters.add("parameter=" + URLEncoder.encode(this.request.toJSON(), "utf-8"));
         PrintWriter writer = new PrintWriter(connection.getOutputStream());

@@ -5,30 +5,30 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.RegisterMeetingRequest;
-import com.iped_system.iped.common.RegisterMeetingResponse;
+import com.iped_system.iped.common.RegisterRemarkRequest;
+import com.iped_system.iped.common.RegisterRemarkResponse;
 import com.iped_system.iped.common.ResponseStatus;
 
 /**
  * Created by kenji on 2014/08/09.
  */
-public class RegisterMeetingServlet extends BaseServlet {
+public class RegisterRemarkServlet extends BaseServlet {
 
     @Override
     protected Class<? extends BaseRequest> getRequestClass() {
-        return RegisterMeetingRequest.class;
+        return RegisterRemarkRequest.class;
     }
 
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
-        RegisterMeetingRequest request = (RegisterMeetingRequest) baseRequest;
+        RegisterRemarkRequest request = (RegisterRemarkRequest) baseRequest;
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Entity meetingArticle = new Entity("meetingArticle");
-        meetingArticle.setProperty("text", request.getText());
-        service.put(meetingArticle);
+        Entity remark = new Entity("remark");
+        remark.setProperty("text", request.getText());
+        service.put(remark);
 
-        RegisterMeetingResponse response = new RegisterMeetingResponse();
+        RegisterRemarkResponse response = new RegisterRemarkResponse();
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

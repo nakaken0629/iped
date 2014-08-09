@@ -15,7 +15,7 @@ import android.widget.ListView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.RegisterMeetingRequest;
+import com.iped_system.iped.common.RegisterRemarkRequest;
 
 public class MeetingFragment extends Fragment implements LoaderManager.LoaderCallbacks<BaseResponse> {
     private static final String TAG = MeetingFragment.class.getName();
@@ -32,7 +32,7 @@ public class MeetingFragment extends Fragment implements LoaderManager.LoaderCal
         MeetingAdapter adapter = new MeetingAdapter(getActivity().getApplicationContext(), 0);
         meetingListView.setAdapter(adapter);
 
-        MeetingItem item = new MeetingItem();
+        Remark item = new Remark();
         item.setText("これはテストです");
         adapter.add(item);
         adapter.add(item);
@@ -70,7 +70,7 @@ public class MeetingFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
         Context context = getActivity().getApplicationContext();
-        RegisterMeetingRequest request = new RegisterMeetingRequest();
+        RegisterRemarkRequest request = new RegisterRemarkRequest();
         request.setText(bundle.getString("text"));
 
         ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "register-meeting", true);
