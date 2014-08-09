@@ -2,16 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>iPED - ユーザー一覧</title>
+    <title>iPED - ユーザ一覧</title>
 </head>
 <body>
-    <h1>ユーザー一覧</h1>
+    <h1>ユーザ一覧</h1>
     <table>
         <tr>
             <th>ユーザID</th>
             <th>苗字</th>
             <th>名前</th>
             <th>役割</th>
+            <th>担当患者ID</th>
         </tr>
         <c:forEach var="user" items="${users}">
             <tr>
@@ -19,6 +20,7 @@
                 <td><c:out value="${user.lastName}" /></td>
                 <td><c:out value="${user.firstName}" /></td>
                 <td><c:out value="${user.role}" /></td>
+                <td><c:out value="${user.patientId}" /></td>
             </tr>
         </c:forEach>
     </table>

@@ -8,6 +8,8 @@ public class LoginResponse extends BaseResponse {
     private String userId;
     private String lastName;
     private String firstName;
+    private String role;
+    private String patientId;
 
     public long getTokenId() {
         return tokenId;
@@ -39,5 +41,21 @@ public class LoginResponse extends BaseResponse {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 }

@@ -6,7 +6,7 @@
 <body>
     <h1>トップ</h1>
     <ul>
-        <li><a href="/backend/users">ユーザー一覧</a></li>
+        <li><a href="/backend/users">ユーザ一覧</a></li>
     </ul>
 </body>
 </html>

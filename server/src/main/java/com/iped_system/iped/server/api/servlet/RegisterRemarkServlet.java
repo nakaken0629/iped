@@ -8,6 +8,7 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RegisterRemarkRequest;
 import com.iped_system.iped.common.RegisterRemarkResponse;
 import com.iped_system.iped.common.ResponseStatus;
+import com.iped_system.iped.server.api.value.UserValue;
 
 /**
  * Created by kenji on 2014/08/09.
@@ -22,9 +23,12 @@ public class RegisterRemarkServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         RegisterRemarkRequest request = (RegisterRemarkRequest) baseRequest;
+        UserValue userValue = getCurrentUserValue();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Entity remark = new Entity("remark");
+        remark.setProperty("patientId", userValue.get("patientId"));
+        remark.setProperty("authorName", request.getAuthorName());
         remark.setProperty("text", request.getText());
         service.put(remark);
 

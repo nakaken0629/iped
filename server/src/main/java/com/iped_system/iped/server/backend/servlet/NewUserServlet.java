@@ -34,9 +34,10 @@ public class NewUserServlet extends HttpServlet {
         user.setFirstName(req.getParameter("firstName"));
         user.setPassword(req.getParameter("password"));
         user.setRole(req.getParameter("role"));
+        user.setPatientId(req.getParameter("patientId"));
         req.setAttribute("user", user);
 
-        if(!user.isValid()) {
+        if (!user.isValid()) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/new-user.jsp");
             dispatcher.forward(req, resp);
             return;
@@ -49,6 +50,7 @@ public class NewUserServlet extends HttpServlet {
         entity.setProperty("firstName", user.getFirstName());
         entity.setProperty("password", user.getPassword());
         entity.setProperty("role", user.getRole());
+        entity.setProperty("patientId", user.getPatientId());
         service.put(entity);
 
         resp.sendRedirect("/backend/users");

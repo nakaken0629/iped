@@ -34,6 +34,7 @@ public class UsersServlet extends HttpServlet {
             user.setLastName((String) userEntity.getProperty("lastName"));
             user.setFirstName((String) userEntity.getProperty("firstName"));
             user.setRole((String) userEntity.getProperty("role"));
+            user.setPatientId((String) userEntity.getProperty("patientId"));
             users.add(user);
         }
         req.setAttribute("users", users);

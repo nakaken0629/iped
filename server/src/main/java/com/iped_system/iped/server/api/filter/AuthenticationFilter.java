@@ -75,9 +75,13 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
+        /* set authentication information */
+        request.setAttribute("userId", userId);
+
         /* refresh token */
         token.setProperty("refreshDate", new Date());
         service.put(token);
+
         chain.doFilter(request, response);
     }
 

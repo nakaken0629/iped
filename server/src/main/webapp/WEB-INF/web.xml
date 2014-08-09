@@ -6,10 +6,6 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>InitializeServlet</servlet-name>
-        <servlet-class>com.iped_system.iped.server.api.servlet.InitializeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>RegisterMeetingServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.RegisterRemarkServlet</servlet-class>
     </servlet>
@@ -30,10 +26,6 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/api/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>InitializeServlet</servlet-name>
-        <url-pattern>/api/initialize</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterMeetingServlet</servlet-name>

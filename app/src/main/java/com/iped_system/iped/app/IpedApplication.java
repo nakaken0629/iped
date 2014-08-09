@@ -12,12 +12,16 @@ public class IpedApplication extends Application {
     private String userId;
     private String lastName;
     private String firstName;
+    private String role;
+    private String patientId;
 
     public void authenticate(LoginResponse response) {
         this.tokenId = response.getTokenId();
         this.userId = response.getUserId();
         this.lastName = response.getLastName();
         this.firstName = response.getFirstName();
+        this.role = response.getRole();
+        this.patientId = response.getPatientId();
     }
 
     public long getTokenId() {
@@ -34,5 +38,13 @@ public class IpedApplication extends Application {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getPatientId() {
+        return patientId;
     }
 }

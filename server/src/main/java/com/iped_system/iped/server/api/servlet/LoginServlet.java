@@ -48,6 +48,8 @@ public class LoginServlet extends BaseServlet {
             response.setUserId(userId);
             response.setLastName((String) user.getProperty("lastName"));
             response.setFirstName((String) user.getProperty("firstName"));
+            response.setRole((String) user.getProperty("role"));
+            response.setPatientId((String) user.getProperty("patientId"));
         } else {
             response.setStatus(ResponseStatus.FAIL);
         }

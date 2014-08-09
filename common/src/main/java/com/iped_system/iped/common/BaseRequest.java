@@ -1,25 +1,12 @@
 package com.iped_system.iped.common;
 
 import net.arnx.jsonic.JSON;
-import net.arnx.jsonic.JSONHint;
 
 /**
  * Created by kenji on 2014/08/04.
  */
 public abstract class BaseRequest {
-    private long tokenId;
-
     public abstract Class<? extends BaseResponse> getResponseClass();
-
-    @JSONHint(ignore = true)
-    public final long getTokenId() {
-        return tokenId;
-    }
-
-    @JSONHint(ignore = true)
-    public final void setTokenId(long tokenId) {
-        this.tokenId = tokenId;
-    }
 
     public final String toJSON() {
         return JSON.encode(this);

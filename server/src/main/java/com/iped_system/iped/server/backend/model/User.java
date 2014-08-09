@@ -10,7 +10,7 @@ public class User {
     private String firstName;
     private String password;
     private String role;
-    private long patientId;
+    private String patientId;
 
     public long getId() {
         return id;
@@ -81,12 +81,16 @@ public class User {
         return this.role != null && this.role.length() > 0;
     }
 
-    public long getPatientId() {
+    public String getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(long patientId) {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
+    }
+
+    public boolean isPatientIdValid() {
+        return true;
     }
 
     public boolean isValid() {
@@ -95,6 +99,7 @@ public class User {
                 && isFirstNameValid()
                 && isPasswordValid()
                 && isRoleValid()
+                && isPatientIdValid()
                 ;
     }
 }
