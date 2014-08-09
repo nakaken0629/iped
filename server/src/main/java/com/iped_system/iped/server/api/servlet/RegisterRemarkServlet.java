@@ -9,6 +9,7 @@ import com.iped_system.iped.common.RegisterRemarkRequest;
 import com.iped_system.iped.common.RegisterRemarkResponse;
 import com.iped_system.iped.common.ResponseStatus;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -33,6 +34,7 @@ public class RegisterRemarkServlet extends BaseServlet {
         remark.setProperty("patientId", patientId);
         remark.setProperty("authorName", authorName);
         remark.setProperty("text", request.getText());
+        remark.setProperty("createdAt", new Date());
         service.put(remark);
 
         RegisterRemarkResponse response = new RegisterRemarkResponse();

@@ -17,8 +17,9 @@ import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RegisterRemarkRequest;
 
-public class MeetingFragment extends Fragment implements LoaderManager.LoaderCallbacks<BaseResponse> {
+public class MeetingFragment extends Fragment {
     private static final String TAG = MeetingFragment.class.getName();
+    private RemarksNewCallbacks remarksNewCallbacks = new RemarksNewCallbacks();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,28 +58,31 @@ public class MeetingFragment extends Fragment implements LoaderManager.LoaderCal
             Bundle bundle = new Bundle();
             bundle.putString("text", text);
             MeetingFragment self = MeetingFragment.this;
-            self.getLoaderManager().initLoader(0, bundle, self);
+            self.getLoaderManager().initLoader(0, bundle, self.remarksNewCallbacks);
         }
     }
 
-    @Override
-    public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-        Context context = getActivity().getApplicationContext();
-        RegisterRemarkRequest request = new RegisterRemarkRequest();
-        request.setText(bundle.getString("text"));
+    class RemarksNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
 
-        ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "register-meeting", true);
-        loader.forceLoad();
-        return loader;
-    }
+        @Override
+        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
+            Context context = getActivity().getApplicationContext();
+            RegisterRemarkRequest request = new RegisterRemarkRequest();
+            request.setText(bundle.getString("text"));
 
-    @Override
-    public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-        setEnabled(true);
-    }
+            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "register-meeting", true);
+            loader.forceLoad();
+            return loader;
+        }
 
-    @Override
-    public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
+        @Override
+        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
+            setEnabled(true);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
         /* nop */
+        }
     }
 }
