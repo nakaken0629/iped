@@ -6,6 +6,11 @@ package com.iped_system.iped.common;
 public class RegisterMeetingRequest extends BaseRequest {
     private String text;
 
+    @Override
+    public Class<? extends BaseResponse> getResponseClass() {
+        return RegisterMeetingResponse.class;
+    }
+
     public String getText() {
         return text;
     }

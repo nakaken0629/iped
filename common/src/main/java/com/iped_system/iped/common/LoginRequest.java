@@ -7,6 +7,11 @@ public class LoginRequest extends BaseRequest {
     private String userId;
     private String password;
 
+    @Override
+    public Class<? extends BaseResponse> getResponseClass() {
+        return LoginResponse.class;
+    }
+
     public String getUserId() {
         return userId;
     }

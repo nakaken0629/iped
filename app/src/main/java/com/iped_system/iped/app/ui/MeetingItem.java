@@ -1,4 +1,4 @@
-package com.iped_system.iped.app;
+package com.iped_system.iped.app.ui;
 
 /**
  * Created by kenji on 2014/08/09.

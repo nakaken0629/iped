@@ -1,4 +1,4 @@
-package com.iped_system.iped.app;
+package com.iped_system.iped.app.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.iped_system.iped.R;
 
 /**
  * Created by kenji on 2014/08/09.

@@ -9,12 +9,14 @@ import net.arnx.jsonic.JSONHint;
 public abstract class BaseRequest {
     private long tokenId;
 
-    @JSONHint(ignore=true)
+    public abstract Class<? extends BaseResponse> getResponseClass();
+
+    @JSONHint(ignore = true)
     public long getTokenId() {
         return tokenId;
     }
 
-    @JSONHint(ignore=true)
+    @JSONHint(ignore = true)
     public void setTokenId(long tokenId) {
         this.tokenId = tokenId;
     }
