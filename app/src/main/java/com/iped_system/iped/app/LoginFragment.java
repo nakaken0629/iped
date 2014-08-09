@@ -1,4 +1,4 @@
-package com.iped_system.iped;
+package com.iped_system.iped.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
                 /* TODO: 本当はActivityに通知する実装が良い */
                 Activity activity = getActivity();
                 IpedApplication application = (IpedApplication) activity.getApplication();
-                application.authorize(response);
+                application.authenticate(response);
                 Intent intent = new Intent(activity, MainActivity.class);
                 activity.startActivity(intent);
             } else {

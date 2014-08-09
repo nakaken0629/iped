@@ -1,4 +1,4 @@
-package com.iped_system.iped.server.apps.api;
+package com.iped_system.iped.server.api.servlet;
 
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;

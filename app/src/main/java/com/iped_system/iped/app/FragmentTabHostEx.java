@@ -1,4 +1,4 @@
-package com.iped_system.iped;
+package com.iped_system.iped.app;
 
 import android.content.Context;
 import android.support.v4.app.FragmentTabHost;

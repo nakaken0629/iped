@@ -1,4 +1,4 @@
-package com.iped_system.iped;
+package com.iped_system.iped.app;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -84,7 +84,9 @@ public class MeetingFragment extends Fragment {
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setRequestMethod("POST");
-            String parameter = "parameter=" + request.toJSON();
+            String parameter;
+            parameter = "tokenId=" + request.getTokenId();
+            parameter += "&parameter=" + request.toJSON();
             PrintWriter writer = new PrintWriter(connection.getOutputStream());
             writer.print(parameter);
             writer.close();

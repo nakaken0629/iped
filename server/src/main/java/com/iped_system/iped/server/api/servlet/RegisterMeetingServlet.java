@@ -1,4 +1,4 @@
-package com.iped_system.iped.server.apps.api;
+package com.iped_system.iped.server.api.servlet;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;

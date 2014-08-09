@@ -1,4 +1,4 @@
-package com.iped_system.iped;
+package com.iped_system.iped.app;
 
 import android.app.Application;
 
@@ -13,7 +13,7 @@ public class IpedApplication extends Application {
     private String lastName;
     private String firstName;
 
-    public void authorize(LoginResponse response) {
+    public void authenticate(LoginResponse response) {
         this.tokenId = response.getTokenId();
         this.userId = response.getUserId();
         this.lastName = response.getLastName();
