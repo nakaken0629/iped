@@ -35,6 +35,12 @@ public class MeetingFragment extends Fragment {
         MeetingAdapter adapter = new MeetingAdapter(getActivity().getApplicationContext(), 0);
         meetingListView.setAdapter(adapter);
 
+        MeetingItem item = new MeetingItem();
+        item.setText("これはテストです");
+        adapter.add(item);
+        adapter.add(item);
+        adapter.add(item);
+
         return rootView;
     }
 
