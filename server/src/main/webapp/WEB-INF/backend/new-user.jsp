@@ -12,28 +12,35 @@
                 <th>ユーザID</th>
                 <td>
                     <input type="text" name="userId" value='<c:out value="${user.userId}" />'/>
-                    <c:if test="${user.userIdValid}"><span class="error">NG</span></c:if>
+                    <c:if test="!${user.userIdValid}"><span class="error">NG</span></c:if>
                 </td>
             </tr>
             <tr>
                 <th>苗字</th>
                 <td>
                     <input type="text" name="lastName" value='<c:out value="${user.lastName}" />'/>
-                    <c:if test="${user.lastNameValid}"><span class="error">NG</span></c:if>
+                    <c:if test="!${user.lastNameValid}"><span class="error">NG</span></c:if>
                 </td>
             </tr>
             <tr>
                 <th>名前</th>
                 <td>
                     <input type="text" name="firstName" value='<c:out value="${user.firstName}" />'/>
-                    <c:if test="${user.firstNameValid}"><span class="error">NG</span></c:if>
+                    <c:if test="!${user.firstNameValid}"><span class="error">NG</span></c:if>
                 </td>
             </tr>
             <tr>
                 <th>パスワード</th>
                 <td>
                     <input type="password" name="password" />
-                    <c:if test="${user.passwordValid}"><span class="error">NG</span></c:if>
+                    <c:if test="!${user.passwordValid}"><span class="error">NG</span></c:if>
+                </td>
+            </tr>
+            <tr>
+                <th>役割</th>
+                <td>
+                    <input type="text" name="role" />
+                    <c:if test="${user.roleValid}"><span class="error">NG</span></c:if>
                 </td>
             </tr>
         </table>

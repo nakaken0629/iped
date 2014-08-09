@@ -9,6 +9,8 @@ public class User {
     private String lastName;
     private String firstName;
     private String password;
+    private String role;
+    private long patientId;
 
     public long getId() {
         return id;
@@ -67,7 +69,32 @@ public class User {
         return this.password != null && this.password.length() > 0;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isRoleValid() {
+        return this.role != null && this.role.length() > 0;
+    }
+
+    public long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(long patientId) {
+        this.patientId = patientId;
+    }
+
     public boolean isValid() {
-        return isUserIdValid() && isLastNameValid() && isFirstNameValid() && isPasswordValid();
+        return isUserIdValid()
+                && isLastNameValid()
+                && isFirstNameValid()
+                && isPasswordValid()
+                && isRoleValid()
+                ;
     }
 }

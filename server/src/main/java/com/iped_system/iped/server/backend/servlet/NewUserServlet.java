@@ -33,6 +33,7 @@ public class NewUserServlet extends HttpServlet {
         user.setLastName(req.getParameter("lastName"));
         user.setFirstName(req.getParameter("firstName"));
         user.setPassword(req.getParameter("password"));
+        user.setRole(req.getParameter("role"));
         req.setAttribute("user", user);
 
         if(!user.isValid()) {
@@ -47,6 +48,7 @@ public class NewUserServlet extends HttpServlet {
         entity.setProperty("lastName", user.getLastName());
         entity.setProperty("firstName", user.getFirstName());
         entity.setProperty("password", user.getPassword());
+        entity.setProperty("role", user.getRole());
         service.put(entity);
 
         resp.sendRedirect("/backend/users");

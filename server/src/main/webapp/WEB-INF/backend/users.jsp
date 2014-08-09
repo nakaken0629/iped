@@ -11,12 +11,14 @@
             <th>ユーザID</th>
             <th>苗字</th>
             <th>名前</th>
+            <th>役割</th>
         </tr>
         <c:forEach var="user" items="${users}">
             <tr>
                 <td><c:out value="${user.userId}" /></td>
                 <td><c:out value="${user.lastName}" /></td>
                 <td><c:out value="${user.firstName}" /></td>
+                <td><c:out value="${user.role}" /></td>
             </tr>
         </c:forEach>
     </table>
