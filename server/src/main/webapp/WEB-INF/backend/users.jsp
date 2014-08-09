@@ -9,7 +9,7 @@
     <table>
         <tr>
             <th>ユーザID</th>
-            <th>名字</th>
+            <th>苗字</th>
             <th>名前</th>
         </tr>
         <c:forEach var="user" items="${users}">
@@ -21,7 +21,8 @@
         </c:forEach>
     </table>
     <ul>
-        <li><a href="/backend/index">戻る</a></li>
+        <li><a href="/backend/users/new">新しいユーザの作成</a></li>
+        <li><a href="/backend/index">トップに戻る</a></li>
     </ul>
 </body>
 </html>

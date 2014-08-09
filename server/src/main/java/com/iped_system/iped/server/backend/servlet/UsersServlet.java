@@ -29,7 +29,8 @@ public class UsersServlet extends HttpServlet {
         ArrayList<User> users = new ArrayList<User>();
         for(Entity userEntity : pq.asIterable()) {
             User user = new User();
-            user.setUserId(userEntity.getKey().getId());
+            user.setId(userEntity.getKey().getId());
+            user.setUserId((String) userEntity.getProperty("userId"));
             user.setLastName((String) userEntity.getProperty("lastName"));
             user.setFirstName((String) userEntity.getProperty("firstName"));
             users.add(user);
