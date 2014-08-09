@@ -6,8 +6,8 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>RegisterMeetingServlet</servlet-name>
-        <servlet-class>com.iped_system.iped.server.api.servlet.RegisterRemarkServlet</servlet-class>
+        <servlet-name>RemarksNewServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.RemarksNewServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
@@ -28,8 +28,8 @@
         <url-pattern>/api/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RegisterMeetingServlet</servlet-name>
-        <url-pattern>/api/secure/register-meeting</url-pattern>
+        <servlet-name>RemarksNewServlet</servlet-name>
+        <url-pattern>/api/secure/remarks/new</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>IndexServlet</servlet-name>

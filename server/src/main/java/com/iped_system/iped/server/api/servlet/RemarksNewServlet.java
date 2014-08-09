@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by kenji on 2014/08/09.
  */
-public class RegisterRemarkServlet extends BaseServlet {
+public class RemarksNewServlet extends BaseServlet {
 
     @Override
     protected Class<? extends BaseRequest> getRequestClass() {

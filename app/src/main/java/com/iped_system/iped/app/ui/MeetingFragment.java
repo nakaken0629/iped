@@ -19,6 +19,7 @@ import com.iped_system.iped.common.RegisterRemarkRequest;
 
 public class MeetingFragment extends Fragment {
     private static final String TAG = MeetingFragment.class.getName();
+    private RemarksCallbacks remarksCallbacks = new RemarksCallbacks();
     private RemarksNewCallbacks remarksNewCallbacks = new RemarksNewCallbacks();
 
     @Override
@@ -62,6 +63,23 @@ public class MeetingFragment extends Fragment {
         }
     }
 
+    class RemarksCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
+        @Override
+        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
+            return null;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
+
+        }
+
+        @Override
+        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
+
+        }
+    }
+
     class RemarksNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
 
         @Override
@@ -70,7 +88,7 @@ public class MeetingFragment extends Fragment {
             RegisterRemarkRequest request = new RegisterRemarkRequest();
             request.setText(bundle.getString("text"));
 
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "register-meeting", true);
+            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks/new", true);
             loader.forceLoad();
             return loader;
         }
