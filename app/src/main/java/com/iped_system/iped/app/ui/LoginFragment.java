@@ -41,12 +41,6 @@ public class LoginFragment extends Fragment {
         return rootView;
     }
 
-    public void setEnabled(boolean enabled) {
-        getView().findViewById(R.id.userIdEditText).setEnabled(enabled);
-        getView().findViewById(R.id.passwordEditText).setEnabled(enabled);
-        getView().findViewById(R.id.loginButton).setEnabled(enabled);
-    }
-
     class LoginButtonListener implements View.OnClickListener {
         private String getEditTextValue(int id) {
             return ((EditText) getView().findViewById(id)).getText().toString().trim();
@@ -56,7 +50,6 @@ public class LoginFragment extends Fragment {
         public void onClick(View view) {
             String userId = getEditTextValue(R.id.userIdEditText);
             String password = getEditTextValue(R.id.passwordEditText);
-            setEnabled(false);
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", userId);
@@ -100,14 +93,11 @@ public class LoginFragment extends Fragment {
                         .create();
                 dialog.show();
             }
-
-        /* TODO: startActivityの時に、一瞬有効になったのが見えてしまう */
-            setEnabled(true);
         }
 
         @Override
         public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            setEnabled(true);
+            /* nop */
         }
     }
 }

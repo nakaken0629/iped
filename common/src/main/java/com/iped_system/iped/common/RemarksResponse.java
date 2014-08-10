@@ -12,4 +12,8 @@ public class RemarksResponse extends BaseResponse {
     public List<Remark> getRemarks() {
         return remarks;
     }
+
+    public void setRemarks(List<Remark> remarks) {
+        this.remarks = remarks;
+    }
 }
