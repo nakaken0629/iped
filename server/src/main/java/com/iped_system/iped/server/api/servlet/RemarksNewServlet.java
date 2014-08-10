@@ -5,8 +5,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.RegisterRemarkRequest;
-import com.iped_system.iped.common.RegisterRemarkResponse;
+import com.iped_system.iped.common.RemarksNewRequest;
+import com.iped_system.iped.common.RemarksNewResponse;
 import com.iped_system.iped.common.Remark;
 
 import java.util.Date;
@@ -19,12 +19,12 @@ public class RemarksNewServlet extends BaseServlet {
 
     @Override
     protected Class<? extends BaseRequest> getRequestClass() {
-        return RegisterRemarkRequest.class;
+        return RemarksNewRequest.class;
     }
 
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
-        RegisterRemarkRequest request = (RegisterRemarkRequest) baseRequest;
+        RemarksNewRequest request = (RemarksNewRequest) baseRequest;
         Map<String, Object> userValue = getCurrentUserValue();
         String patientId = (String) userValue.get("patientId");
         String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
@@ -37,7 +37,7 @@ public class RemarksNewServlet extends BaseServlet {
         remark.setProperty("createdAt", new Date());
         service.put(remark);
 
-        RegisterRemarkResponse response = new RegisterRemarkResponse();
+        RemarksNewResponse response = new RemarksNewResponse();
         Remark remarkValue = new Remark();
         remarkValue.setAuthorName(authorName);
         remarkValue.setText(request.getText());

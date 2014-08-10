@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.RegisterRemarkRequest;
+import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.Remark;
 import com.iped_system.iped.common.RemarksRequest;
 import com.iped_system.iped.common.RemarksResponse;
@@ -104,7 +104,7 @@ public class MeetingFragment extends Fragment {
         @Override
         public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
             Context context = getActivity().getApplicationContext();
-            RegisterRemarkRequest request = new RegisterRemarkRequest();
+            RemarksNewRequest request = new RemarksNewRequest();
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
 

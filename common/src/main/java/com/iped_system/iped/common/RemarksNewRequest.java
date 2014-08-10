@@ -5,14 +5,14 @@ import net.arnx.jsonic.JSONHint;
 /**
  * Created by kenji on 2014/08/09.
  */
-public class RegisterRemarkRequest extends BaseRequest {
+public class RemarksNewRequest extends BaseRequest {
     private String authorName;
     private String text;
 
     @Override
     @JSONHint(ignore=true)
     public Class<? extends BaseResponse> getResponseClass() {
-        return RegisterRemarkResponse.class;
+        return RemarksNewResponse.class;
     }
 
     public String getAuthorName() {

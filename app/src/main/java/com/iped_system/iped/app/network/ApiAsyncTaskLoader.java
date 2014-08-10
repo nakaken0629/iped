@@ -37,11 +37,18 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
 
     @Override
     public BaseResponse loadInBackground() {
+        HttpURLConnection connection = null;
         try {
-            return doNetworkAccess();
+            URL url = new URL("http://10.0.2.2:8080/api/" + getPath());
+            connection = (HttpURLConnection) url.openConnection();
+            return doNetworkAccess(connection);
         } catch (IOException e) {
             Log.e(TAG, "network error", e);
             return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -53,10 +60,8 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
         }
     }
 
-    private BaseResponse doNetworkAccess() throws IOException {
+    private BaseResponse doNetworkAccess(HttpURLConnection connection) throws IOException {
         /* prepare a connection */
-        URL url = new URL("http://10.0.2.2:8080/api/" + getPath());
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setUseCaches(false);
         connection.setRequestMethod("POST");
