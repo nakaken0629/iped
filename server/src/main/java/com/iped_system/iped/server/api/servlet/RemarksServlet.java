@@ -25,7 +25,7 @@ public class RemarksServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         Map<String, Object> userValue = getCurrentUserValue();
-        long patientId = Long.valueOf((String) userValue.get("patientId"));
+        String patientId = (String) userValue.get("patientId");
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);

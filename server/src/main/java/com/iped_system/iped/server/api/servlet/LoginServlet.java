@@ -43,7 +43,6 @@ public class LoginServlet extends BaseServlet {
             token.setProperty("refreshDate", calendar.getTime());
             service.put(token);
 
-            response.setStatus(ResponseStatus.SUCCESS);
             response.setTokenId(token.getKey().getId());
             response.setUserId(userId);
             response.setLastName((String) user.getProperty("lastName"));

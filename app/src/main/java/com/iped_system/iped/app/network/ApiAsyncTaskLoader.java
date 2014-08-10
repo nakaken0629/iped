@@ -2,10 +2,13 @@ package com.iped_system.iped.app.network;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
+
+import net.arnx.jsonic.JSON;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +22,8 @@ import java.util.ArrayList;
  * Created by kenji on 2014/08/09.
  */
 public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
+    private static final String TAG = ApiAsyncTaskLoader.class.getName();
+
     private BaseRequest request;
     private String apiName;
     private boolean isSecure;
@@ -35,6 +40,7 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
         try {
             return doNetworkAccess();
         } catch (IOException e) {
+            Log.e(TAG, "network error", e);
             return null;
         }
     }
@@ -73,10 +79,12 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
         }
         writer.print(builder.toString());
         writer.close();
+        Log.d(TAG, "request: " + builder.toString());
 
         /* access server */
         InputStreamReader reader = new InputStreamReader(connection.getInputStream());
         BaseResponse response = BaseResponse.fromJSON(reader, this.request.getResponseClass());
+        Log.d(TAG, "response: " + JSON.encode(response));
         return response;
     }
 }

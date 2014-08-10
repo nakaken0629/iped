@@ -25,13 +25,16 @@ import com.iped_system.iped.common.ResponseStatus;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<BaseResponse> {
+public class LoginFragment extends Fragment {
     private static final String TAG = LoginFragment.class.getName();
+
+    private LoginCallbacks loginCallbacks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        this.loginCallbacks = new LoginCallbacks();
 
         Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new LoginButtonListener());
@@ -60,48 +63,51 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
             bundle.putString("password", "password");
             LoginFragment self = LoginFragment.this;
             LoaderManager manager = self.getLoaderManager();
-            self.getLoaderManager().initLoader(0, bundle, self);
+            self.getLoaderManager().initLoader(0, bundle, self.loginCallbacks);
         }
     }
 
-    @Override
-    public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-        Context context = getActivity().getApplicationContext();
-        LoginRequest request = new LoginRequest();
-        request.setUserId(bundle.getString("userId"));
-        request.setPassword(bundle.getString("password"));
+    class LoginCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
 
-        ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "login", false);
-        loader.forceLoad();
-        return loader;
-    }
+        @Override
+        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
+            Context context = getActivity().getApplicationContext();
+            LoginRequest request = new LoginRequest();
+            request.setUserId(bundle.getString("userId"));
+            request.setPassword(bundle.getString("password"));
 
-    @Override
-    public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
+            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "login", false);
+            loader.forceLoad();
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
         /* TODO: このキャストをなくせないか？ */
-        LoginResponse response = (LoginResponse) baseResponse;
-        if (response.getStatus() == ResponseStatus.SUCCESS) {
+            LoginResponse response = (LoginResponse) baseResponse;
+            if (response.getStatus() == ResponseStatus.SUCCESS) {
             /* TODO: 本当はActivityに通知する実装が良い */
-            Activity activity = getActivity();
-            IpedApplication application = (IpedApplication) activity.getApplication();
-            application.authenticate(response);
-            Intent intent = new Intent(activity, MainActivity.class);
-            activity.startActivity(intent);
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            AlertDialog dialog = builder.setTitle("メッセージ")
-                    .setMessage("ユーザ名かパスワードが正しくありません")
-                    .setPositiveButton("確認", null)
-                    .create();
-            dialog.show();
-        }
+                Activity activity = getActivity();
+                IpedApplication application = (IpedApplication) activity.getApplication();
+                application.authenticate(response);
+                Intent intent = new Intent(activity, MainActivity.class);
+                activity.startActivity(intent);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog dialog = builder.setTitle("メッセージ")
+                        .setMessage("ユーザ名かパスワードが正しくありません")
+                        .setPositiveButton("確認", null)
+                        .create();
+                dialog.show();
+            }
 
         /* TODO: startActivityの時に、一瞬有効になったのが見えてしまう */
-        setEnabled(true);
-    }
+            setEnabled(true);
+        }
 
-    @Override
-    public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-        setEnabled(true);
+        @Override
+        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
+            setEnabled(true);
+        }
     }
 }

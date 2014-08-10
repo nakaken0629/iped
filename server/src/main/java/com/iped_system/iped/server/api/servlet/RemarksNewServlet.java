@@ -7,7 +7,7 @@ import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RegisterRemarkRequest;
 import com.iped_system.iped.common.RegisterRemarkResponse;
-import com.iped_system.iped.common.ResponseStatus;
+import com.iped_system.iped.common.Remark;
 
 import java.util.Date;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class RemarksNewServlet extends BaseServlet {
         String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Entity remark = new Entity("remark");
+        Entity remark = new Entity("Remark");
         remark.setProperty("patientId", patientId);
         remark.setProperty("authorName", authorName);
         remark.setProperty("text", request.getText());
@@ -38,7 +38,10 @@ public class RemarksNewServlet extends BaseServlet {
         service.put(remark);
 
         RegisterRemarkResponse response = new RegisterRemarkResponse();
-        response.setStatus(ResponseStatus.SUCCESS);
+        Remark remarkValue = new Remark();
+        remarkValue.setAuthorName(authorName);
+        remarkValue.setText(request.getText());
+        response.setRemark(remarkValue);
         return response;
     }
 }
