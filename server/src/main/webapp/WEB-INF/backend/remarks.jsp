@@ -8,14 +8,16 @@
     <h1>ミーティング投稿一覧</h1>
     <table>
         <tr>
-            <th>名前</th>
             <th>患者ID</th>
+            <th>投稿者名</th>
+            <th>投稿日</th>
             <th>テキスト</th>
         </tr>
         <c:forEach var="remark" items="${remarks}">
             <tr>
-                <td><c:out value="${remark.authorId}" /></td>
                 <td><c:out value="${remark.patientId}" /></td>
+                <td><c:out value="${remark.authorName}" /></td>
+                <td><c:out value="${remark.createdAt}" /></td>
                 <td><c:out value="${remark.text}" /></td>
             </tr>
         </c:forEach>
