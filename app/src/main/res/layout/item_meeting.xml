@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true" />
 
     <TextView
-        android:id="@+id/authorNametextView"
+        android:id="@+id/authorNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"

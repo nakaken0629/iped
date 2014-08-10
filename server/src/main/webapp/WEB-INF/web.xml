@@ -14,16 +14,20 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.RemarksNewServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>IndexServlet</servlet-name>
+        <servlet-name>Backend/IndexServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.IndexServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UsersServlet</servlet-name>
+        <servlet-name>Backend/UsersServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.UsersServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewUserServlet</servlet-name>
+        <servlet-name>Backend/NewUserServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.NewUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Backend/RemarksServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.RemarksServlet</servlet-class>
     </servlet>
 
     <!-- define servlet mappings -->
@@ -40,16 +44,20 @@
         <url-pattern>/api/secure/remarks/new</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>IndexServlet</servlet-name>
+        <servlet-name>Backend/IndexServlet</servlet-name>
         <url-pattern>/backend/index</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
+        <servlet-name>Backend/UsersServlet</servlet-name>
         <url-pattern>/backend/users</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewUserServlet</servlet-name>
+        <servlet-name>Backend/NewUserServlet</servlet-name>
         <url-pattern>/backend/users/new</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Backend/RemarksServlet</servlet-name>
+        <url-pattern>/backend/remarks</url-pattern>
     </servlet-mapping>
 
     <!-- define filters -->

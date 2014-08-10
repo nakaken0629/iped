@@ -56,6 +56,7 @@ public abstract class BaseServlet extends HttpServlet {
         BaseResponse baseResponse = execute(baseRequest);
 
         response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
         response.getWriter().print(baseResponse.toJSON());
     }
 

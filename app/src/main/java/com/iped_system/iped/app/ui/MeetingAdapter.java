@@ -28,7 +28,9 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
             convertView = this.inflater.inflate(R.layout.item_meeting, null);
         }
 
+        TextView authorNameTextView = (TextView) convertView.findViewById(R.id.authorNameTextView);
         TextView textTextView = (TextView) convertView.findViewById(R.id.textTextView);
+        authorNameTextView.setText(item.getAuthorName());
         textTextView.setText(item.getText());
 
         return convertView;

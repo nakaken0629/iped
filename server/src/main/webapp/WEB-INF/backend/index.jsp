@@ -7,6 +7,7 @@
     <h1>トップ</h1>
     <ul>
         <li><a href="/backend/users">ユーザ一覧</a></li>
+        <li><a href="/backend/remarks">ミーティング投稿一覧</a></li>
     </ul>
 </body>
 </html>
