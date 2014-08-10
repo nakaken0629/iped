@@ -1,16 +1,19 @@
 package com.iped_system.iped.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kenji on 2014/08/09.
  */
 public class RemarksNewResponse extends BaseResponse {
-    private Remark remark;
+    private List<Remark> remarks = new ArrayList<Remark>();
 
-    public Remark getRemark() {
-        return remark;
+    public List<Remark> getRemarks() {
+        return remarks;
     }
 
-    public void setRemark(Remark remark) {
-        this.remark = remark;
+    public void setRemarks(List<Remark> remarks) {
+        this.remarks = remarks;
     }
 }

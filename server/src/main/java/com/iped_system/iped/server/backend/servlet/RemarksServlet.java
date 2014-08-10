@@ -29,7 +29,7 @@ public class RemarksServlet extends HttpServlet {
         ArrayList<Remark> remarks = new ArrayList<Remark>();
         for(Entity userEntity : pq.asIterable()) {
             Remark remark = new Remark();
-            remark.setAuthorName((String) userEntity.getProperty("authorName"));
+            remark.setAuthorId((String) userEntity.getProperty("authorName"));
             remark.setPatientId((String) userEntity.getProperty("patientId"));
             remark.setText((String) userEntity.getProperty("text"));
             remarks.add(remark);

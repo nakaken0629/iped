@@ -6,9 +6,18 @@ import java.util.Date;
  * Created by kenji on 2014/08/09.
  */
 public class Remark {
+    private String patientId;
     private String authorName;
     private Date createdAt;
     private String text;
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
 
     public String getAuthorName() {
         return authorName;

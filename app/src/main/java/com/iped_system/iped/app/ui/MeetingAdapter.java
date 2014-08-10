@@ -29,8 +29,14 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         }
 
         TextView authorNameTextView = (TextView) convertView.findViewById(R.id.authorNameTextView);
+        TextView createdAtTextView = (TextView) convertView.findViewById(R.id.createdAtTextView);
         TextView textTextView = (TextView) convertView.findViewById(R.id.textTextView);
         authorNameTextView.setText(item.getAuthorName());
+        if (item.getCreatedAt() != null) {
+            createdAtTextView.setText(item.getCreatedAt().toString());
+        } else {
+            createdAtTextView.setText("");
+        }
         textTextView.setText(item.getText());
 
         return convertView;

@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment {
             bundle.putString("password", "password");
             LoginFragment self = LoginFragment.this;
             LoaderManager manager = self.getLoaderManager();
-            self.getLoaderManager().initLoader(0, bundle, self.loginCallbacks);
+            self.getLoaderManager().restartLoader(0, bundle, self.loginCallbacks);
         }
     }
 

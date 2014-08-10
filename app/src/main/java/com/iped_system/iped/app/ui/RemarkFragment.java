@@ -24,8 +24,11 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
+import java.util.Date;
+
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
+    private Date lastUpdate;
 
     public interface OnRegisterListener {
         public void onRegister(RemarksNewResponse response);
@@ -44,6 +47,8 @@ public class RemarkFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
         this.remarksNewCallbacks = new RemarksNewCallbacks();
+        Bundle args = getArguments();
+        this.lastUpdate = (Date) args.getSerializable("lastUpdate");
 
         Button messageButton = (Button) rootView.findViewById(R.id.remarkButton);
         messageButton.setOnClickListener(new RemarkButtonListener());
@@ -86,6 +91,7 @@ public class RemarkFragment extends DialogFragment {
         public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
             Context context = getActivity().getApplicationContext();
             RemarksNewRequest request = new RemarksNewRequest();
+            request.setLastUpdate(lastUpdate);
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
 

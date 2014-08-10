@@ -14,7 +14,7 @@
         </tr>
         <c:forEach var="remark" items="${remarks}">
             <tr>
-                <td><c:out value="${remark.authorName}" /></td>
+                <td><c:out value="${remark.authorId}" /></td>
                 <td><c:out value="${remark.patientId}" /></td>
                 <td><c:out value="${remark.text}" /></td>
             </tr>

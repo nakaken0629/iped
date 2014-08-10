@@ -4,16 +4,16 @@ package com.iped_system.iped.server.backend.model;
  * Created by kenji on 2014/08/10.
  */
 public class Remark {
-    private String authorName;
+    private String authorId;
     private String patientId;
     private String text;
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public String getPatientId() {

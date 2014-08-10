@@ -5,9 +5,10 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.Remark;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
-import com.iped_system.iped.common.Remark;
+import com.iped_system.iped.server.api.domain.RemarkDomain;
 
 import java.util.Date;
 import java.util.Map;
@@ -26,24 +27,24 @@ public class RemarksNewServlet extends BaseServlet {
     protected BaseResponse execute(BaseRequest baseRequest) {
         RemarksNewRequest request = (RemarksNewRequest) baseRequest;
         Map<String, Object> userValue = getCurrentUserValue();
+        String userId = (String) userValue.get("userId");
         String patientId = (String) userValue.get("patientId");
-        String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
+        Date lastUpdate = request.getLastUpdate();
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Entity remark = new Entity("Remark");
         remark.setProperty("patientId", patientId);
-        remark.setProperty("authorName", authorName);
+        remark.setProperty("authorId", userId);
         remark.setProperty("createdAt", createdAt);
         remark.setProperty("text", request.getText());
         service.put(remark);
 
         RemarksNewResponse response = new RemarksNewResponse();
-        Remark remarkValue = new Remark();
-        remarkValue.setAuthorName(authorName);
-        remarkValue.setCreatedAt(createdAt);
-        remarkValue.setText(request.getText());
-        response.setRemark(remarkValue);
+        RemarkDomain remarkDomain = RemarkDomain.getInstance();
+        for(Remark remarkValue : remarkDomain.search(patientId, lastUpdate)) {
+            response.getRemarks().add(remarkValue);
+        }
         return response;
     }
 }
