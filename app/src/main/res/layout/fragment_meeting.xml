@@ -4,26 +4,32 @@
     android:layout_height="match_parent"
     tools:context="com.iped_system.iped.app.ui.MeetingFragment">
 
-    <Button
-        android:id="@+id/messageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:text="送信" />
-
-    <EditText
-        android:id="@+id/messageEditText"
+    <LinearLayout
+        android:id="@+id/commandLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/messageButton"
-        android:layout_alignBaseline="@id/messageButton"
-        android:inputType="textPersonName"
-        android:singleLine="true" />
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="近況"
+            android:id="@+id/RemarkTextView"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="写真"
+            android:id="@+id/photoTextView"
+            android:gravity="center"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/meetingListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/messageButton" />
+        android:layout_above="@id/commandLayout"/>
 </RelativeLayout>

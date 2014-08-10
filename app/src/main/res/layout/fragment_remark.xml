@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.ui.RemarkFragment">
+
+    <Button
+        android:id="@+id/remarkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="投稿"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="投稿する"
+        android:layout_alignBaseline="@id/remarkButton"/>
+
+    <EditText
+        android:id="@+id/remarkEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/remarkButton"
+        android:gravity="top" />
+</RelativeLayout>
