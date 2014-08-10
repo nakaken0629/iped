@@ -36,7 +36,7 @@ public class RemarkDomain {
             filter = Query.CompositeFilterOperator.and(filter, lastUpdateFilter);
         }
         Query query = new Query("Remark").setFilter(filter);
-        query.addSort("createdAt");
+        query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<Remark> remarks = new ArrayList<Remark>();
@@ -48,7 +48,7 @@ public class RemarkDomain {
             remarkValue.setAuthorName(authorName);
             remarkValue.setCreatedAt((Date)remark.getProperty("createdAt"));
             remarkValue.setText((String) remark.getProperty("text"));
-            remarks.add(remarkValue);
+            remarks.add(0, remarkValue);
         }
 
         return remarks;
