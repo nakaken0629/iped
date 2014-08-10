@@ -7,6 +7,8 @@ import android.util.Log;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.LoginResponse;
+import com.iped_system.iped.common.ResponseStatus;
 
 import net.arnx.jsonic.JSON;
 
@@ -39,12 +41,16 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
     public BaseResponse loadInBackground() {
         HttpURLConnection connection = null;
         try {
-            URL url = new URL("http://10.0.2.2:8080/api/" + getPath());
+//            URL url = new URL("http://10.0.2.2:8080/api/" + getPath());
+            URL url = new URL("http://192.168.11.103:8080/api/" + getPath());
+//            URL url = new URL("http://ipedsystem.appspot.com/api/" + getPath());
             connection = (HttpURLConnection) url.openConnection();
             return doNetworkAccess(connection);
         } catch (IOException e) {
-            Log.e(TAG, "network error", e);
-            return null;
+            Log.e(TAG, "network error: " + e.toString(), e);
+            LoginResponse response = new LoginResponse();
+            response.setStatus(ResponseStatus.FAIL);
+            return response;
         } finally {
             if (connection != null) {
                 connection.disconnect();

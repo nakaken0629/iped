@@ -56,7 +56,7 @@ public class AuthenticationFilter implements Filter {
 
         /* check token */
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Key tokenKey = KeyFactory.createKey("token", tokenId);
+        Key tokenKey = KeyFactory.createKey("Token", tokenId);
         Entity token;
         try {
             token = service.get(tokenKey);

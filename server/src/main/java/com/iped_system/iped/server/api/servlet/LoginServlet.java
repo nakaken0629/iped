@@ -32,7 +32,7 @@ public class LoginServlet extends BaseServlet {
 
         LoginResponse response = new LoginResponse();
         if (userValue != null && password.equals(userValue.get("password"))) {
-            Entity token = new Entity("token");
+            Entity token = new Entity("Token");
             token.setProperty("userId", userId);
             Calendar calendar = Calendar.getInstance();
             token.setProperty("refreshDate", calendar.getTime());
