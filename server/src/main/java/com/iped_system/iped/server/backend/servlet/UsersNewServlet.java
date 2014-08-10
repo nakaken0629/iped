@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by kenji on 2014/08/09.
  */
-public class NewUserServlet extends HttpServlet {
+public class UsersNewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = new User();
