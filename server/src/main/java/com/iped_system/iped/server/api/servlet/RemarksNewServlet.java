@@ -28,18 +28,20 @@ public class RemarksNewServlet extends BaseServlet {
         Map<String, Object> userValue = getCurrentUserValue();
         String patientId = (String) userValue.get("patientId");
         String authorName = (String) userValue.get("lastName") + " " + (String) userValue.get("firstName");
+        Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Entity remark = new Entity("Remark");
         remark.setProperty("patientId", patientId);
         remark.setProperty("authorName", authorName);
+        remark.setProperty("createdAt", createdAt);
         remark.setProperty("text", request.getText());
-        remark.setProperty("createdAt", new Date());
         service.put(remark);
 
         RemarksNewResponse response = new RemarksNewResponse();
         Remark remarkValue = new Remark();
         remarkValue.setAuthorName(authorName);
+        remarkValue.setCreatedAt(createdAt);
         remarkValue.setText(request.getText());
         response.setRemark(remarkValue);
         return response;

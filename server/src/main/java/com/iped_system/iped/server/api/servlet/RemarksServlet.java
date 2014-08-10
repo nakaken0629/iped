@@ -30,6 +30,7 @@ public class RemarksServlet extends BaseServlet {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);
         Query query = new Query("Remark").setFilter(filter);
+        query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         RemarksResponse response = new RemarksResponse();
         for(Entity remark : pq.asIterable()) {

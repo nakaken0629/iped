@@ -17,10 +17,11 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.Remark;
+import com.iped_system.iped.common.RemarksNewResponse;
 import com.iped_system.iped.common.RemarksRequest;
 import com.iped_system.iped.common.RemarksResponse;
 
-public class MeetingFragment extends Fragment {
+public class MeetingFragment extends Fragment implements RemarkFragment.OnRegisterListener {
     private static final String TAG = MeetingFragment.class.getName();
 
     private RemarksCallbacks remarksCallbacks;
@@ -82,8 +83,22 @@ public class MeetingFragment extends Fragment {
             FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.addToBackStack(null);
-            RemarkFragment fragment = new RemarkFragment();
+            RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
             fragment.show(transaction, "dialog");
         }
+    }
+
+    @Override
+    public void onRegister(RemarksNewResponse response) {
+        Remark remark = response.getRemark();
+
+        ListView meetingListView = (ListView) getView().findViewById(R.id.meetingListView);
+        MeetingAdapter adapter = (MeetingAdapter) meetingListView.getAdapter();
+        MeetingItem item = new MeetingItem();
+        item.setAuthorName(remark.getAuthorName());
+        item.setCreatedAt(remark.getCreatedAt());
+        item.setText(remark.getText());
+        adapter.insert(item, 0);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -1,10 +1,13 @@
 package com.iped_system.iped.app.ui;
 
+import java.util.Date;
+
 /**
  * Created by kenji on 2014/08/09.
  */
 public class MeetingItem {
     private String authorName;
+    private Date createdAt;
     private String text;
 
     public String getAuthorName() {
@@ -13,6 +16,14 @@ public class MeetingItem {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getText() {

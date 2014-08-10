@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -21,11 +22,22 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RemarksNewRequest;
+import com.iped_system.iped.common.RemarksNewResponse;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
 
+    public interface OnRegisterListener {
+        public void onRegister(RemarksNewResponse response);
+    }
+
     private RemarksNewCallbacks remarksNewCallbacks;
+
+    public static RemarkFragment newInstance(Fragment fragment) {
+        RemarkFragment remarkFragment = new RemarkFragment();
+        remarkFragment.setTargetFragment(fragment, 0);
+        return remarkFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,9 +96,14 @@ public class RemarkFragment extends DialogFragment {
 
         @Override
         public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
+            final RemarksNewResponse response = (RemarksNewResponse) baseResponse;
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
+                    Fragment fragment = getTargetFragment();
+                    if (fragment instanceof OnRegisterListener) {
+                        ((OnRegisterListener) fragment).onRegister(response);
+                    }
                     RemarkFragment.this.dismiss();
                 }
             });
