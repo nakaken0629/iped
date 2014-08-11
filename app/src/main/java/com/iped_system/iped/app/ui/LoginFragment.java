@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 AlertDialog dialog = builder.setTitle("メッセージ")
-                        .setMessage("ユーザ名かパスワードが正しくありません")
+                        .setMessage("ユーザーIDかパスワードが正しくありません")
                         .setPositiveButton("確認", null)
                         .create();
                 dialog.show();
