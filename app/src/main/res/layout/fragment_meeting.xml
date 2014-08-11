@@ -16,23 +16,60 @@
         android:id="@+id/commandLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        style="@style/iped_meeting_command">
+
+        <RelativeLayout
+            android:id="@+id/remarkLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/remarkImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="発言"
+                android:id="@+id/RemarkTextView"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/remarkImageView" />
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="近況"
-            android:id="@+id/RemarkTextView"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:text="|"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"/>
 
-        <TextView
+        <RelativeLayout
+            android:id="@+id/photoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="写真"
-            android:id="@+id/photoTextView"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/photoImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <TextView
+                android:id="@+id/photoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="写真"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/photoImageView" />
+
+        </RelativeLayout>
     </LinearLayout>
 
     <ListView
@@ -40,5 +77,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/refreshButton"
-        android:layout_above="@id/commandLayout"/>
+        android:layout_above="@id/commandLayout" />
 </RelativeLayout>

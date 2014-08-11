@@ -1,5 +1,6 @@
 package com.iped_system.iped.app.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,10 +40,17 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         this.remarksCallbacks = new RemarksCallbacks();
 
         /* コマンド */
+        RemarkListener remarkListener = new RemarkListener();
+        ImageView remarkImageView = (ImageView) rootView.findViewById(R.id.remarkImageView);
+        remarkImageView.setOnClickListener(remarkListener);
         TextView remarkTextView = (TextView) rootView.findViewById(R.id.RemarkTextView);
-        remarkTextView.setOnClickListener(new RemarkTextViewListener());
+        remarkTextView.setOnClickListener(remarkListener);
+
+        PhotoListener photoListener = new PhotoListener();
+        ImageView photoImageView = (ImageView) rootView.findViewById(R.id.photoImageView);
+        photoImageView.setOnClickListener(photoListener);
         TextView photoTextView = (TextView) rootView.findViewById(R.id.photoTextView);
-        photoTextView.setOnClickListener(new PhotoTextViewListener());
+        photoTextView.setOnClickListener(photoListener);
 
         /* リストビュー */
         Button refreshButton = (Button) rootView.findViewById(R.id.refreshButton);
@@ -107,7 +116,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         }
     }
 
-    class RemarkTextViewListener implements View.OnClickListener {
+    class RemarkListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             FragmentManager manager = getFragmentManager();
@@ -126,16 +135,24 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         insertRemarks(response.getRemarks());
     }
 
-    class PhotoTextViewListener implements View.OnClickListener {
+    class PhotoListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.addToBackStack(null);
-            CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-            fragment.show(transaction, "dialog");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog dialog = builder.setTitle("メッセージ")
+                    .setMessage("カメラ機能は準備中です")
+                    .setPositiveButton("確認", null)
+                    .create();
+            dialog.show();
+//            FragmentManager manager = getFragmentManager();
+//            FragmentTransaction transaction = manager.beginTransaction();
+//            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//            CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
+//            Bundle args = new Bundle();
+//            fragment.setArguments(args);
+//            transaction.add(android.R.id.content, fragment);
+//            transaction.addToBackStack(null);
+//            transaction.commit();
         }
     }
 }

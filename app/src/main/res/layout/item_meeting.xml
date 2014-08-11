@@ -4,37 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/profileImageView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/profileLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/anonymous"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        style="@style/iped_remark">
 
-    <TextView
-        android:id="@+id/authorNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="author name"
-        android:layout_toRightOf="@+id/profileImageView"
-        android:layout_alignTop="@id/profileImageView" />
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/anonymous"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            style="@style/iped_remark_image" />
 
-    <TextView
-        android:id="@+id/createdAtTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="created at"
-        android:layout_alignLeft="@id/authorNameTextView"
-        android:layout_below="@id/authorNameTextView"/>
+        <TextView
+            android:id="@+id/authorNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="author name"
+            android:layout_toRightOf="@+id/profileImageView"
+            android:layout_alignTop="@id/profileImageView"
+            style="@style/iped_remark_author_name" />
+
+
+        <TextView
+            android:id="@+id/createdAtTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="created at"
+            android:layout_alignLeft="@id/authorNameTextView"
+            android:layout_below="@id/authorNameTextView"
+            style="@style/iped_remark_created_at" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:layout_below="@id/profileImageView"
-        android:layout_alignParentLeft="true" />
+        android:layout_below="@id/profileLayout"
+        android:layout_alignParentLeft="true"
+        style="@style/iped_remark_text" />
+
 </RelativeLayout>

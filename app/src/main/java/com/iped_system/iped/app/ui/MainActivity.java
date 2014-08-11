@@ -18,11 +18,11 @@ public class MainActivity extends FragmentActivity {
         host.setup(this, getSupportFragmentManager(), R.id.content);
 
         TabHost.TabSpec tabSpecMeeting = host.newTabSpec("meeting");
-        tabSpecMeeting.setIndicator("meeting");
+        tabSpecMeeting.setIndicator("ミーティング");
         host.addTab(tabSpecMeeting, MeetingFragment.class, null);
 
         TabHost.TabSpec tabSpecInterview = host.newTabSpec("interview");
-        tabSpecInterview.setIndicator("interview");
+        tabSpecInterview.setIndicator("インタビュー");
         host.addTab(tabSpecInterview, InterviewFragment.class, null);
     }
 }

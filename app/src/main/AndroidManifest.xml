@@ -6,12 +6,12 @@
         android:name="com.iped_system.iped.app.IpedApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:label="iPED"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".app.ui.LoginActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
+            android:label="ログイン画面" >
+            <intent-filter android:label="iPED">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".app.ui.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="メイン画面" >
         </activity>
     </application>
 
