@@ -53,7 +53,7 @@ public class LoginFragment extends Fragment {
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", userId);
-            bundle.putString("password", "password");
+            bundle.putString("password", password);
             LoginFragment self = LoginFragment.this;
             LoaderManager manager = self.getLoaderManager();
             self.getLoaderManager().restartLoader(0, bundle, self.loginCallbacks);
