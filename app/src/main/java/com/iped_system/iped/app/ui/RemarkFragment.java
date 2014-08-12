@@ -59,7 +59,9 @@ public class RemarkFragment extends DialogFragment {
             Bitmap workBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             Matrix matrix = new Matrix();
             matrix.setRotate(270);
-            Bitmap bitmap = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, true);
+            Bitmap bitmap = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
+            workBitmap.recycle();
+            workBitmap = null;
             ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
             ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
             thumbnailImageView.setImageBitmap(bitmap);

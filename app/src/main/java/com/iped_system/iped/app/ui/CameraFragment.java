@@ -36,7 +36,17 @@ public class CameraFragment extends DialogFragment {
     private SurfaceHolder.Callback surfaceListener = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
-            camera = Camera.open(0);
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            for(int i = 0; i < Camera.getNumberOfCameras(); i++) {
+                Camera.getCameraInfo(i, info);
+                if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    camera = Camera.open(i);
+                    break;
+                }
+            }
+            if (camera == null) {
+                camera = Camera.open(0);
+            }
             try {
                 camera.setPreviewDisplay(surfaceHolder);
             } catch (IOException e) {
@@ -103,6 +113,13 @@ public class CameraFragment extends DialogFragment {
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         );
         return dialog;
+    }
+
+    class ChangerListener implements  View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+        }
     }
 
     class TakePictureListener implements View.OnClickListener {

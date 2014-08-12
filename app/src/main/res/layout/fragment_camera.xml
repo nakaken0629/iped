@@ -16,7 +16,6 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:text="写真を撮る"
-        />
+        android:text="写真を撮る" />
 </FrameLayout>
 
