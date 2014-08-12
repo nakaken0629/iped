@@ -56,12 +56,25 @@ public class RemarkFragment extends DialogFragment {
         this.lastUpdate = (Date) args.getSerializable("lastUpdate");
         if (args.containsKey("picture")) {
             byte[] bytes = args.getByteArray("picture");
-            Bitmap workBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            /* check size */
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int max = Math.max(width, height);
+            if (800 < max) {
+                int scale = max / 800 + 1;
+                options.inSampleSize = scale;
+            }
+
+            /* create bitmap */
+            options.inJustDecodeBounds = false;
+            Bitmap workBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
             Matrix matrix = new Matrix();
             matrix.setRotate(270);
             Bitmap bitmap = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
             workBitmap.recycle();
-            workBitmap = null;
             ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
             ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
             thumbnailImageView.setImageBitmap(bitmap);
