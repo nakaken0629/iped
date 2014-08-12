@@ -30,4 +30,9 @@
         <item name="android:background">#ff44cc44</item>
         <item name="android:padding">8px</item>
     </style>
+    <style name="iped_thumbnail">
+        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_height">128dp</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
 </resources>

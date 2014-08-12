@@ -2,6 +2,7 @@ package com.iped_system.iped.app.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,7 +27,7 @@ import com.iped_system.iped.common.RemarksResponse;
 import java.util.Date;
 import java.util.List;
 
-public class MeetingFragment extends Fragment implements RemarkFragment.OnRegisterListener {
+public class MeetingFragment extends Fragment implements RemarkFragment.OnRegisterListener, CameraFragment.OnTakePictureListener {
     private static final String TAG = MeetingFragment.class.getName();
 
     private RemarksCallbacks remarksCallbacks;
@@ -118,14 +119,10 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     class RemarkListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.addToBackStack(null);
             RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
             Bundle args = new Bundle();
             args.putSerializable("lastUpdate", lastUpdate);
-            fragment.setArguments(args);
-            fragment.show(transaction, "dialog");
+            showDialog(fragment, args);
         }
     }
 
@@ -137,15 +134,27 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     class PhotoListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
-            Bundle args = new Bundle();
-            fragment.setArguments(args);
-            transaction.add(android.R.id.content, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            showDialog(fragment, null);
         }
+    }
+
+    @Override
+    public void onTakePicture(byte[] bitmapBytes) {
+        RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
+        Bundle args = new Bundle();
+        args.putSerializable("lastUpdate", lastUpdate);
+        args.putByteArray("picture", bitmapBytes);
+        showDialog(fragment, args);
+    }
+
+    private void showDialog(DialogFragment fragment, Bundle args) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.addToBackStack(null);
+        if (args != null) {
+            fragment.setArguments(args);
+        }
+        fragment.show(transaction, "dialog");
     }
 }

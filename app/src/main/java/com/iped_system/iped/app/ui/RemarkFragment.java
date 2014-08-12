@@ -2,6 +2,9 @@ package com.iped_system.iped.app.ui;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
@@ -28,6 +32,7 @@ import java.util.Date;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
+    /* TODO: ライフサイクルによってなくなってしまわないか？ */
     private Date lastUpdate;
 
     public interface OnRegisterListener {
@@ -49,6 +54,17 @@ public class RemarkFragment extends DialogFragment {
         this.remarksNewCallbacks = new RemarksNewCallbacks();
         Bundle args = getArguments();
         this.lastUpdate = (Date) args.getSerializable("lastUpdate");
+        if (args.containsKey("picture")) {
+            byte[] bytes = args.getByteArray("picture");
+            Bitmap workBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Matrix matrix = new Matrix();
+            matrix.setRotate(270);
+            Bitmap bitmap = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, true);
+            ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
+            ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
+            thumbnailImageView.setImageBitmap(bitmap);
+            thumbnailLayout.addView(thumbnailImageView);
+        }
 
         Button messageButton = (Button) rootView.findViewById(R.id.remarkButton);
         messageButton.setOnClickListener(new RemarkButtonListener());
