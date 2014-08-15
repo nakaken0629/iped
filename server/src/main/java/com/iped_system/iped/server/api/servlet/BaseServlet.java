@@ -50,7 +50,9 @@ public abstract class BaseServlet extends HttpServlet {
 
     private void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.userId = (String) request.getAttribute("userId");
-
+        for(Object key : request.getParameterMap().keySet()) {
+            System.out.println(key.toString() + ":" + request.getParameter(key.toString()));
+        }
         String parameter = request.getParameter("parameter");
         BaseRequest baseRequest = JSON.decode(parameter, getRequestClass());
         BaseResponse baseResponse = execute(baseRequest);

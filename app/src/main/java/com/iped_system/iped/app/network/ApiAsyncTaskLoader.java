@@ -10,12 +10,18 @@ import com.iped_system.iped.common.BaseResponse;
 
 import net.arnx.jsonic.JSON;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -37,20 +43,11 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
 
     @Override
     public BaseResponse loadInBackground() {
-        HttpURLConnection connection = null;
         try {
-//            URL url = new URL("http://10.0.2.2:8080/api/" + getPath());
-            URL url = new URL("http://192.168.11.103:8080/api/" + getPath());
-//            URL url = new URL("http://ipedsystem.appspot.com/api/" + getPath());
-            connection = (HttpURLConnection) url.openConnection();
-            return doNetworkAccess(connection);
+            return doNetworkAccess();
         } catch (IOException e) {
             Log.e(TAG, "network error: " + e.toString(), e);
             throw new RuntimeException("通信エラーが発生しました", e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
 
@@ -62,36 +59,32 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
         }
     }
 
-    private BaseResponse doNetworkAccess(HttpURLConnection connection) throws IOException {
-        /* prepare a connection */
-        connection.setDoOutput(true);
-        connection.setUseCaches(false);
-        connection.setRequestMethod("POST");
-
-        /* prepare parameters */
-        ArrayList<String> parameters = new ArrayList<String>();
+    private BaseResponse doNetworkAccess() throws IOException {
+        HttpClient client = new DefaultHttpClient();
+//        String url = "http://10.0.2.2:8080/api/" + getPath();
+        String url = "http://192.168.11.103:8080/api/" + getPath();
+//        String url = "http://ipedsystem.appspot.com/api/" + getPath();
+        HttpPost post = new HttpPost(url);
         if (this.isSecure) {
             IpedApplication application = (IpedApplication) getContext().getApplicationContext();
-            connection.setRequestProperty("X-IPED-USER-ID", application.getUserId());
-            connection.setRequestProperty("X-IPED-TOKEN-ID", Long.toString(application.getTokenId()));
+            post.setHeader("X-IPED-USER-ID", application.getUserId());
+            post.setHeader("X-IPED-TOKEN-ID", Long.toString(application.getTokenId()));
         }
-        parameters.add("parameter=" + URLEncoder.encode(this.request.toJSON(), "utf-8"));
-        PrintWriter writer = new PrintWriter(connection.getOutputStream());
-        StringBuilder builder = new StringBuilder();
-        for (String parameter : parameters) {
-            if (builder.length() > 0) {
-                builder.append("&");
-            }
-            builder.append(parameter);
-        }
-        writer.print(builder.toString());
-        writer.close();
-        Log.d(TAG, "request: " + builder.toString());
+
+        /* prepare parameters */
+        ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+        parameters.add(new BasicNameValuePair("parameter", this.request.toJSON()));
+        post.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
 
         /* access server */
-        InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-        BaseResponse response = BaseResponse.fromJSON(reader, this.request.getResponseClass());
-        Log.d(TAG, "response: " + JSON.encode(response));
-        return response;
+        HttpResponse response = client.execute(post);
+        int status = response.getStatusLine().getStatusCode();
+        if (status != HttpStatus.SC_OK) {
+            throw new IOException("network error: " + response.getStatusLine().toString());
+        }
+        InputStreamReader reader = new InputStreamReader(response.getEntity().getContent());
+        BaseResponse baseResponse = BaseResponse.fromJSON(reader, this.request.getResponseClass());
+        Log.d(TAG, "response: " + JSON.encode(baseResponse));
+        return baseResponse;
     }
 }
