@@ -11,6 +11,7 @@ public class RemarksNewRequest extends BaseRequest {
     private Date lastUpdate;
     private String authorName;
     private String text;
+    private String picturePath;
 
     @Override
     @JSONHint(ignore=true)
@@ -40,5 +41,13 @@ public class RemarksNewRequest extends BaseRequest {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

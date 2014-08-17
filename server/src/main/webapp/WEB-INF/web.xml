@@ -14,6 +14,14 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.RemarksNewServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetPostUrlServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.GetPostUrlServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServeServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.ServeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Backend/IndexServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.IndexServlet</servlet-class>
     </servlet>
@@ -42,6 +50,14 @@
     <servlet-mapping>
         <servlet-name>RemarksNewServlet</servlet-name>
         <url-pattern>/api/secure/remarks/new</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPostUrlServlet</servlet-name>
+        <url-pattern>/api/getPostUrl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServeServlet</servlet-name>
+        <url-pattern>/api/serve</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Backend/IndexServlet</servlet-name>

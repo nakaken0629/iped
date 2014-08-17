@@ -24,22 +24,26 @@ import android.widget.ImageView;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
+import com.iped_system.iped.app.network.UploadAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
     /* TODO: ライフサイクルによってなくなってしまわないか？ */
     private Date lastUpdate;
+    private byte[] pictureData;
 
     public interface OnRegisterListener {
         public void onRegister(RemarksNewResponse response);
     }
 
     private RemarksNewCallbacks remarksNewCallbacks;
+    private PictureUploadCallbacks pictureUploadCallbacks;
 
     public static RemarkFragment newInstance(Fragment fragment) {
         RemarkFragment remarkFragment = new RemarkFragment();
@@ -52,14 +56,16 @@ public class RemarkFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
         this.remarksNewCallbacks = new RemarksNewCallbacks();
+        this.pictureUploadCallbacks = new PictureUploadCallbacks();
+
         Bundle args = getArguments();
         this.lastUpdate = (Date) args.getSerializable("lastUpdate");
-        if (args.containsKey("picture")) {
-            byte[] bytes = args.getByteArray("picture");
+        if (args.containsKey("pictureData")) {
+            this.pictureData = args.getByteArray("pictureData");
             /* check size */
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+            BitmapFactory.decodeByteArray(this.pictureData, 0, this.pictureData.length, options);
             int width = options.outWidth;
             int height = options.outHeight;
             int max = Math.max(width, height);
@@ -70,14 +76,13 @@ public class RemarkFragment extends DialogFragment {
 
             /* create bitmap */
             options.inJustDecodeBounds = false;
-            Bitmap workBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+            Bitmap workBitmap = BitmapFactory.decodeByteArray(this.pictureData, 0, this.pictureData.length, options);
             Matrix matrix = new Matrix();
             matrix.setRotate(270);
-            Bitmap bitmap = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
-            workBitmap.recycle();
+            Bitmap picture = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
             ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
             ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
-            thumbnailImageView.setImageBitmap(bitmap);
+            thumbnailImageView.setImageBitmap(picture);
             thumbnailLayout.addView(thumbnailImageView);
         }
 
@@ -96,6 +101,10 @@ public class RemarkFragment extends DialogFragment {
         return dialog;
     }
 
+    private byte[] getPictureData() {
+        return RemarkFragment.this.pictureData;
+    }
+
     class RemarkButtonListener implements View.OnClickListener {
         private String getEditTextValue(int id) {
             return ((EditText) getView().findViewById(id)).getText().toString().trim();
@@ -109,10 +118,42 @@ public class RemarkFragment extends DialogFragment {
                 return;
             }
 
+            RemarkFragment self = RemarkFragment.this;
             Bundle bundle = new Bundle();
             bundle.putString("text", text);
-            RemarkFragment self = RemarkFragment.this;
-            self.getLoaderManager().restartLoader(0, bundle, self.remarksNewCallbacks);
+            byte[] pictureData = self.getPictureData();
+            if (pictureData == null) {
+                self.getLoaderManager().restartLoader(0, bundle, self.remarksNewCallbacks);
+            } else {
+                bundle.putString("picturePath", UUID.randomUUID().toString());
+                bundle.putByteArray("pictureData", pictureData);
+                self.getLoaderManager().restartLoader(0, bundle, self.pictureUploadCallbacks);
+            }
+        }
+    }
+
+    class PictureUploadCallbacks implements LoaderManager.LoaderCallbacks<Void> {
+        private Bundle bundle;
+        @Override
+        public Loader<Void> onCreateLoader(int i, Bundle bundle) {
+            this.bundle = bundle;
+            Context context = getActivity().getApplicationContext();
+            String picturePath = bundle.getString("picturePath");
+            byte[] pictureData = bundle.getByteArray("pictureData");
+            Log.d(TAG, "picturePath: " + picturePath);
+            UploadAsyncTaskLoader loader = new UploadAsyncTaskLoader(context, picturePath, pictureData);
+            loader.forceLoad();
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Void> voidLoader, Void aVoid) {
+            getLoaderManager().restartLoader(0, bundle, remarksNewCallbacks);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Void> voidLoader) {
+            /* nop */
         }
     }
 
@@ -125,7 +166,9 @@ public class RemarkFragment extends DialogFragment {
             request.setLastUpdate(lastUpdate);
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
-
+            if (bundle.containsKey("picturePath")) {
+                request.setPicturePath(bundle.getString("picturePath"));
+            }
             ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks/new", true);
             loader.forceLoad();
             return loader;

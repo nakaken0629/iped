@@ -144,7 +144,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
         Bundle args = new Bundle();
         args.putSerializable("lastUpdate", lastUpdate);
-        args.putByteArray("picture", bitmapBytes);
+        args.putByteArray("pictureData", bitmapBytes);
         showDialog(fragment, args);
     }
 
