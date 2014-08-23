@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,13 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
             item.setAuthorName(remark.getAuthorName());
             item.setCreatedAt(remark.getCreatedAt());
             item.setText(remark.getText());
+            if (remark.getPictures() != null) {
+                for(String blobKey : remark.getPictures()) {
+                    Log.d(TAG, "blobKey: " + blobKey);
+                }
+            } else {
+                Log.d(TAG, "blobKey: null");
+            }
             adapter.insert(item, 0);
 
             if (lastUpdate == null || lastUpdate.before(remark.getCreatedAt())) {

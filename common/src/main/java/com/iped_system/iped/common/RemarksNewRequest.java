@@ -3,6 +3,7 @@ package com.iped_system.iped.common;
 import net.arnx.jsonic.JSONHint;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kenji on 2014/08/09.
@@ -11,7 +12,7 @@ public class RemarksNewRequest extends BaseRequest {
     private Date lastUpdate;
     private String authorName;
     private String text;
-    private String picturePath;
+    private List<String> pictures;
 
     @Override
     @JSONHint(ignore=true)
@@ -43,11 +44,11 @@ public class RemarksNewRequest extends BaseRequest {
         this.text = text;
     }
 
-    public String getPicturePath() {
-        return picturePath;
+    public List<String> getPictures() {
+        return pictures;
     }
 
-    public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }

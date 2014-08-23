@@ -169,9 +169,7 @@ public class RemarkFragment extends DialogFragment {
             request.setLastUpdate(lastUpdate);
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
-            if (bundle.containsKey("pictures")) {
-                request.setPicturePath(bundle.getStringArrayList("pictures").get(0));
-            }
+            request.setPictures(bundle.getStringArrayList("pictures"));
             ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks/new", true);
             loader.forceLoad();
             return loader;

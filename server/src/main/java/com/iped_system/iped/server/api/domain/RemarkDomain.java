@@ -48,6 +48,7 @@ public class RemarkDomain {
             remarkValue.setAuthorName(authorName);
             remarkValue.setCreatedAt((Date)remark.getProperty("createdAt"));
             remarkValue.setText((String) remark.getProperty("text"));
+            remarkValue.setPictures((List<String>)remark.getProperty("pictures"));
             remarks.add(0, remarkValue);
         }
 

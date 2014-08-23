@@ -1,6 +1,7 @@
 package com.iped_system.iped.common;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kenji on 2014/08/09.
@@ -10,6 +11,7 @@ public class Remark {
     private String authorName;
     private Date createdAt;
     private String text;
+    private List<String> pictures;
 
     public String getPatientId() {
         return patientId;
@@ -41,5 +43,13 @@ public class Remark {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }

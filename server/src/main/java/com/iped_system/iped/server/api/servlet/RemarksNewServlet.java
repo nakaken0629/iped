@@ -38,7 +38,7 @@ public class RemarksNewServlet extends BaseServlet {
         remark.setProperty("authorId", userId);
         remark.setProperty("createdAt", createdAt);
         remark.setProperty("text", request.getText());
-        remark.setProperty("imagePath", request.getPicturePath());
+        remark.setProperty("pictures", request.getPictures());
         service.put(remark);
 
         RemarksNewResponse response = new RemarksNewResponse();
