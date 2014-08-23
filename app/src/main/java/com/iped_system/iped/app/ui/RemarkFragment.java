@@ -29,7 +29,9 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class RemarkFragment extends DialogFragment {
@@ -132,10 +134,10 @@ public class RemarkFragment extends DialogFragment {
         }
     }
 
-    class PictureUploadCallbacks implements LoaderManager.LoaderCallbacks<Void> {
+    class PictureUploadCallbacks implements LoaderManager.LoaderCallbacks<List<String>> {
         private Bundle bundle;
         @Override
-        public Loader<Void> onCreateLoader(int i, Bundle bundle) {
+        public Loader<List<String>> onCreateLoader(int i, Bundle bundle) {
             this.bundle = bundle;
             Context context = getActivity().getApplicationContext();
             String picturePath = bundle.getString("picturePath");
@@ -147,12 +149,13 @@ public class RemarkFragment extends DialogFragment {
         }
 
         @Override
-        public void onLoadFinished(Loader<Void> voidLoader, Void aVoid) {
+        public void onLoadFinished(Loader<List<String>> listLoader, List<String> strings) {
+            bundle.putStringArrayList("pictures", new ArrayList<String>(strings));
             getLoaderManager().restartLoader(0, bundle, remarksNewCallbacks);
         }
 
         @Override
-        public void onLoaderReset(Loader<Void> voidLoader) {
+        public void onLoaderReset(Loader<List<String>> listLoader) {
             /* nop */
         }
     }
@@ -166,8 +169,8 @@ public class RemarkFragment extends DialogFragment {
             request.setLastUpdate(lastUpdate);
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
-            if (bundle.containsKey("picturePath")) {
-                request.setPicturePath(bundle.getString("picturePath"));
+            if (bundle.containsKey("pictures")) {
+                request.setPicturePath(bundle.getStringArrayList("pictures").get(0));
             }
             ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks/new", true);
             loader.forceLoad();

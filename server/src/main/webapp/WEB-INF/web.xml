@@ -18,6 +18,10 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.GetPostUrlServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.UploadServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServeServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.ServeServlet</servlet-class>
     </servlet>
@@ -54,6 +58,10 @@
     <servlet-mapping>
         <servlet-name>GetPostUrlServlet</servlet-name>
         <url-pattern>/api/getPostUrl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServeServlet</servlet-name>
