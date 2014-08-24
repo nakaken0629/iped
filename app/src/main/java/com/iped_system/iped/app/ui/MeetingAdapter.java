@@ -1,6 +1,7 @@
 package com.iped_system.iped.app.ui;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
+
+import java.util.Calendar;
 
 /**
  * Created by kenji on 2014/08/09.
@@ -31,12 +34,11 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         TextView authorNameTextView = (TextView) convertView.findViewById(R.id.authorNameTextView);
         TextView createdAtTextView = (TextView) convertView.findViewById(R.id.createdAtTextView);
         TextView textTextView = (TextView) convertView.findViewById(R.id.textTextView);
+
         authorNameTextView.setText(item.getAuthorName());
-        if (item.getCreatedAt() != null) {
-            createdAtTextView.setText(item.getCreatedAt().toString());
-        } else {
-            createdAtTextView.setText("");
-        }
+        Calendar createdAt = Calendar.getInstance();
+        createdAt.setTime(item.getCreatedAt());
+        createdAtTextView.setText(DateFormat.format("yyyy/MM/dd kk:mm", createdAt));
         textTextView.setText(item.getText());
 
         return convertView;
