@@ -19,7 +19,7 @@ public class DownloadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BlobKey blobKey = new BlobKey(req.getParameter("blob-key"));
+        BlobKey blobKey = new BlobKey(req.getParameter("pictureKey"));
         blobstoreService.serve(blobKey, resp);
     }
 }
