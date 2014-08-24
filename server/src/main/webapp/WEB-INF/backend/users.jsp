@@ -37,8 +37,8 @@
                     <c:out value="${user.patientId}"/>
                 </td>
                 <td>
-                    <input class="btn btn-info" type="button" value="編集" />
-                    <input class="btn btn-danger" type="button" value="削除" />
+                    <a class="btn btn-info" href='/backend/user/edit/<c:out value="${user.userId}"/>'>編集</a>
+                    <a class="btn btn-danger" href="#">削除</a>
                 </td>
             </tr>
         </c:forEach>

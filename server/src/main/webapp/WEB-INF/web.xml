@@ -42,6 +42,10 @@
         <servlet-class>com.iped_system.iped.server.backend.servlet.UsersNewServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Backend/UserEditServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.UserEditServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Backend/RemarksServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.RemarksServlet</servlet-class>
     </servlet>
@@ -86,6 +90,10 @@
     <servlet-mapping>
         <servlet-name>Backend/UsersNewServlet</servlet-name>
         <url-pattern>/backend/users/new</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Backend/UserEditServlet</servlet-name>
+        <url-pattern>/backend/user/edit/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Backend/RemarksServlet</servlet-name>

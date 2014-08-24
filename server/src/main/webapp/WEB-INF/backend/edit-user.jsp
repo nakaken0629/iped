@@ -4,14 +4,14 @@
 <html lang="ja">
 <head>
     <jsp:include page="/WEB-INF/backend/partial/header.jsp"/>
-    <title>iPED - 新しいユーザの作成</title>
+    <title>iPED - ユーザの編集</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/backend/partial/menu.jsp"/>
 <div class="container">
-    <h1>新しいユーザの作成</h1>
-    <c:set var="method" value="new" scope="request" />
-    <jsp:include page="/WEB-INF/backend/partial/userform.jsp" />
+    <h1>ユーザの編集</h1>
+    <c:set var="method" value="edit" scope="request" />
+    <jsp:include page="/WEB-INF/backend/partial/userform.jsp"/>
 </div>
 </body>
 </html>

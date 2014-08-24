@@ -4,8 +4,14 @@
       role="form">
     <div class="form-group">
         <label for="userId">ユーザID<span class="text-info">（必須）</span></label>
-        <input type="text" class="form-control" id="userId" placeholder="例：yasui.hiroki"
-               name="userId" value='<c:out value="${user.userId}" />'>
+        <c:if test='${method == "new"}'>
+            <input type="text" class="form-control" id="userId" placeholder="例：yasui.hiroki"
+                   name="userId" value='<c:out value="${user.userId}" />'>
+        </c:if>
+        <c:if test='${method != "new"}'>
+            <p class="form-control-static" id="userId"><c:out value="${user.userId}" /></p>
+            <input type="hidden" name="userId" value='<c:out value="${user.userId}" />'>
+        </c:if>
     </div>
     <div class="form-group">
         <label for="lastName">苗字<span class="text-info">（必須）</span></label>
@@ -26,7 +32,8 @@
         <c:forEach var="role" items="${roles}">
             <label class="radio-inline">
                 <input type="radio" name="role" value='<c:out value="${role}" />'
-                <c:if test="${role == user.role}"> checked="checked"</c:if>>
+                <c:if test="${role == user.role}"> checked="checked"</c:if>
+                >
                 <c:out value="${role}"/>
             </label>
         </c:forEach>

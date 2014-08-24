@@ -15,14 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by kenji on 2014/08/09.
  */
-public class UsersNewServlet extends HttpServlet {
+public class UserEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = new User();
+        String userId = req.getPathInfo().split("/")[1];
+        User user = UserUtils.createFromUserId(userId);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.getRoles());
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/new-user.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/edit-user.jsp");
         dispatcher.forward(req, resp);
     }
 
@@ -33,12 +34,12 @@ public class UsersNewServlet extends HttpServlet {
         req.setAttribute("roles", RoleType.getRoles());
 
         if (!user.isValid()) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/new-user.jsp");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/edit-user.jsp");
             dispatcher.forward(req, resp);
             return;
         }
 
-        UserUtils.insert(user);
+        UserUtils.update(user);
         resp.sendRedirect("/backend/users");
     }
 }
