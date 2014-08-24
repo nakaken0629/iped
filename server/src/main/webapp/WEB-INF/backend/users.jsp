@@ -45,7 +45,6 @@
     </table>
     <ul>
         <li><a href="/backend/users/new">新しいユーザの作成</a></li>
-        <li><a href="/backend/index">トップに戻る</a></li>
     </ul>
 </div>
 </body>
