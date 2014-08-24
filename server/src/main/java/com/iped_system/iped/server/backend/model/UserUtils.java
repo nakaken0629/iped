@@ -69,4 +69,10 @@ public final class UserUtils {
         entity.setProperty("patientId", user.getPatientId());
         service.put(entity);
     }
+
+    public static void delete(String userId) {
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        Entity entity = selectByUserId(userId);
+        service.delete(entity.getKey());
+    }
 }

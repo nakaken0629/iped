@@ -9,7 +9,9 @@
                    name="userId" value='<c:out value="${user.userId}" />'>
         </c:if>
         <c:if test='${method != "new"}'>
-            <p class="form-control-static" id="userId"><c:out value="${user.userId}" /></p>
+            <p class="form-control-static" id="userId">
+                <c:out value="${user.userId}"/>
+            </p>
             <input type="hidden" name="userId" value='<c:out value="${user.userId}" />'>
         </c:if>
     </div>
@@ -44,6 +46,12 @@
                name="patientId" value='<c:out value="${user.patientId}" />'>
     </div>
     <p>
-        <input type="submit" class="btn btn-primary" value="登録する"/>
+        <input type="submit" name="register" class="btn btn-primary" value="登録する"/>
     </p>
+    <c:if test='${method != "new"}'>
+        <p>
+            <input type="submit" name="delete" class="btn btn-danger" value="削除する"/>
+            <span class="text-danger">元に戻せません！！</span>
+        </p>
+    </c:if>
 </form>

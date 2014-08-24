@@ -38,7 +38,6 @@
                 </td>
                 <td>
                     <a class="btn btn-info" href='/backend/user/edit/<c:out value="${user.userId}"/>'>編集</a>
-                    <a class="btn btn-danger" href="#">削除</a>
                 </td>
             </tr>
         </c:forEach>

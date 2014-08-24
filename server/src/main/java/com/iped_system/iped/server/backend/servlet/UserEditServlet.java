@@ -29,6 +29,14 @@ public class UserEditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getParameter("register") != null) {
+            doPostAsRegister(req, resp);
+        } else if (req.getParameter("delete") != null) {
+            doPostAsDelete(req, resp);
+        }
+    }
+
+    private void doPostAsRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = UserUtils.createFromRequest(req);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.getRoles());
@@ -40,6 +48,12 @@ public class UserEditServlet extends HttpServlet {
         }
 
         UserUtils.update(user);
+        resp.sendRedirect("/backend/users");
+    }
+
+    private void doPostAsDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String userId = req.getParameter("userId");
+        UserUtils.delete(userId);
         resp.sendRedirect("/backend/users");
     }
 }
