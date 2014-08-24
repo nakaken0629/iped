@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/newPhotoTextView"
-            android:text="新しい写真を追加"
+            android:text="新しい写真を追加\n(準備中)"
             android:background="@drawable/thumbnail"
             android:gravity="center"
             style="@style/iped_thumbnail"/>

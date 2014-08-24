@@ -1,5 +1,6 @@
 package com.iped_system.iped.app.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -142,8 +143,14 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     class PhotoListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
-            showDialog(fragment, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog dialog = builder.setTitle("メッセージ")
+                    .setMessage("カメラは準備中です")
+                    .setPositiveButton("確認", null)
+                    .create();
+            dialog.show();
+//            CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
+//            showDialog(fragment, null);
         }
     }
 
