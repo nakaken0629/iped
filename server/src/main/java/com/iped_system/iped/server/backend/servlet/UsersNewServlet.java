@@ -3,6 +3,7 @@ package com.iped_system.iped.server.backend.servlet;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.backend.model.User;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class UsersNewServlet extends HttpServlet {
         User user = new User();
         req.setAttribute("user", user);
 
+        req.setAttribute("roles", RoleType.getRoles());
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/new-user.jsp");
         dispatcher.forward(req, resp);
     }
@@ -36,6 +39,8 @@ public class UsersNewServlet extends HttpServlet {
         user.setRole(req.getParameter("role"));
         user.setPatientId(req.getParameter("patientId"));
         req.setAttribute("user", user);
+
+        req.setAttribute("roles", RoleType.getRoles());
 
         if (!user.isValid()) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/new-user.jsp");
