@@ -41,7 +41,7 @@
         </c:forEach>
     </div>
     <div class="form-group">
-        <label for="patientId">担当患者ID<span class="text-info">（役割が患者以外のとき必須）</span></label>
+        <label for="patientId">担当患者ID<span class="text-info">（役割が患者のときはユーザIDと同じ）</span></label>
         <input type="text" class="form-control" id="patientId" placeholder="例：nakagaki.kenji"
                name="patientId" value='<c:out value="${user.patientId}" />'>
     </div>

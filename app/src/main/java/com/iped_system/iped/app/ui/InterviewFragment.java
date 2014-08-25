@@ -36,6 +36,9 @@ public class InterviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_interview, container, false);
+
+        /* 変数初期化 */
+        this.lastUpdate = null;
         this.talksCallbacks = new TalksCallbacks();
         this.talksNewCallbacks = new TalksNewCallbacks();
 
@@ -49,14 +52,14 @@ public class InterviewFragment extends Fragment {
         interviewListView.setAdapter(adapter);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lastUpdate", lastUpdate);
-        getLoaderManager().initLoader(0, bundle, talksCallbacks);
+        getLoaderManager().restartLoader(0, bundle, talksCallbacks);
         return rootView;
     }
 
     private void insertTalks(List<Talk> talks) {
         ListView interviewListView = (ListView) getView().findViewById(R.id.interviewListView);
         InterviewAdapter adapter = (InterviewAdapter) interviewListView.getAdapter();
-        for(Talk talk : talks) {
+        for (Talk talk : talks) {
             Log.d(TAG, "createdAt: " + talk.getCreatedAt());
             TalkItem item = new TalkItem();
             item.setYouText(talk.getYouText());
