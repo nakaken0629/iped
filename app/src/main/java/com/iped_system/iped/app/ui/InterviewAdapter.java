@@ -13,7 +13,7 @@ import com.iped_system.iped.R;
 /**
  * Created by kenji on 2014/08/25.
  */
-public class InterviewAdapter extends ArrayAdapter<InterviewItem> {
+public class InterviewAdapter extends ArrayAdapter<TalkItem> {
     private LayoutInflater inflater;
 
     public InterviewAdapter(Context context, int resource) {
@@ -23,23 +23,23 @@ public class InterviewAdapter extends ArrayAdapter<InterviewItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        InterviewItem item = getItem(position);
+        TalkItem item = getItem(position);
 
         if (convertView == null) {
-            convertView = this.inflater.inflate(R.layout.item_interview, null);
+            convertView = this.inflater.inflate(R.layout.item_talk, null);
         }
 
         RelativeLayout youLayout = (RelativeLayout) convertView.findViewById(R.id.youLayout);
-        TextView youTextView = (TextView) convertView.findViewById(R.id.youTextTextView);
-        TextView authorNameView = (TextView) convertView.findViewById(R.id.authorNameTextView);
+        TextView youTextTextView = (TextView) convertView.findViewById(R.id.youTextTextView);
+        TextView authorNameTextView = (TextView) convertView.findViewById(R.id.authorNameTextView);
         RelativeLayout meLayout = (RelativeLayout) convertView.findViewById(R.id.meLayout);
-        TextView meTextView = (TextView) convertView.findViewById(R.id.meTextTextView);
+        TextView meTextTextView = (TextView) convertView.findViewById(R.id.meTextTextView);
 
         youLayout.setVisibility(item.getYouText() == null ? View.GONE : View.VISIBLE);
-        youTextView.setText(item.getYouText());
-        authorNameView.setText(item.getAuthorName());
+        youTextTextView.setText(item.getYouText());
+        authorNameTextView.setText(item.getAuthorName());
         meLayout.setVisibility(item.getMeText() == null ? View.GONE : View.VISIBLE);
-        meTextView.setText(item.getMeText());
+        meTextTextView.setText(item.getMeText());
 
         return convertView;
     }

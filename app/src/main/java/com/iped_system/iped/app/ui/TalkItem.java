@@ -3,7 +3,7 @@ package com.iped_system.iped.app.ui;
 /**
  * Created by kenji on 2014/08/25.
  */
-public class InterviewItem {
+public class TalkItem {
     private String youText;
     private String authorName;
     private String meText;

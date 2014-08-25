@@ -88,8 +88,8 @@ public class RemarkFragment extends DialogFragment {
             thumbnailLayout.addView(thumbnailImageView);
         }
 
-        Button messageButton = (Button) rootView.findViewById(R.id.remarkButton);
-        messageButton.setOnClickListener(new RemarkButtonListener());
+        Button remarkButton = (Button) rootView.findViewById(R.id.remarkButton);
+        remarkButton.setOnClickListener(new RemarkButtonListener());
         return rootView;
     }
 

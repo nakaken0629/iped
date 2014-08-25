@@ -16,7 +16,7 @@
             android:src="@drawable/anonymous"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            style="@style/iped_interview_image" />
+            style="@style/iped_talk_image" />
 
         <TextView
             android:id="@+id/authorNameTextView"
@@ -26,7 +26,7 @@
             android:text="author name"
             android:layout_toRightOf="@+id/profileImageView"
             android:layout_alignTop="@id/profileImageView"
-            style="@style/iped_interview_author_name" />
+            style="@style/iped_talk_author_name" />
 
         <TextView
             android:id="@+id/youTextTextView"
@@ -35,7 +35,7 @@
             android:text="New Text"
             android:layout_below="@id/authorNameTextView"
             android:layout_alignLeft="@id/authorNameTextView"
-            style="@style/iped_interview_text_you" />
+            style="@style/iped_talk_text_you" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -51,7 +51,7 @@
             android:text="New Text"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            style="@style/iped_interview_text_me" />
+            style="@style/iped_talk_text_me" />
 
     </RelativeLayout>
 </RelativeLayout>

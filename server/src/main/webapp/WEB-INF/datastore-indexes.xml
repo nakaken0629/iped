@@ -3,9 +3,12 @@
 <datastore-indexes autoGenerate="false">
 
     <!-- Used 4 times in query history -->
-    <datastore-index kind="Remark" ancestor="false" source="auto">
+    <datastore-index kind="Remark" ancestor="false" source="manual">
         <property name="patientId" direction="asc"/>
         <property name="createdAt" direction="desc"/>
     </datastore-index>
-
+    <datastore-index kind="Talk" ancestor="false" source="manual">
+        <property name="patientId" direction="asc"/>
+        <property name="createdAt" direction="desc"/>
+    </datastore-index>
 </datastore-indexes>

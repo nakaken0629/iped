@@ -30,6 +30,10 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.ServeServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>TalksNewServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.TalksNewServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Backend/IndexServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.IndexServlet</servlet-class>
     </servlet>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>ServeServlet</servlet-name>
         <url-pattern>/api/serve</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TalksNewServlet</servlet-name>
+        <url-pattern>/api/secure/talks/new</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Backend/IndexServlet</servlet-name>
