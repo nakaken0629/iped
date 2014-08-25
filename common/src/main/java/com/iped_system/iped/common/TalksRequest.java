@@ -7,14 +7,13 @@ import java.util.Date;
 /**
  * Created by kenji on 2014/08/25.
  */
-public class TalksNewRequest extends BaseRequest {
+public class TalksRequest extends BaseRequest {
     private Date lastUpdate;
-    private String text;
 
     @Override
     @JSONHint(ignore=true)
     public Class<? extends BaseResponse> getResponseClass() {
-        return TalksNewResponse.class;
+        return TalksResponse.class;
     }
 
     public Date getLastUpdate() {
@@ -23,14 +22,5 @@ public class TalksNewRequest extends BaseRequest {
 
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
-    }
-
-    public String getText() {
-
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

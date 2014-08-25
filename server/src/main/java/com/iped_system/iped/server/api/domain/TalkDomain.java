@@ -49,7 +49,7 @@ public final class TalkDomain {
             filter = Query.CompositeFilterOperator.and(filter, lastUpdateFilter);
         }
         Query query = new Query("Talk").setFilter(filter);
-        query.addSort("createdAt", Query.SortDirection.DESCENDING);
+        query.addSort("createdAt");
         PreparedQuery pq = service.prepare(query);
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<Talk> talks = new ArrayList<Talk>();
@@ -68,7 +68,7 @@ public final class TalkDomain {
                 talkValue.setYouText(text);
             }
             talkValue.setCreatedAt((Date) talk.getProperty("createdAt"));
-            talks.add(0, talkValue);
+            talks.add(talkValue);
         }
 
         return talks;

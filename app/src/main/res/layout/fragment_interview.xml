@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.iped_system.iped.app.ui.InterviewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Wrap Button and EditText by Layer -->
 
     <Button
         android:id="@+id/postButton"

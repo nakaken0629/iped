@@ -9,6 +9,6 @@
     </datastore-index>
     <datastore-index kind="Talk" ancestor="false" source="manual">
         <property name="patientId" direction="asc"/>
-        <property name="createdAt" direction="desc"/>
+        <property name="createdAt" direction="asc"/>
     </datastore-index>
 </datastore-indexes>

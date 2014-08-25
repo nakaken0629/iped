@@ -54,4 +54,6 @@
     <style name="iped_talk_text_me" parent="iped_talk_text">
         <item name="android:background">@drawable/bubble_me</item>
     </style>
+    <style name="iped_talk_created_at" parent="iped_talk">
+    </style>
 </resources>
