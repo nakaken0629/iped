@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/youLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/anonymous"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            style="@style/iped_interview_image" />
+
+        <TextView
+            android:id="@+id/authorNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="author name"
+            android:layout_toRightOf="@+id/profileImageView"
+            android:layout_alignTop="@id/profileImageView"
+            style="@style/iped_interview_author_name" />
+
+        <TextView
+            android:id="@+id/youTextTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:layout_below="@id/authorNameTextView"
+            android:layout_alignLeft="@id/authorNameTextView"
+            style="@style/iped_interview_text_you" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/meLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/youLayout">
+
+        <TextView
+            android:id="@+id/meTextTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            style="@style/iped_interview_text_me" />
+
+    </RelativeLayout>
+</RelativeLayout>

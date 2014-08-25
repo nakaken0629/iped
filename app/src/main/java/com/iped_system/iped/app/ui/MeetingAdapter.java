@@ -25,7 +25,7 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MeetingItem item = (MeetingItem) getItem(position);
+        MeetingItem item = getItem(position);
 
         if (convertView == null) {
             convertView = this.inflater.inflate(R.layout.item_meeting, null);

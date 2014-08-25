@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="/backend/users">ユーザー</a></li>
-                <li><a href="/backend/meetings">ミーティング</a></li>
+                <li><a href="/backend/remarks">ミーティング</a></li>
                 <li><a href="/backend/discussions">ディスカッション</a></li>
             </ul>
         </div><!--/.nav-collapse -->
