@@ -32,13 +32,16 @@ import java.util.List;
 public class MeetingFragment extends Fragment implements RemarkFragment.OnRegisterListener, CameraFragment.OnTakePictureListener {
     private static final String TAG = MeetingFragment.class.getName();
 
-    private RemarksCallbacks remarksCallbacks;
     private Date lastUpdate;
+    private RemarksCallbacks remarksCallbacks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_meeting, container, false);
+
+        /* 変数初期化 */
+        this.lastUpdate = null;
         this.remarksCallbacks = new RemarksCallbacks();
 
         /* コマンド */
@@ -62,7 +65,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         meetingListView.setAdapter(adapter);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lastUpdate", lastUpdate);
-        getLoaderManager().initLoader(0, bundle, remarksCallbacks);
+        getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
 
         return rootView;
     }
@@ -70,13 +73,13 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     private void insertRemarks(List<Remark> remarks) {
         ListView meetingListView = (ListView) getView().findViewById(R.id.meetingListView);
         MeetingAdapter adapter = (MeetingAdapter) meetingListView.getAdapter();
-        for(Remark remark : remarks) {
+        for (Remark remark : remarks) {
             MeetingItem item = new MeetingItem();
             item.setAuthorName(remark.getAuthorName());
             item.setCreatedAt(remark.getCreatedAt());
             item.setText(remark.getText());
             if (remark.getPictures() != null) {
-                for(String blobKey : remark.getPictures()) {
+                for (String blobKey : remark.getPictures()) {
                     Log.d(TAG, "blobKey: " + blobKey);
                 }
             } else {
