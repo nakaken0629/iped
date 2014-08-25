@@ -57,6 +57,10 @@
         <servlet-name>Backend/RemarksServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.RemarksServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Backend/TalksServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.TalksServlet</servlet-class>
+    </servlet>
 
     <!-- define servlet mappings -->
     <servlet-mapping>
@@ -114,6 +118,10 @@
     <servlet-mapping>
         <servlet-name>Backend/RemarksServlet</servlet-name>
         <url-pattern>/backend/remarks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Backend/TalksServlet</servlet-name>
+        <url-pattern>/backend/talks</url-pattern>
     </servlet-mapping>
 
     <!-- define filters -->

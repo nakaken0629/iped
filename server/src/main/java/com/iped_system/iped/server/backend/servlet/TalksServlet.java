@@ -6,7 +6,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.server.api.domain.UserDomain;
-import com.iped_system.iped.server.backend.model.Remark;
+import com.iped_system.iped.server.backend.model.Talk;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,29 +22,29 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by kenji on 2014/08/10.
  */
-public class RemarksServlet extends HttpServlet {
+public class TalksServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        /* prepare remarks */
+        /* prepare talks */
         UserDomain domain = UserDomain.getInstance();
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Query query = new Query("Remark");
+        Query query = new Query("Talk");
         query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
-        ArrayList<Remark> remarks = new ArrayList<Remark>();
+        ArrayList<Talk> talks = new ArrayList<Talk>();
         for (Entity user : pq.asIterable()) {
-            Remark remarkValue = new Remark();
-            remarkValue.setPatientId((String) user.getProperty("patientId"));
+            Talk talkValue = new Talk();
+            talkValue.setPatientId((String) user.getProperty("patientId"));
             String authorId = (String) user.getProperty("authorId");
             Map<String, Object> authorValue = domain.getByUserId(authorId);
-            remarkValue.setAuthorName(authorValue.get("lastName") + " " + authorValue.get("firstName"));
-            remarkValue.setCreatedAt((Date) user.getProperty("createdAt"));
-            remarkValue.setText((String) user.getProperty("text"));
-            remarks.add(remarkValue);
+            talkValue.setAuthorName(authorValue.get("lastName") + " " + authorValue.get("firstName"));
+            talkValue.setCreatedAt((Date) user.getProperty("createdAt"));
+            talkValue.setText((String) user.getProperty("text"));
+            talks.add(talkValue);
         }
-        req.setAttribute("remarks", remarks);
+        req.setAttribute("talks", talks);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/remarks.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/talks.jsp");
         dispatcher.forward(req, resp);
     }
 }

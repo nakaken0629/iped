@@ -9,9 +9,11 @@
 <body>
 <jsp:include page="/WEB-INF/backend/partial/menu.jsp"/>
 <div class="container">
-    <h1>新しいユーザの作成</h1>
-    <c:set var="method" value="new" scope="request" />
-    <jsp:include page="/WEB-INF/backend/partial/userform.jsp" />
+    <div class="page-header">
+        <h1>新しいユーザの作成</h1>
+    </div>
+    <c:set var="method" value="new" scope="request"/>
+    <jsp:include page="/WEB-INF/backend/partial/userform.jsp"/>
 </div>
 </body>
 </html>

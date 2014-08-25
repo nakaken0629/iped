@@ -1,14 +1,17 @@
-<!-- Indices written at Sun, 10 Aug 2014 20:43:16 JST -->
+<!-- Indices written at Tue, 26 Aug 2014 08:00:37 JST -->
 
-<datastore-indexes autoGenerate="false">
+<datastore-indexes autoGenerate="true">
 
-    <!-- Used 4 times in query history -->
-    <datastore-index kind="Remark" ancestor="false" source="manual">
+    <!-- Used 3 times in query history -->
+    <datastore-index kind="Remark" ancestor="false" source="auto">
         <property name="patientId" direction="asc"/>
         <property name="createdAt" direction="desc"/>
     </datastore-index>
-    <datastore-index kind="Talk" ancestor="false" source="manual">
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Talk" ancestor="false" source="auto">
         <property name="patientId" direction="asc"/>
         <property name="createdAt" direction="asc"/>
     </datastore-index>
+
 </datastore-indexes>

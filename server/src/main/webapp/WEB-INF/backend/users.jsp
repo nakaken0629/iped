@@ -9,7 +9,9 @@
 <body>
 <jsp:include page="/WEB-INF/backend/partial/menu.jsp"/>
 <div class="container">
-    <h1>ユーザ一覧</h1>
+    <div class="page-header">
+        <h1>ユーザ一覧</h1>
+    </div>
     <table class="table">
         <tr>
             <th>ユーザID</th>
@@ -37,7 +39,8 @@
                     <c:out value="${user.patientId}"/>
                 </td>
                 <td>
-                    <a class="btn btn-info" href='/backend/user/edit/<c:out value="${user.userId}"/>'>編集</a>
+                    <a class="btn btn-info"
+                       href='/backend/user/edit/<c:out value="${user.userId}"/>'>編集</a>
                 </td>
             </tr>
         </c:forEach>
