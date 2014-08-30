@@ -9,9 +9,12 @@
 <body>
 <jsp:include page="/WEB-INF/backend/partial/menu.jsp"/>
 <div class="container">
-    <h1>ユーザの編集</h1>
-    <c:set var="method" value="edit" scope="request" />
+    <div class="page-header">
+        <h1>ユーザの編集</h1>
+    </div>
+    <c:set var="method" value="edit" scope="request"/>
     <jsp:include page="/WEB-INF/backend/partial/userform.jsp"/>
 </div>
+<jsp:include page="/WEB-INF/backend/partial/footer.jsp"/>
 </body>
 </html>

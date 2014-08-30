@@ -15,5 +15,6 @@
     <c:set var="method" value="new" scope="request"/>
     <jsp:include page="/WEB-INF/backend/partial/userform.jsp"/>
 </div>
+<jsp:include page="/WEB-INF/backend/partial/footer.jsp"/>
 </body>
 </html>

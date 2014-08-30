@@ -49,5 +49,6 @@
         <li><a href="/backend/users/new">新しいユーザの作成</a></li>
     </ul>
 </div>
+<jsp:include page="/WEB-INF/backend/partial/footer.jsp"/>
 </body>
 </html>
