@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.iped_system.iped.app.ui.MeetingFragment">
 
-    <Button
-        android:id="@+id/refreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="更新する" />
-
     <LinearLayout
         android:id="@+id/commandLayout"
         android:layout_width="match_parent"
@@ -46,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="|"
             android:layout_gravity="center_vertical"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/photoLayout"
@@ -72,10 +64,16 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/meetingListView"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/meetingRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/refreshButton"
-        android:layout_above="@id/commandLayout" />
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/commandLayout">
+
+        <ListView
+            android:id="@+id/meetingListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

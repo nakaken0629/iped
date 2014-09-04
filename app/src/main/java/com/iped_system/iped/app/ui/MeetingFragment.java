@@ -9,11 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,6 +34,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
 
     private Date lastUpdate;
     private RemarksCallbacks remarksCallbacks;
+    private RefreshListener refreshListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +44,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         /* 変数初期化 */
         this.lastUpdate = null;
         this.remarksCallbacks = new RemarksCallbacks();
+        this.refreshListener = new RefreshListener();
 
         /* コマンド */
         RemarkListener remarkListener = new RemarkListener();
@@ -58,8 +60,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         photoTextView.setOnClickListener(photoListener);
 
         /* リストビュー */
-        Button refreshButton = (Button) rootView.findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new RefreshButtonListener());
+        SwipeRefreshLayout swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
+        swipe.setOnRefreshListener(refreshListener);
         ListView meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
         MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0);
         meetingListView.setAdapter(adapter);
@@ -94,15 +96,6 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         adapter.notifyDataSetChanged();
     }
 
-    class RefreshButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("lastUpdate", lastUpdate);
-            getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
-        }
-    }
-
     class RemarksCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
         @Override
         public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
@@ -120,11 +113,22 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
             RemarksResponse response = (RemarksResponse) baseResponse;
             insertRemarks(response.getRemarks());
+            SwipeRefreshLayout swipe = (SwipeRefreshLayout) getView().findViewById(R.id.meetingRefresh);
+            swipe.setRefreshing(false);
         }
 
         @Override
         public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
             /* nop */
+        }
+    }
+
+    class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onRefresh() {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("lastUpdate", lastUpdate);
+            getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
         }
     }
 
