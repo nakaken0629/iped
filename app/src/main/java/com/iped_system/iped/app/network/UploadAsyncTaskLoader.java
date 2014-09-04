@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.iped_system.iped.R;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,9 +50,7 @@ public class UploadAsyncTaskLoader extends AsyncTaskLoader<List<String>> {
 
     private String getPath() throws IOException {
         HttpClient client = new DefaultHttpClient();
-//        String url = "http://10.0.2.2:8080/api/getPostUrl";
-        String url = "http://192.168.11.103:8080/api/getPostUrl";
-//        String url = "http://ipedsystem.appspot.com/api/getPostUrl";
+        String url = getContext().getString(R.string.server_baseurl) + "/api/getPostUrl";
         HttpGet get = new HttpGet(url);
         HttpResponse response = client.execute(get);
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));

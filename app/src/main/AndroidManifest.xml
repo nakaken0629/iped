@@ -6,13 +6,13 @@
         android:name="com.iped_system.iped.app.IpedApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="iPED"
+        android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
             android:name=".app.ui.LoginActivity"
             android:label="ログイン画面"
             android:screenOrientation="portrait">
-            <intent-filter android:label="iPED">
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
@@ -52,18 +53,13 @@ public class ApiAsyncTaskLoader extends AsyncTaskLoader<BaseResponse> {
     }
 
     private String getPath() {
-        if (this.isSecure) {
-            return "secure/" + this.apiName;
-        } else {
-            return this.apiName;
-        }
+        return "/api" + (this.isSecure ? "/secure/" : "/") + this.apiName;
     }
 
     private BaseResponse doNetworkAccess() throws IOException {
         HttpClient client = new DefaultHttpClient();
-//        String url = "http://10.0.2.2:8080/api/" + getPath();
-        String url = "http://192.168.11.103:8080/api/" + getPath();
-//        String url = "http://ipedsystem.appspot.com/api/" + getPath();
+        String url = getContext().getString(R.string.server_baseurl) + getPath();
+        Log.d(TAG, "url: " + url);
         HttpPost post = new HttpPost(url);
         if (this.isSecure) {
             IpedApplication application = (IpedApplication) getContext().getApplicationContext();
