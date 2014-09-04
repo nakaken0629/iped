@@ -48,7 +48,7 @@ public class InterviewFragment extends Fragment {
 
         /* リストビュー */
         ListView interviewListView = (ListView) rootView.findViewById(R.id.interviewListView);
-        InterviewAdapter adapter = new InterviewAdapter(getActivity().getApplicationContext(), 0);
+        InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0);
         interviewListView.setAdapter(adapter);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lastUpdate", lastUpdate);

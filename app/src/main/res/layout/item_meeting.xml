@@ -50,6 +50,7 @@
         android:text="New Text"
         android:layout_below="@id/profileLayout"
         android:layout_alignParentLeft="true"
+        android:autoLink="web"
         style="@style/iped_remark_text" />
 
 </RelativeLayout>

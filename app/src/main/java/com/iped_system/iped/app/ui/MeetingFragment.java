@@ -61,7 +61,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         Button refreshButton = (Button) rootView.findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new RefreshButtonListener());
         ListView meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
-        MeetingAdapter adapter = new MeetingAdapter(getActivity().getApplicationContext(), 0);
+        MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0);
         meetingListView.setAdapter(adapter);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lastUpdate", lastUpdate);
