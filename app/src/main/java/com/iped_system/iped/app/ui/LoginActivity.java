@@ -1,11 +1,12 @@
 package com.iped_system.iped.app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.iped_system.iped.R;
 
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends FragmentActivity implements LoginFragment.OnLoginListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,5 +17,11 @@ public class LoginActivity extends FragmentActivity {
                     .add(R.id.container, new LoginFragment())
                     .commit();
         }
+    }
+
+    @Override
+    public void onLogin() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
     }
 }

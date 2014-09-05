@@ -2,12 +2,11 @@ package com.iped_system.iped.app.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,11 @@ import com.iped_system.iped.common.ResponseStatus;
 public class LoginFragment extends Fragment {
     private static final String TAG = LoginFragment.class.getName();
 
+    public interface OnLoginListener {
+        public void onLogin();
+    }
+
+    private OnLoginListener onLoginListener;
     private LoginCallbacks loginCallbacks;
 
     @Override
@@ -39,6 +43,12 @@ public class LoginFragment extends Fragment {
         Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new LoginButtonListener());
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.onLoginListener = (OnLoginListener) activity;
     }
 
     class LoginButtonListener implements View.OnClickListener {
@@ -79,12 +89,10 @@ public class LoginFragment extends Fragment {
         /* TODO: このキャストをなくせないか？ */
             LoginResponse response = (LoginResponse) baseResponse;
             if (response.getStatus() == ResponseStatus.SUCCESS) {
-            /* TODO: 本当はActivityに通知する実装が良い */
                 Activity activity = getActivity();
                 IpedApplication application = (IpedApplication) activity.getApplication();
                 application.authenticate(response);
-                Intent intent = new Intent(activity, MainActivity.class);
-                activity.startActivity(intent);
+                onLoginListener.onLogin();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 AlertDialog dialog = builder.setTitle("メッセージ")
