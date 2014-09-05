@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -23,7 +24,12 @@ import android.widget.Button;
 import com.iped_system.iped.R;
 
 import java.io.IOException;
+import java.util.List;
 
+/**
+ * This source has been created with reference to the below link.
+ * http://kurotofu.sytes.net/kanji/fool/?p=694
+ */
 public class CameraFragment extends DialogFragment {
     private static final String TAG = CameraFragment.class.getName();
 
@@ -37,7 +43,7 @@ public class CameraFragment extends DialogFragment {
         @Override
         public void surfaceCreated(SurfaceHolder surfaceHolder) {
             Camera.CameraInfo info = new Camera.CameraInfo();
-            for(int i = 0; i < Camera.getNumberOfCameras(); i++) {
+            for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
                 Camera.getCameraInfo(i, info);
                 if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     camera = Camera.open(i);
@@ -56,13 +62,53 @@ public class CameraFragment extends DialogFragment {
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-            /* TODO: 表示されるプレビューの向きとアスペクト比 */
-            /* TODO: 出来上がる写真のサイズ */
-            /* TODO: レンズが複数ある時の対応 */
             camera.stopPreview();
             Camera.Parameters parameters = camera.getParameters();
+
+            /* set orientation */
             boolean portrait = isPortrait();
-            camera.setDisplayOrientation(portrait ? 90 : 0);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
+                /* 2.1 and before */
+                parameters.set("orientation", portrait ? "portrait" : "landscape");
+            } else {
+                /* 2.2 and later */
+                camera.setDisplayOrientation(portrait ? 90 : 0);
+            }
+
+            /* Set width & height */
+            int previewWidth = (portrait ? height : width);
+            int previewHeight = (portrait ? width : height);
+
+            List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+            int tmpHeight = 0;
+            int tmpWidth = 0;
+            for (Camera.Size size : sizes) {
+                if ((size.width > previewWidth) || (size.height > previewHeight)) {
+                    continue;
+                }
+                if (tmpHeight < size.height) {
+                    tmpWidth = size.width;
+                    tmpHeight = size.height;
+                }
+            }
+            previewWidth = tmpWidth;
+            previewHeight = tmpHeight;
+
+            parameters.setPreviewSize(previewWidth, previewHeight);
+
+            /* Adjust SurfaceView size */
+            ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
+            float layoutWidth = (portrait ? previewHeight : previewWidth);
+            float layoutHeight = (portrait ? previewWidth : previewHeight);
+            float factW = width / layoutWidth;
+            float factH = height / layoutHeight;
+            /* Select smaller factor, because the surface cannot be set to the size larger than display metrics. */
+            float fact = (factH < factW ? factH : factW);
+            layoutParams.width = (int) (layoutWidth * fact);
+            layoutParams.height = (int) (layoutHeight * fact);
+            getView().setLayoutParams(layoutParams);
+
+            camera.setParameters(parameters);
             camera.startPreview();
         }
 
@@ -115,7 +161,7 @@ public class CameraFragment extends DialogFragment {
         return dialog;
     }
 
-    class ChangerListener implements  View.OnClickListener {
+    class ChangerListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
 
