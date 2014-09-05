@@ -118,9 +118,11 @@ public class CameraFragment extends DialogFragment {
             camera = null;
         }
     };
-    private int currentOrientation;
 
     public static CameraFragment newInstance(Fragment fragment) {
+        if (!(fragment instanceof OnTakePictureListener)) {
+            throw new ClassCastException();
+        }
         CameraFragment cameraFragment = new CameraFragment();
         cameraFragment.setTargetFragment(fragment, 0);
         return cameraFragment;
@@ -159,13 +161,6 @@ public class CameraFragment extends DialogFragment {
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         );
         return dialog;
-    }
-
-    class ChangerListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 
     class TakePictureListener implements View.OnClickListener {
