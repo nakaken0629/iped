@@ -11,7 +11,7 @@ public abstract class RoleType {
     
     static {
         roles = new ArrayList<String>();
-        roles.add("講師");
+        roles.add("教員");
         roles.add("生徒");
         roles.add("患者");
     }
