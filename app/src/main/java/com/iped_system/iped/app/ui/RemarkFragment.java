@@ -41,11 +41,11 @@ public class RemarkFragment extends DialogFragment {
     private byte[] pictureData;
 
     public interface OnRegisterListener {
-        public void onRegister(RemarksNewResponse response);
+        public void onRegister();
     }
 
-    private RemarksNewCallbacks remarksNewCallbacks;
     private PictureUploadCallbacks pictureUploadCallbacks;
+    private RemarksNewCallbacks remarksNewCallbacks;
 
     public static RemarkFragment newInstance(Fragment fragment) {
         RemarkFragment remarkFragment = new RemarkFragment();
@@ -183,7 +183,7 @@ public class RemarkFragment extends DialogFragment {
                 public void run() {
                     Fragment fragment = getTargetFragment();
                     if (fragment instanceof OnRegisterListener) {
-                        ((OnRegisterListener) fragment).onRegister(response);
+                        ((OnRegisterListener) fragment).onRegister();
                     }
                     RemarkFragment.this.dismiss();
                 }

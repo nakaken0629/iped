@@ -21,7 +21,6 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.Remark;
-import com.iped_system.iped.common.RemarksNewResponse;
 import com.iped_system.iped.common.RemarksRequest;
 import com.iped_system.iped.common.RemarksResponse;
 
@@ -69,6 +68,12 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
 
         return rootView;
+    }
+
+    private void reloadRemarks() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("lastUpdate", lastUpdate);
+        getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
     }
 
     private void insertRemarks(List<Remark> remarks) {
@@ -125,9 +130,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public void onRefresh() {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("lastUpdate", lastUpdate);
-            getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
+            MeetingFragment.this.reloadRemarks();
         }
     }
 
@@ -142,8 +145,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     }
 
     @Override
-    public void onRegister(RemarksNewResponse response) {
-        insertRemarks(response.getRemarks());
+    public void onRegister() {
+        reloadRemarks();
     }
 
     class PhotoListener implements View.OnClickListener {

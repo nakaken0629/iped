@@ -114,6 +114,7 @@ public class CameraFragment extends DialogFragment {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+            camera.stopPreview();
             camera.release();
             camera = null;
         }
@@ -178,6 +179,7 @@ public class CameraFragment extends DialogFragment {
                 return;
             }
             camera.takePicture(shutterCallback, null, jpegPictureCallback);
+            CameraFragment.this.dismiss();
         }
     }
 
@@ -200,7 +202,6 @@ public class CameraFragment extends DialogFragment {
         public void onPictureTaken(byte[] bytes, Camera camera) {
             final byte[] bitmapBytes = bytes;
 
-            /* TODO: CameraFragmentを閉じるタイミングとRemarkFragmentを閉じるタイミングに問題が無いか？ */
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
@@ -210,7 +211,6 @@ public class CameraFragment extends DialogFragment {
                     }
                 }
             });
-            CameraFragment.this.dismiss();
         }
     }
 }

@@ -5,10 +5,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.Remark;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
-import com.iped_system.iped.server.api.domain.RemarkDomain;
 
 import java.util.Date;
 import java.util.Map;
@@ -42,10 +40,6 @@ public class RemarksNewServlet extends BaseServlet {
         service.put(remark);
 
         RemarksNewResponse response = new RemarksNewResponse();
-        RemarkDomain remarkDomain = RemarkDomain.getInstance();
-        for(Remark remarkValue : remarkDomain.search(patientId, lastUpdate)) {
-            response.getRemarks().add(remarkValue);
-        }
         return response;
     }
 }
