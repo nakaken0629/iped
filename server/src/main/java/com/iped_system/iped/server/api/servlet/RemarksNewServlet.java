@@ -27,7 +27,6 @@ public class RemarksNewServlet extends BaseServlet {
         Map<String, Object> userValue = getCurrentUserValue();
         String userId = (String) userValue.get("userId");
         String patientId = (String) userValue.get("patientId");
-        Date lastUpdate = request.getLastUpdate();
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();

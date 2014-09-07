@@ -30,14 +30,12 @@ import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
     /* TODO: ライフサイクルによってなくなってしまわないか？ */
-    private Date lastUpdate;
     private byte[] pictureData;
 
     public interface OnRegisterListener {
@@ -61,7 +59,6 @@ public class RemarkFragment extends DialogFragment {
         this.pictureUploadCallbacks = new PictureUploadCallbacks();
 
         Bundle args = getArguments();
-        this.lastUpdate = (Date) args.getSerializable("lastUpdate");
         if (args.containsKey("pictureData")) {
             this.pictureData = args.getByteArray("pictureData");
             /* check size */
@@ -166,7 +163,6 @@ public class RemarkFragment extends DialogFragment {
         public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
             Context context = getActivity().getApplicationContext();
             RemarksNewRequest request = new RemarksNewRequest();
-            request.setLastUpdate(lastUpdate);
             request.setAuthorName(bundle.getString("authorName"));
             request.setText(bundle.getString("text"));
             request.setPictures(bundle.getStringArrayList("pictures"));
