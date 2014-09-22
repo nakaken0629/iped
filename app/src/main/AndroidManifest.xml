@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.iped_system.iped">
+    package="com.iped_system.iped" >
 
     <application
-        android:name="com.iped_system.iped.app.IpedApplication"
+        android:name=".app.IpedApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".app.ui.LoginActivity"
             android:label="ログイン画面"
-            android:screenOrientation="portrait">
-            <intent-filter android:label="@string/app_name">
+            android:screenOrientation="portrait" >
+            <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,14 +21,17 @@
         <activity
             android:name=".app.ui.MainActivity"
             android:label="メイン画面"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
     </application>
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="15" />
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="15" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
 </manifest>

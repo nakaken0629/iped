@@ -95,6 +95,7 @@ public class CameraFragment extends DialogFragment {
             previewHeight = tmpHeight;
 
             parameters.setPreviewSize(previewWidth, previewHeight);
+            parameters.setRotation(90);
 
             /* Adjust SurfaceView size */
             ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
@@ -201,6 +202,7 @@ public class CameraFragment extends DialogFragment {
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
             final byte[] bitmapBytes = bytes;
+
 
             new Handler().post(new Runnable() {
                 @Override

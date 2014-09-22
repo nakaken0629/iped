@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,21 +28,90 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
+    private static final int LOADER_PICTURE = 0;
+    private static final int LOADER_REMARK = 1;
+
     /* TODO: ライフサイクルによってなくなってしまわないか？ */
-    private byte[] pictureData;
+    private ArrayList<Picture> pictures = new ArrayList<Picture>();
 
     public interface OnRegisterListener {
         public void onRegister();
     }
 
     private PictureUploadCallbacks pictureUploadCallbacks;
-    private RemarksNewCallbacks remarksNewCallbacks;
+    private RemarkNewCallbacks remarkNewCallbacks;
+
+    class Picture implements Serializable {
+        private byte[] original;
+        private Bitmap displayBitmap;
+        private Bitmap thumbnailBitmap;
+
+        Picture(byte[] original) {
+            this.original = original;
+            this.displayBitmap = convertToDisplay(original);
+            this.thumbnailBitmap = convertToThumbnail(original);
+        }
+
+        Bitmap getDisplayBitmap() {
+            return this.displayBitmap;
+        }
+
+        Bitmap getThumbnailBitmap() {
+            return this.thumbnailBitmap;
+        }
+
+        private Bitmap convertToDisplay(byte[] original) {
+            return convertTo(original, 800);
+        }
+
+        private Bitmap convertToThumbnail(byte[] original) {
+            return convertTo(original, 200);
+        }
+
+        private Bitmap convertTo(byte[] original, int size) {
+            /* check size */
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeByteArray(original, 0, original.length, options);
+            int width = options.outWidth;
+            int height = options.outHeight;
+            int max = Math.max(width, height);
+            if (size < max) {
+                options.inSampleSize = max / size + 1;
+            }
+
+            /* create bitmap */
+            options.inJustDecodeBounds = false;
+            Bitmap workBitmap = BitmapFactory.decodeByteArray(original, 0, original.length, options);
+            return Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), null, false);
+        }
+
+        byte[] getDisplay() {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try {
+                this.displayBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                baos.flush();
+            } catch (IOException e) {
+                /* nop */
+            } finally {
+                try {
+                    baos.close();
+                } catch (IOException e) {
+                    /* nop */
+                }
+            }
+            return baos.toByteArray();
+        }
+    }
 
     public static RemarkFragment newInstance(Fragment fragment) {
         RemarkFragment remarkFragment = new RemarkFragment();
@@ -55,34 +123,19 @@ public class RemarkFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
-        this.remarksNewCallbacks = new RemarksNewCallbacks();
+        this.remarkNewCallbacks = new RemarkNewCallbacks();
+        getLoaderManager().initLoader(LOADER_REMARK, null, this.remarkNewCallbacks);
         this.pictureUploadCallbacks = new PictureUploadCallbacks();
+        getLoaderManager().initLoader(LOADER_PICTURE, null, this.pictureUploadCallbacks);
 
         Bundle args = getArguments();
-        if (args.containsKey("pictureData")) {
-            this.pictureData = args.getByteArray("pictureData");
-            /* check size */
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeByteArray(this.pictureData, 0, this.pictureData.length, options);
-            int width = options.outWidth;
-            int height = options.outHeight;
-            int max = Math.max(width, height);
-            if (800 < max) {
-                int scale = max / 800 + 1;
-                options.inSampleSize = scale;
-            }
-
-            /* create bitmap */
-            options.inJustDecodeBounds = false;
-            Bitmap workBitmap = BitmapFactory.decodeByteArray(this.pictureData, 0, this.pictureData.length, options);
-            Matrix matrix = new Matrix();
-            matrix.setRotate(270);
-            Bitmap picture = Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
+        if (args.containsKey("pictures")) {
+            Picture picture = new Picture(args.getByteArray("pictures"));
             ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
             ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
-            thumbnailImageView.setImageBitmap(picture);
+            thumbnailImageView.setImageBitmap(picture.thumbnailBitmap);
             thumbnailLayout.addView(thumbnailImageView);
+            this.pictures.add(picture);
         }
 
         Button remarkButton = (Button) rootView.findViewById(R.id.remarkButton);
@@ -100,10 +153,6 @@ public class RemarkFragment extends DialogFragment {
         return dialog;
     }
 
-    private byte[] getPictureData() {
-        return RemarkFragment.this.pictureData;
-    }
-
     class RemarkButtonListener implements View.OnClickListener {
         private String getEditTextValue(int id) {
             return ((EditText) getView().findViewById(id)).getText().toString().trim();
@@ -112,7 +161,6 @@ public class RemarkFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             String text = getEditTextValue(R.id.remarkEditText);
-            Log.d(TAG, "text: " + text);
             if (text == null || text.length() == 0) {
                 return;
             }
@@ -120,25 +168,26 @@ public class RemarkFragment extends DialogFragment {
             RemarkFragment self = RemarkFragment.this;
             Bundle bundle = new Bundle();
             bundle.putString("text", text);
-            byte[] pictureData = self.getPictureData();
-            if (pictureData == null) {
-                self.getLoaderManager().restartLoader(0, bundle, self.remarksNewCallbacks);
+            if (self.pictures.size() == 0) {
+                self.getLoaderManager().restartLoader(LOADER_REMARK, bundle, self.remarkNewCallbacks);
             } else {
+                bundle.putInt("pictureCount", self.pictures.size());
                 bundle.putString("picturePath", UUID.randomUUID().toString());
-                bundle.putByteArray("pictureData", pictureData);
-                self.getLoaderManager().restartLoader(0, bundle, self.pictureUploadCallbacks);
+                bundle.putByteArray("picture", pictures.get(0).getDisplay());
+                self.getLoaderManager().restartLoader(LOADER_PICTURE, bundle, self.pictureUploadCallbacks);
             }
         }
     }
 
     class PictureUploadCallbacks implements LoaderManager.LoaderCallbacks<List<String>> {
         private Bundle bundle;
+
         @Override
         public Loader<List<String>> onCreateLoader(int i, Bundle bundle) {
             this.bundle = bundle;
             Context context = getActivity().getApplicationContext();
             String picturePath = bundle.getString("picturePath");
-            byte[] pictureData = bundle.getByteArray("pictureData");
+            byte[] pictureData = bundle.getByteArray("pictures");
             Log.d(TAG, "picturePath: " + picturePath);
             UploadAsyncTaskLoader loader = new UploadAsyncTaskLoader(context, picturePath, pictureData);
             loader.forceLoad();
@@ -148,7 +197,7 @@ public class RemarkFragment extends DialogFragment {
         @Override
         public void onLoadFinished(Loader<List<String>> listLoader, List<String> strings) {
             bundle.putStringArrayList("pictures", new ArrayList<String>(strings));
-            getLoaderManager().restartLoader(0, bundle, remarksNewCallbacks);
+            getLoaderManager().restartLoader(0, bundle, remarkNewCallbacks);
         }
 
         @Override
@@ -157,7 +206,7 @@ public class RemarkFragment extends DialogFragment {
         }
     }
 
-    class RemarksNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
+    class RemarkNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
 
         @Override
         public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {

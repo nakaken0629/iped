@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +13,7 @@ import android.widget.EditText;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
-import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
-import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.app.network.ApiAsyncTask;
 import com.iped_system.iped.common.LoginRequest;
 import com.iped_system.iped.common.LoginResponse;
 import com.iped_system.iped.common.ResponseStatus;
@@ -32,13 +29,11 @@ public class LoginFragment extends Fragment {
     }
 
     private OnLoginListener onLoginListener;
-    private LoginCallbacks loginCallbacks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        this.loginCallbacks = new LoginCallbacks();
 
         Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new LoginButtonListener());
@@ -60,38 +55,40 @@ public class LoginFragment extends Fragment {
         public void onClick(View view) {
             String userId = getEditTextValue(R.id.userIdEditText);
             String password = getEditTextValue(R.id.passwordEditText);
+            LoginRequest request = new LoginRequest();
+            request.setUserId(userId);
+            request.setPassword(password);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("userId", userId);
-            bundle.putString("password", password);
-            LoginFragment self = LoginFragment.this;
-            LoaderManager manager = self.getLoaderManager();
-            self.getLoaderManager().restartLoader(0, bundle, self.loginCallbacks);
+            LoginAsyncTask task = new LoginAsyncTask(LoginFragment.this.getActivity());
+            task.execute(request);
         }
     }
 
-    class LoginCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
-
-        @Override
-        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-            Context context = getActivity().getApplicationContext();
-            LoginRequest request = new LoginRequest();
-            request.setUserId(bundle.getString("userId"));
-            request.setPassword(bundle.getString("password"));
-
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "login", false);
-            loader.forceLoad();
-            return loader;
+    class LoginAsyncTask extends ApiAsyncTask<LoginRequest, LoginResponse> {
+        LoginAsyncTask(Context context) {
+            super(context);
         }
 
         @Override
-        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-        /* TODO: このキャストをなくせないか？ */
-            LoginResponse response = (LoginResponse) baseResponse;
-            if (response.getStatus() == ResponseStatus.SUCCESS) {
-                Activity activity = getActivity();
+        protected boolean isSecure() {
+            return false;
+        }
+
+        @Override
+        protected String getApiName() {
+            return "login";
+        }
+
+        @Override
+        protected void onPostExecute(LoginResponse loginResponse) {
+            Activity activity = getActivity();
+            if (activity == null) {
+                return;
+            }
+
+            if (loginResponse.getStatus() == ResponseStatus.SUCCESS) {
                 IpedApplication application = (IpedApplication) activity.getApplication();
-                application.authenticate(response);
+                application.authenticate(loginResponse);
                 onLoginListener.onLogin();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -101,11 +98,6 @@ public class LoginFragment extends Fragment {
                         .create();
                 dialog.show();
             }
-        }
-
-        @Override
-        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            /* nop */
         }
     }
 }
