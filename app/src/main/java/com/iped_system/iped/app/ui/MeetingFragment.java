@@ -6,8 +6,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
-import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.app.network.ApiAsyncTask;
 import com.iped_system.iped.common.Remark;
 import com.iped_system.iped.common.RemarksRequest;
 import com.iped_system.iped.common.RemarksResponse;
@@ -31,8 +28,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     private static final String TAG = MeetingFragment.class.getName();
 
     private Date lastUpdate;
-    private RemarksCallbacks remarksCallbacks;
-    private RefreshListener refreshListener;
+    private SwipeRefreshLayout swipe;
+    private ListView meetingListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,8 +38,6 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
 
         /* 変数初期化 */
         this.lastUpdate = null;
-        this.remarksCallbacks = new RemarksCallbacks();
-        this.refreshListener = new RefreshListener();
 
         /* コマンド */
         RemarkListener remarkListener = new RemarkListener();
@@ -58,22 +53,53 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         photoTextView.setOnClickListener(photoListener);
 
         /* リストビュー */
-        SwipeRefreshLayout swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
-        swipe.setOnRefreshListener(refreshListener);
-        ListView meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
+        swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
+        swipe.setOnRefreshListener(new RefreshListener());
+        this.meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
         MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0);
-        meetingListView.setAdapter(adapter);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("lastUpdate", lastUpdate);
-        getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
+        this.meetingListView.setAdapter(adapter);
+
+        reloadRemarks();
 
         return rootView;
     }
 
     private void reloadRemarks() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("lastUpdate", lastUpdate);
-        getLoaderManager().restartLoader(0, bundle, remarksCallbacks);
+        ReloadRemarksAsyncTask task = new ReloadRemarksAsyncTask(getActivity());
+        RemarksRequest request = new RemarksRequest();
+        request.setLastUpdate(this.lastUpdate);
+        task.execute(request);
+    }
+
+    class ReloadRemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
+        ReloadRemarksAsyncTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected boolean isSecure() {
+            return true;
+        }
+
+        @Override
+        protected String getApiName() {
+            return "remarks";
+        }
+
+        @Override
+        protected void onPostExecute(RemarksResponse remarksResponse) {
+            MeetingAdapter adapter = (MeetingAdapter) MeetingFragment.this.meetingListView.getAdapter();
+            for(Remark remark : remarksResponse.getRemarks()) {
+                MeetingItem item = new MeetingItem();
+                item.setAuthorName(remark.getAuthorName());
+                item.setCreatedAt(remark.getCreatedAt());
+                item.setText(remark.getText());
+                adapter.insert(item, 0);
+                MeetingFragment.this.lastUpdate = remark.getCreatedAt();
+            }
+            adapter.notifyDataSetChanged();
+            MeetingFragment.this.swipe.setRefreshing(false);
+        }
     }
 
     private void insertRemarks(List<Remark> remarks) {
@@ -98,33 +124,6 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
             }
         }
         adapter.notifyDataSetChanged();
-    }
-
-    class RemarksCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
-        @Override
-        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-            Context context = getActivity().getApplicationContext();
-            RemarksRequest request = new RemarksRequest();
-            Date lastUpdate = (Date) bundle.getSerializable("lastUpdate");
-            request.setLastUpdate(lastUpdate);
-
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks", true);
-            loader.forceLoad();
-            return loader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-            RemarksResponse response = (RemarksResponse) baseResponse;
-            insertRemarks(response.getRemarks());
-            SwipeRefreshLayout swipe = (SwipeRefreshLayout) getView().findViewById(R.id.meetingRefresh);
-            swipe.setRefreshing(false);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            /* nop */
-        }
     }
 
     class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {

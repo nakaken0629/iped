@@ -1,10 +1,7 @@
 package com.iped_system.iped.app.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +11,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
-import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.app.network.ApiAsyncTask;
 import com.iped_system.iped.common.Talk;
 import com.iped_system.iped.common.TalksNewRequest;
 import com.iped_system.iped.common.TalksNewResponse;
-import com.iped_system.iped.common.TalksRequest;
-import com.iped_system.iped.common.TalksResponse;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +23,6 @@ public class InterviewFragment extends Fragment {
     private static final String TAG = InterviewFragment.class.getName();
 
     private Date lastUpdate;
-    private TalksCallbacks talksCallbacks;
-    private TalksNewCallbacks talksNewCallbacks;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +31,6 @@ public class InterviewFragment extends Fragment {
 
         /* 変数初期化 */
         this.lastUpdate = null;
-        this.talksCallbacks = new TalksCallbacks();
-        this.talksNewCallbacks = new TalksNewCallbacks();
 
         /* コマンド */
         Button postButton = (Button) rootView.findViewById(R.id.postButton);
@@ -50,9 +40,6 @@ public class InterviewFragment extends Fragment {
         ListView interviewListView = (ListView) rootView.findViewById(R.id.interviewListView);
         InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0);
         interviewListView.setAdapter(adapter);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("lastUpdate", lastUpdate);
-        getLoaderManager().restartLoader(0, bundle, talksCallbacks);
         return rootView;
     }
 
@@ -87,58 +74,26 @@ public class InterviewFragment extends Fragment {
 
             postEditText.setText("");
             InterviewFragment self = InterviewFragment.this;
-            Bundle bundle = new Bundle();
-            bundle.putString("text", text);
-            self.getLoaderManager().restartLoader(0, bundle, self.talksNewCallbacks);
-        }
-    }
+            ApiAsyncTask<TalksNewRequest, TalksNewResponse> task = new ApiAsyncTask<TalksNewRequest, TalksNewResponse>(InterviewFragment.this.getActivity()) {
+                @Override
+                protected boolean isSecure() {
+                    return true;
+                }
 
-    class TalksCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
+                @Override
+                protected String getApiName() {
+                    return "talks/new";
+                }
 
-        @Override
-        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-            Context context = getActivity().getApplicationContext();
-            TalksRequest request = new TalksRequest();
-            request.setLastUpdate(lastUpdate);
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "talks", true);
-            loader.forceLoad();
-            return loader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-            TalksResponse response = (TalksResponse) baseResponse;
-            insertTalks(response.getTalks());
-        }
-
-        @Override
-        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            /* nop */
-        }
-    }
-
-    class TalksNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
-
-        @Override
-        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-            Context context = getActivity().getApplicationContext();
+                @Override
+                protected void onPostExecute(TalksNewResponse talksNewResponse) {
+                    insertTalks(talksNewResponse.getTalks());
+                }
+            };
             TalksNewRequest request = new TalksNewRequest();
+            request.setText(text);
             request.setLastUpdate(lastUpdate);
-            request.setText(bundle.getString("text"));
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "talks/new", true);
-            loader.forceLoad();
-            return loader;
-        }
-
-        @Override
-        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-            TalksNewResponse response = (TalksNewResponse) baseResponse;
-            insertTalks(response.getTalks());
-        }
-
-        @Override
-        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            /* nop */
+            task.execute(request);
         }
     }
 }

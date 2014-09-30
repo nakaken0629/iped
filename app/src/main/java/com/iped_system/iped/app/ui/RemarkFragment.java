@@ -1,17 +1,14 @@
 package com.iped_system.iped.app.ui;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.network.ApiAsyncTaskLoader;
-import com.iped_system.iped.app.network.UploadAsyncTaskLoader;
-import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.app.network.ApiAsyncTask;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
@@ -32,8 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
@@ -46,9 +40,6 @@ public class RemarkFragment extends DialogFragment {
     public interface OnRegisterListener {
         public void onRegister();
     }
-
-    private PictureUploadCallbacks pictureUploadCallbacks;
-    private RemarkNewCallbacks remarkNewCallbacks;
 
     class Picture implements Serializable {
         private byte[] original;
@@ -123,10 +114,6 @@ public class RemarkFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
-        this.remarkNewCallbacks = new RemarkNewCallbacks();
-        getLoaderManager().initLoader(LOADER_REMARK, null, this.remarkNewCallbacks);
-        this.pictureUploadCallbacks = new PictureUploadCallbacks();
-        getLoaderManager().initLoader(LOADER_PICTURE, null, this.pictureUploadCallbacks);
 
         Bundle args = getArguments();
         if (args.containsKey("pictures")) {
@@ -166,78 +153,42 @@ public class RemarkFragment extends DialogFragment {
             }
 
             RemarkFragment self = RemarkFragment.this;
-            Bundle bundle = new Bundle();
-            bundle.putString("text", text);
             if (self.pictures.size() == 0) {
-                self.getLoaderManager().restartLoader(LOADER_REMARK, bundle, self.remarkNewCallbacks);
-            } else {
-                bundle.putInt("pictureCount", self.pictures.size());
-                bundle.putString("picturePath", UUID.randomUUID().toString());
-                bundle.putByteArray("picture", pictures.get(0).getDisplay());
-                self.getLoaderManager().restartLoader(LOADER_PICTURE, bundle, self.pictureUploadCallbacks);
+                IpedApplication application = (IpedApplication) getActivity().getApplication();
+                RemarksNewRequest request = new RemarksNewRequest();
+                request.setAuthorName(application.getLastName() + " " + application.getFirstName());
+                request.setText(text);
+                RemarksNewTask task = new RemarksNewTask(getActivity());
+                task.execute(request);
+//            } else {
+//                bundle.putInt("pictureCount", self.pictures.size());
+//                bundle.putString("picturePath", UUID.randomUUID().toString());
+//                bundle.putByteArray("picture", pictures.get(0).getDisplay());
+//                self.getLoaderManager().restartLoader(LOADER_PICTURE, bundle, self.pictureUploadCallbacks);
             }
         }
     }
 
-    class PictureUploadCallbacks implements LoaderManager.LoaderCallbacks<List<String>> {
-        private Bundle bundle;
-
-        @Override
-        public Loader<List<String>> onCreateLoader(int i, Bundle bundle) {
-            this.bundle = bundle;
-            Context context = getActivity().getApplicationContext();
-            String picturePath = bundle.getString("picturePath");
-            byte[] pictureData = bundle.getByteArray("pictures");
-            Log.d(TAG, "picturePath: " + picturePath);
-            UploadAsyncTaskLoader loader = new UploadAsyncTaskLoader(context, picturePath, pictureData);
-            loader.forceLoad();
-            return loader;
+    class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
+        RemarksNewTask(Context context) {
+            super(context);
         }
 
         @Override
-        public void onLoadFinished(Loader<List<String>> listLoader, List<String> strings) {
-            bundle.putStringArrayList("pictures", new ArrayList<String>(strings));
-            getLoaderManager().restartLoader(0, bundle, remarkNewCallbacks);
+        protected boolean isSecure() {
+            return true;
         }
 
         @Override
-        public void onLoaderReset(Loader<List<String>> listLoader) {
-            /* nop */
-        }
-    }
-
-    class RemarkNewCallbacks implements LoaderManager.LoaderCallbacks<BaseResponse> {
-
-        @Override
-        public Loader<BaseResponse> onCreateLoader(int i, Bundle bundle) {
-            Context context = getActivity().getApplicationContext();
-            RemarksNewRequest request = new RemarksNewRequest();
-            request.setAuthorName(bundle.getString("authorName"));
-            request.setText(bundle.getString("text"));
-            request.setPictures(bundle.getStringArrayList("pictures"));
-            ApiAsyncTaskLoader loader = new ApiAsyncTaskLoader(context, request, "remarks/new", true);
-            loader.forceLoad();
-            return loader;
+        protected String getApiName() {
+            return "remarks/new";
         }
 
         @Override
-        public void onLoadFinished(Loader<BaseResponse> baseResponseLoader, BaseResponse baseResponse) {
-            final RemarksNewResponse response = (RemarksNewResponse) baseResponse;
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    Fragment fragment = getTargetFragment();
-                    if (fragment instanceof OnRegisterListener) {
-                        ((OnRegisterListener) fragment).onRegister();
-                    }
-                    RemarkFragment.this.dismiss();
-                }
-            });
-        }
-
-        @Override
-        public void onLoaderReset(Loader<BaseResponse> baseResponseLoader) {
-            /* nop */
+        protected void onPostExecute(RemarksNewResponse remarksNewResponse) {
+            OnRegisterListener listener = (OnRegisterListener) getTargetFragment();
+            listener.onRegister();
+            RemarkFragment.this.dismiss();
         }
     }
 }
