@@ -95,7 +95,9 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
                 item.setCreatedAt(remark.getCreatedAt());
                 item.setText(remark.getText());
                 adapter.insert(item, 0);
-                MeetingFragment.this.lastUpdate = remark.getCreatedAt();
+                if (lastUpdate == null || lastUpdate.before(remark.getCreatedAt())) {
+                    lastUpdate = remark.getCreatedAt();
+                }
             }
             adapter.notifyDataSetChanged();
             MeetingFragment.this.swipe.setRefreshing(false);
