@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.iped_system.iped" >
+    package="com.iped_system.iped"
+    android:versionCode="1"
+    android:versionName="0.1.0">
 
     <application
         android:name=".app.IpedApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".app.ui.LoginActivity"
+            android:name=".app.login.LoginActivity"
             android:label="ログイン画面"
-            android:screenOrientation="portrait" >
-            <intent-filter android:label="@string/app_name" >
+            android:screenOrientation="portrait">
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

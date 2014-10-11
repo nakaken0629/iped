@@ -2,8 +2,6 @@ package com.iped_system.iped.app;
 
 import android.app.Application;
 
-import com.iped_system.iped.common.LoginResponse;
-
 /**
  * Created by kenji on 2014/08/08.
  */
@@ -15,13 +13,13 @@ public class IpedApplication extends Application {
     private String role;
     private String patientId;
 
-    public void authenticate(LoginResponse response) {
-        this.tokenId = response.getTokenId();
-        this.userId = response.getUserId();
-        this.lastName = response.getLastName();
-        this.firstName = response.getFirstName();
-        this.role = response.getRole();
-        this.patientId = response.getPatientId();
+    public void authenticate(long tokenId, String userId, String lastName, String firstName, String role, String patientId) {
+        this.tokenId = tokenId;
+        this.userId = userId;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.role = role;
+        this.patientId = patientId;
     }
 
     public long getTokenId() {

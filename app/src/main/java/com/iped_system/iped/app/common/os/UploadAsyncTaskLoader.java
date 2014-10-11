@@ -1,4 +1,4 @@
-package com.iped_system.iped.app.network;
+package com.iped_system.iped.app.common.os;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

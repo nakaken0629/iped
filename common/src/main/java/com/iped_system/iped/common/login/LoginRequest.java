@@ -1,4 +1,7 @@
-package com.iped_system.iped.common;
+package com.iped_system.iped.common.login;
+
+import com.iped_system.iped.common.BaseRequest;
+import com.iped_system.iped.common.BaseResponse;
 
 import net.arnx.jsonic.JSONHint;
 

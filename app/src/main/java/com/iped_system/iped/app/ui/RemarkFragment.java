@@ -2,7 +2,6 @@ package com.iped_system.iped.app.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ import android.widget.ImageView;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
-import com.iped_system.iped.app.network.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.common.RemarksNewRequest;
 import com.iped_system.iped.common.RemarksNewResponse;
 
@@ -170,8 +169,8 @@ public class RemarkFragment extends DialogFragment {
     }
 
     class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
-        RemarksNewTask(Context context) {
-            super(context);
+        RemarksNewTask(Activity activity) {
+            super(activity);
         }
 
         @Override
@@ -185,7 +184,7 @@ public class RemarkFragment extends DialogFragment {
         }
 
         @Override
-        protected void onPostExecute(RemarksNewResponse remarksNewResponse) {
+        protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
             OnRegisterListener listener = (OnRegisterListener) getTargetFragment();
             listener.onRegister();
             RemarkFragment.this.dismiss();

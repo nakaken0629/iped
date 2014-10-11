@@ -1,6 +1,6 @@
 package com.iped_system.iped.app.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.network.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.common.Talk;
 import com.iped_system.iped.common.TalksNewRequest;
 import com.iped_system.iped.common.TalksNewResponse;
@@ -90,7 +90,7 @@ public class InterviewFragment extends Fragment {
     }
 
     class ReloadTalksAsyncTask extends ApiAsyncTask<TalksRequest, TalksResponse> {
-        ReloadTalksAsyncTask(Context context) {
+        ReloadTalksAsyncTask(Activity context) {
             super(context);
         }
 
@@ -105,7 +105,7 @@ public class InterviewFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(TalksResponse talksResponse) {
+        protected void onPostExecuteOnSuccess(TalksResponse talksResponse) {
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
             for(Talk talk : talksResponse.getTalks()) {
                 TalkItem item = new TalkItem();
@@ -166,7 +166,7 @@ public class InterviewFragment extends Fragment {
                 }
 
                 @Override
-                protected void onPostExecute(TalksNewResponse talksNewResponse) {
+                protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
                     insertTalks(talksNewResponse.getTalks());
                 }
             };

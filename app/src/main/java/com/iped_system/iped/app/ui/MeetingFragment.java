@@ -1,6 +1,6 @@
 package com.iped_system.iped.app.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.network.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.common.Remark;
 import com.iped_system.iped.common.RemarksRequest;
 import com.iped_system.iped.common.RemarksResponse;
@@ -72,8 +72,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     }
 
     class ReloadRemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
-        ReloadRemarksAsyncTask(Context context) {
-            super(context);
+        ReloadRemarksAsyncTask(Activity activity) {
+            super(activity);
         }
 
         @Override
@@ -87,7 +87,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         }
 
         @Override
-        protected void onPostExecute(RemarksResponse remarksResponse) {
+        protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
             MeetingAdapter adapter = (MeetingAdapter) MeetingFragment.this.meetingListView.getAdapter();
             for(Remark remark : remarksResponse.getRemarks()) {
                 MeetingItem item = new MeetingItem();

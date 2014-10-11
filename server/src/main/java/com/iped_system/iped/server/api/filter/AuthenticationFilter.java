@@ -32,7 +32,7 @@ public class AuthenticationFilter implements Filter {
         /* nop */
     }
 
-    private void sendUnAuthorized(ServletResponse response, String reason) throws IOException {
+    private void sendUnauthorized(ServletResponse response, String reason) throws IOException {
         logger.warning("unauthorized request: " + reason);
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
         response.flushBuffer();
@@ -46,12 +46,12 @@ public class AuthenticationFilter implements Filter {
         try {
             tokenId = Long.valueOf(httpServletRequest.getHeader("X-IPED-TOKEN-ID"));
         } catch (NumberFormatException e) {
-            sendUnAuthorized(response, "invalid token id");
+            sendUnauthorized(response, "invalid token id");
             return;
         }
         String userId = httpServletRequest.getHeader("X-IPED-USER-ID");
         if (userId == null || userId.length() == 0) {
-            sendUnAuthorized(response, "userId is not exist");
+            sendUnauthorized(response, "userId is not exist");
         }
 
         /* check token */
@@ -61,17 +61,17 @@ public class AuthenticationFilter implements Filter {
         try {
             token = service.get(tokenKey);
         } catch (EntityNotFoundException e) {
-            sendUnAuthorized(response, "no token");
+            sendUnauthorized(response, "no token");
             return;
         }
         if(!userId.equals(token.getProperty("userId"))) {
-            sendUnAuthorized(response, "different userId");
+            sendUnauthorized(response, "different userId");
             return;
         }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, -30);
         if(calendar.before(token.getProperty("refreshDate"))) {
-            sendUnAuthorized(response, "expired token");
+            sendUnauthorized(response, "expired token");
             return;
         }
 

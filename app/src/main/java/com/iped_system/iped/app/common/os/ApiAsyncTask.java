@@ -1,6 +1,6 @@
-package com.iped_system.iped.app.network;
+package com.iped_system.iped.app.common.os;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,6 +8,7 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.ResponseStatus;
 
 import net.arnx.jsonic.JSON;
 
@@ -23,6 +24,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -31,15 +33,26 @@ import java.util.ArrayList;
 public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseResponse> extends AsyncTask<T1, Void, T2> {
     private static final String TAG = ApiAsyncTask.class.getName();
 
-    private Context context;
+    private WeakReference<Activity> activityRef;
+    private String userId;
+    private long tokenId;
+    private String baseUrl;
 
-    public ApiAsyncTask(Context context) {
-        this.context = context;
+    public ApiAsyncTask(Activity activity) {
+        IpedApplication application = (IpedApplication) activity.getApplication();
+        this.userId = application.getUserId();
+        this.tokenId = application.getTokenId();
+        this.baseUrl = activity.getString(R.string.server_baseurl);
+        this.activityRef = new WeakReference<Activity>(activity);
     }
 
     protected abstract boolean isSecure();
 
     protected abstract String getApiName();
+
+    protected Activity getActivity() {
+        return this.activityRef.get();
+    }
 
     private String getPath() {
         return "/api" + (this.isSecure() ? "/secure/" : "/") + this.getApiName();
@@ -58,13 +71,12 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     private T2 doInBackgroundInner(T1... requests) throws IOException {
         T1 request = requests[0];
         HttpClient client = new DefaultHttpClient();
-        String url = this.context.getString(R.string.server_baseurl) + getPath();
+        String url = this.baseUrl + getPath();
         Log.d(TAG, "url: " + url);
         HttpPost post = new HttpPost(url);
         if (this.isSecure()) {
-            IpedApplication application = (IpedApplication) this.context.getApplicationContext();
-            post.setHeader("X-IPED-USER-ID", application.getUserId());
-            post.setHeader("X-IPED-TOKEN-ID", Long.toString(application.getTokenId()));
+            post.setHeader("X-IPED-USER-ID", this.userId);
+            post.setHeader("X-IPED-TOKEN-ID", Long.toString(this.tokenId));
         }
 
         /* prepare parameters */
@@ -83,4 +95,21 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         Log.d(TAG, "response: " + JSON.encode(baseResponse));
         return (T2) baseResponse;
     }
+
+    @Override
+    protected final void onPostExecute(T2 t2) {
+        Activity activity = this.activityRef.get();
+        if (activity == null) {
+            return;
+        }
+        if (t2.getStatus() == ResponseStatus.SUCCESS) {
+            onPostExecuteOnSuccess(t2);
+        } else {
+            onPostExecuteOnFailure(t2);
+        }
+    }
+
+    protected abstract void onPostExecuteOnSuccess(T2 t2);
+
+    protected void onPostExecuteOnFailure(T2 t2) { /* nop */}
 }

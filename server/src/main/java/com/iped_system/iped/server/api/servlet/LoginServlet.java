@@ -5,8 +5,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.LoginRequest;
-import com.iped_system.iped.common.LoginResponse;
+import com.iped_system.iped.common.login.LoginRequest;
+import com.iped_system.iped.common.login.LoginResponse;
 import com.iped_system.iped.common.ResponseStatus;
 import com.iped_system.iped.server.api.domain.UserDomain;
 
