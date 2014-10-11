@@ -7,6 +7,7 @@ import com.iped_system.iped.common.main.RemarksRequest;
 import com.iped_system.iped.common.main.RemarksResponse;
 import com.iped_system.iped.server.api.filter.AuthInfo;
 import com.iped_system.iped.server.domain.RemarkDomain;
+import com.iped_system.iped.server.domain.model.Remark;
 
 import java.util.Date;
 
@@ -24,12 +25,17 @@ public class RemarksServlet extends BaseServlet {
         AuthInfo authInfo = getAuthInfo();
         String patientId = authInfo.getPatientId();
         RemarksRequest request = (RemarksRequest) baseRequest;
-        Date lastUpdate = request.getLastUpdate();
+        Date lastDate = request.getLastDate();
 
         RemarksResponse response = new RemarksResponse();
         RemarkDomain remarkDomain = RemarkDomain.getInstance();
-        for(RemarkValue remarkValue : remarkDomain.search(patientId, lastUpdate)) {
-            response.getRemarkValues().add(remarkValue);
+        for(Remark remark : remarkDomain.search(patientId, lastDate)) {
+            RemarkValue value = new RemarkValue();
+            value.setId(remark.getId());
+            value.setAuthorName(remark.getAuthorName());
+            value.setCreatedAt(remark.getCreatedAt());
+            value.setText(remark.getText());
+            response.getRemarkValues().add(value);
         }
 
         return response;

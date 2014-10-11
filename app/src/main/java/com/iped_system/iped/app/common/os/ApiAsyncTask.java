@@ -44,7 +44,9 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         this.activityRef = new WeakReference<Activity>(activity);
     }
 
-    protected abstract boolean isSecure();
+    protected boolean isSecure() {
+        return true;
+    }
 
     protected abstract String getApiName();
 

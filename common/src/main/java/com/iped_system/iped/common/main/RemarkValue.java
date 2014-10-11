@@ -7,18 +7,18 @@ import java.util.List;
  * Created by kenji on 2014/08/09.
  */
 public class RemarkValue {
-    private String patientId;
+    private long id;
     private String authorName;
     private Date createdAt;
     private String text;
     private List<String> pictures;
 
-    public String getPatientId() {
-        return patientId;
+    public long getId() {
+        return id;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getAuthorName() {

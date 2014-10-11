@@ -12,17 +12,20 @@ import java.util.logging.Logger;
 public abstract class EntityHelper {
     private static final Logger logger = Logger.getLogger(EntityHelper.class.getName());
 
+    private long id;
+
+    public long getId() {
+        return this.id;
+    }
+
     public Entity createEntity() {
         Class<? extends EntityHelper> clazz = this.getClass();
         Entity entity = new Entity(clazz.getSimpleName());
 
         Field[] fields = clazz.getDeclaredFields();
-        logger.fine("fields length is " + fields.length);
         for(Field field : fields) {
-            logger.fine("field name is " + field.getName());
             EntityProperty property = field.getAnnotation(EntityProperty.class);
             if(property == null) {
-                logger.fine("no annotation");
                 continue;
             }
             try {
@@ -36,6 +39,8 @@ public abstract class EntityHelper {
     }
 
     public void fromEntity(Entity entity) {
+        this.id = entity.getKey().getId();
+
         Class<? extends EntityHelper> clazz = this.getClass();
         for(Map.Entry<String, Object> entry : entity.getProperties().entrySet()) {
             try {
@@ -48,6 +53,5 @@ public abstract class EntityHelper {
                 logger.warning(e.toString());
             }
         }
-
     }
 }

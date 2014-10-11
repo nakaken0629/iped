@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
@@ -27,7 +25,8 @@ import java.util.List;
 public class MeetingFragment extends Fragment implements RemarkFragment.OnRegisterListener, CameraFragment.OnTakePictureListener {
     private static final String TAG = MeetingFragment.class.getName();
 
-    private Date lastUpdate;
+    private Date lastDate;
+    private Date firstDate;
     private SwipeRefreshLayout swipeLayout;
     private ListView meetingListView;
 
@@ -37,20 +36,17 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         View rootView = inflater.inflate(R.layout.fragment_meeting, container, false);
 
         /* 変数初期化 */
-        this.lastUpdate = null;
+        this.lastDate = null;
+        this.firstDate = null;
 
         /* コマンド */
         RemarkListener remarkListener = new RemarkListener();
-        ImageView remarkImageView = (ImageView) rootView.findViewById(R.id.remarkImageView);
-        remarkImageView.setOnClickListener(remarkListener);
-        TextView remarkTextView = (TextView) rootView.findViewById(R.id.RemarkTextView);
-        remarkTextView.setOnClickListener(remarkListener);
+        rootView.findViewById(R.id.remarkImageView).setOnClickListener(remarkListener);
+        rootView.findViewById(R.id.RemarkTextView).setOnClickListener(remarkListener);
 
         PhotoListener photoListener = new PhotoListener();
-        ImageView photoImageView = (ImageView) rootView.findViewById(R.id.photoImageView);
-        photoImageView.setOnClickListener(photoListener);
-        TextView photoTextView = (TextView) rootView.findViewById(R.id.photoTextView);
-        photoTextView.setOnClickListener(photoListener);
+        rootView.findViewById(R.id.photoImageView).setOnClickListener(photoListener);
+        rootView.findViewById(R.id.photoTextView).setOnClickListener(photoListener);
 
         /* リストビュー */
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
@@ -60,25 +56,24 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         this.meetingListView.setAdapter(adapter);
 
         reloadRemarks();
-
         return rootView;
     }
 
     private void reloadRemarks() {
-        ReloadRemarksAsyncTask task = new ReloadRemarksAsyncTask(getActivity());
+        RemarksAsyncTask task = new RemarksAsyncTask(getActivity(), 0);
         RemarksRequest request = new RemarksRequest();
-        request.setLastUpdate(this.lastUpdate);
+        request.setLastDate(this.lastDate);
+        request.setFirstDate(this.firstDate);
         task.execute(request);
     }
 
-    class ReloadRemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
-        ReloadRemarksAsyncTask(Activity activity) {
-            super(activity);
-        }
+    class RemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
+        private MeetingFragment parent = MeetingFragment.this;
+        private int index;
 
-        @Override
-        protected boolean isSecure() {
-            return true;
+        private RemarksAsyncTask(Activity activity, int index) {
+            super(activity);
+            this.index = index;
         }
 
         @Override
@@ -89,14 +84,14 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         @Override
         protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
             MeetingAdapter adapter = (MeetingAdapter) MeetingFragment.this.meetingListView.getAdapter();
-            for(RemarkValue remarkValue : remarksResponse.getRemarkValues()) {
+            for(RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
-                item.setAuthorName(remarkValue.getAuthorName());
-                item.setCreatedAt(remarkValue.getCreatedAt());
-                item.setText(remarkValue.getText());
-                adapter.insert(item, 0);
-                if (lastUpdate == null || lastUpdate.before(remarkValue.getCreatedAt())) {
-                    lastUpdate = remarkValue.getCreatedAt();
+                item.setAuthorName(value.getAuthorName());
+                item.setCreatedAt(value.getCreatedAt());
+                item.setText(value.getText());
+                adapter.insert(item, index++);
+                if (lastDate == null || lastDate.before(value.getCreatedAt())) {
+                    lastDate = value.getCreatedAt();
                 }
             }
             adapter.notifyDataSetChanged();
@@ -121,8 +116,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
             }
             adapter.insert(item, 0);
 
-            if (lastUpdate == null || lastUpdate.before(remarkValue.getCreatedAt())) {
-                lastUpdate = remarkValue.getCreatedAt();
+            if (lastDate == null || lastDate.before(remarkValue.getCreatedAt())) {
+                lastDate = remarkValue.getCreatedAt();
             }
         }
         adapter.notifyDataSetChanged();
@@ -142,7 +137,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         public void onClick(View view) {
             RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
             Bundle args = new Bundle();
-            args.putSerializable("lastUpdate", lastUpdate);
+            args.putSerializable("lastDate", lastDate);
             showDialog(fragment, args);
         }
     }
@@ -164,7 +159,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
     public void onTakePicture(byte[] bitmapBytes) {
         RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
         Bundle args = new Bundle();
-        args.putSerializable("lastUpdate", lastUpdate);
+        args.putSerializable("lastDate", lastDate);
         args.putByteArray("pictureData", bitmapBytes);
         showDialog(fragment, args);
     }

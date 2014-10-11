@@ -57,8 +57,7 @@ public class RemarkFragment extends DialogFragment {
 //            this.pictures.add(picture);
 //        }
 //
-        Button remarkButton = (Button) rootView.findViewById(R.id.remarkButton);
-        remarkButton.setOnClickListener(new RemarkButtonListener());
+        rootView.findViewById(R.id.remarkButton).setOnClickListener(new RemarkButtonListener());
         return rootView;
     }
 
