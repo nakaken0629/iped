@@ -24,7 +24,6 @@ public class LoginFragment extends Fragment {
 
     private EditTextEx userIdEditText;
     private EditTextEx passwordEditText;
-    private Button loginButton;
 
     public interface OnLoginListener {
         public void onLogin();
@@ -39,8 +38,8 @@ public class LoginFragment extends Fragment {
 
         this.userIdEditText = (EditTextEx) rootView.findViewById(R.id.userIdEditText);
         this.passwordEditText = (EditTextEx) rootView.findViewById(R.id.passwordEditText);
-        this.loginButton = (Button) rootView.findViewById(R.id.loginButton);
-        this.loginButton.setOnClickListener(new LoginButtonListener());
+        Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new LoginButtonListener());
 
         return rootView;
     }

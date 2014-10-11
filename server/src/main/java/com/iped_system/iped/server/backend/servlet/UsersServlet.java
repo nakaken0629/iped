@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.iped_system.iped.server.backend.model.User;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;

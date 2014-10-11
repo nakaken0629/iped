@@ -1,8 +1,8 @@
 package com.iped_system.iped.server.backend.servlet;
 
 import com.iped_system.iped.common.RoleType;
-import com.iped_system.iped.server.backend.model.User;
-import com.iped_system.iped.server.backend.model.UserUtils;
+import com.iped_system.iped.server.domain.model.User;
+import com.iped_system.iped.server.backend.UserUtils;
 
 import java.io.IOException;
 

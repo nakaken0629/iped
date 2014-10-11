@@ -2,10 +2,11 @@ package com.iped_system.iped.server.api.servlet;
 
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.Talk;
-import com.iped_system.iped.common.TalksNewRequest;
-import com.iped_system.iped.common.TalksNewResponse;
-import com.iped_system.iped.server.api.domain.TalkDomain;
+import com.iped_system.iped.common.main.TalkValue;
+import com.iped_system.iped.common.main.TalksNewRequest;
+import com.iped_system.iped.common.main.TalksNewResponse;
+import com.iped_system.iped.server.api.filter.AuthInfo;
+import com.iped_system.iped.server.domain.TalkDomain;
 
 import java.util.List;
 import java.util.Map;
@@ -22,16 +23,16 @@ public class TalksNewServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         TalksNewRequest request = (TalksNewRequest) baseRequest;
-        Map<String, Object> userValue = getCurrentUserValue();
+        AuthInfo authInfo = getAuthInfo();
 
-        String userId = (String) userValue.get("userId");
-        String patientId = (String) userValue.get("patientId");
+        String userId = authInfo.getUserId();
+        String patientId = authInfo.getPatientId();
         String text = request.getText();
         TalkDomain.getInstance().insert(userId, patientId, text);
 
         TalksNewResponse response = new TalksNewResponse();
-        List<Talk> talks = TalkDomain.getInstance().search(userId, patientId, request.getLastUpdate());
-        response.setTalks(talks);
+        List<TalkValue> talkValues = TalkDomain.getInstance().search(userId, patientId, request.getLastUpdate());
+        response.setTalkValues(talkValues);
         return response;
     }
 }

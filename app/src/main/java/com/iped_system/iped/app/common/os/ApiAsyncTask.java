@@ -34,13 +34,11 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     private static final String TAG = ApiAsyncTask.class.getName();
 
     private WeakReference<Activity> activityRef;
-    private String userId;
     private long tokenId;
     private String baseUrl;
 
     public ApiAsyncTask(Activity activity) {
         IpedApplication application = (IpedApplication) activity.getApplication();
-        this.userId = application.getUserId();
         this.tokenId = application.getTokenId();
         this.baseUrl = activity.getString(R.string.server_baseurl);
         this.activityRef = new WeakReference<Activity>(activity);
@@ -75,7 +73,6 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         Log.d(TAG, "url: " + url);
         HttpPost post = new HttpPost(url);
         if (this.isSecure()) {
-            post.setHeader("X-IPED-USER-ID", this.userId);
             post.setHeader("X-IPED-TOKEN-ID", Long.toString(this.tokenId));
         }
 

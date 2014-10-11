@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.ui.MainActivity;
+import com.iped_system.iped.app.main.MainActivity;
 
 public class LoginActivity extends FragmentActivity implements LoginFragment.OnLoginListener {
 

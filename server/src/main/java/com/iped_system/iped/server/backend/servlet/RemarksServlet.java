@@ -5,8 +5,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.iped_system.iped.server.api.domain.UserDomain;
-import com.iped_system.iped.server.backend.model.Remark;
+import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.Remark;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,15 +32,10 @@ public class RemarksServlet extends HttpServlet {
         query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         ArrayList<Remark> remarks = new ArrayList<Remark>();
-        for (Entity user : pq.asIterable()) {
-            Remark remarkValue = new Remark();
-            remarkValue.setPatientId((String) user.getProperty("patientId"));
-            String authorId = (String) user.getProperty("authorId");
-            Map<String, Object> authorValue = domain.getByUserId(authorId);
-            remarkValue.setAuthorName(authorValue.get("lastName") + " " + authorValue.get("firstName"));
-            remarkValue.setCreatedAt((Date) user.getProperty("createdAt"));
-            remarkValue.setText((String) user.getProperty("text"));
-            remarks.add(remarkValue);
+        for (Entity entity : pq.asIterable()) {
+            Remark remark = new Remark();
+            remark.fromEntity(entity);
+            remarks.add(remark);
         }
         req.setAttribute("remarks", remarks);
 

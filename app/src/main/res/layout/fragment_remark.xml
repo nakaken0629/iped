@@ -34,12 +34,12 @@
 
     </LinearLayout>
 
-    <EditText
+    <com.iped_system.iped.app.common.widget.EditTextEx
         android:id="@+id/remarkEditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/remarkButton"
         android:layout_above="@id/thumbnailLayout"
-        android:gravity="top"></EditText>
+        android:gravity="top" />
 </RelativeLayout>

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".app.ui.MainActivity"
+            android:name=".app.main.MainActivity"
             android:label="メイン画面"
             android:screenOrientation="portrait" />
     </application>

@@ -8,7 +8,7 @@ import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.login.LoginRequest;
 import com.iped_system.iped.common.login.LoginResponse;
 import com.iped_system.iped.common.ResponseStatus;
-import com.iped_system.iped.server.api.domain.UserDomain;
+import com.iped_system.iped.server.domain.UserDomain;
 
 import java.util.Calendar;
 import java.util.Map;

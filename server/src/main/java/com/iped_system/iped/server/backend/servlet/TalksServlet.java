@@ -5,8 +5,8 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.iped_system.iped.server.api.domain.UserDomain;
-import com.iped_system.iped.server.backend.model.Talk;
+import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.Talk;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class TalksServlet extends HttpServlet {
         /* prepare talks */
         UserDomain domain = UserDomain.getInstance();
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Query query = new Query("Talk");
+        Query query = new Query("TalkValue");
         query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         ArrayList<Talk> talks = new ArrayList<Talk>();
