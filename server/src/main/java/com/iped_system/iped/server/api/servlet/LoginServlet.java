@@ -9,6 +9,7 @@ import com.iped_system.iped.common.login.LoginRequest;
 import com.iped_system.iped.common.login.LoginResponse;
 import com.iped_system.iped.common.ResponseStatus;
 import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -28,10 +29,10 @@ public class LoginServlet extends BaseServlet {
         LoginRequest request = (LoginRequest) baseRequest;
         String userId = request.getUserId();
         String password = request.getPassword();
-        Map<String,Object> userValue = UserDomain.getInstance().getByUserId(userId);
+        User user = UserDomain.getInstance().getByUserId(userId);
 
         LoginResponse response = new LoginResponse();
-        if (userValue != null && password.equals(userValue.get("password"))) {
+        if (user != null && password.equals(user.getPassword())) {
             Entity token = new Entity("Token");
             token.setProperty("userId", userId);
             Calendar calendar = Calendar.getInstance();
@@ -41,10 +42,10 @@ public class LoginServlet extends BaseServlet {
 
             response.setTokenId(token.getKey().getId());
             response.setUserId(userId);
-            response.setLastName((String) userValue.get("lastName"));
-            response.setFirstName((String) userValue.get("firstName"));
-            response.setRole((String) userValue.get("role"));
-            response.setPatientId((String) userValue.get("patientId"));
+            response.setLastName((String) user.getLastName());
+            response.setFirstName((String) user.getFirstName());
+            response.setRole((String) user.getRole());
+            response.setPatientId((String) user.getPatientId());
         } else {
             response.setStatus(ResponseStatus.FAIL);
         }

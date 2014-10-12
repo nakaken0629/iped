@@ -1,6 +1,7 @@
 package com.iped_system.iped.server.backend.servlet;
 
 import com.iped_system.iped.common.RoleType;
+import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.User;
 import com.iped_system.iped.server.backend.UserUtils;
 
@@ -19,7 +20,8 @@ public class UserEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getPathInfo().split("/")[1];
-        User user = UserUtils.createFromUserId(userId);
+        UserDomain domain = UserDomain.getInstance();
+        User user = domain.getByUserId(userId);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.getRoles());
 

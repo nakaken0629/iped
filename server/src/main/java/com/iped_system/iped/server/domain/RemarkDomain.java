@@ -30,8 +30,7 @@ public class RemarkDomain {
 
     public void insert(Remark remark) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Entity entity = remark.createEntity();
-        service.put(entity);
+        remark.save(service);
     }
 
     public List<Remark> search(String patientId, Date lastDate) {
@@ -48,8 +47,7 @@ public class RemarkDomain {
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<Remark> remarks = new ArrayList<Remark>();
         for(Entity entity : pq.asIterable(FetchOptions.Builder.withLimit(FETCH_SIZE))) {
-            Remark remark = new Remark();
-            remark.fromEntity(entity);
+            Remark remark = new Remark(entity);
             remarks.add(remark);
         }
 

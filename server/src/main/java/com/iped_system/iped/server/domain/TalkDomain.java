@@ -6,6 +6,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.main.TalkValue;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,8 +63,8 @@ public final class TalkDomain {
                 talkValue.setMeText(text);
             } else {
                 /* do as other people */
-                Map<String, Object> authorValue = userDomain.getByUserId(authorId);
-                String authorName = authorValue.get("lastName") + " " + authorValue.get("firstName");
+                User authorValue = userDomain.getByUserId(authorId);
+                String authorName = authorValue.getLastName() + " " + authorValue.getFirstName();
                 talkValue.setAuthorName(authorName);
                 talkValue.setYouText(text);
             }

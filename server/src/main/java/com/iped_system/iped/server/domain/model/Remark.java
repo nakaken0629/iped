@@ -1,23 +1,26 @@
 package com.iped_system.iped.server.domain.model;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PropertyContainer;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Created by kenji on 2014/08/10.
  */
-public class Remark extends EntityHelper {
+public class Remark extends EntityWrapper {
     @EntityProperty private String userId;
     @EntityProperty private String patientId;
     @EntityProperty private String authorName;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
+    @EntityProperty private String face;
 
     public Remark() {
-        /* nop */
+        super();
+    }
+
+    public Remark(Entity entity) {
+        super(entity);
     }
 
     public String getUserId() {
@@ -60,5 +63,13 @@ public class Remark extends EntityHelper {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
     }
 }

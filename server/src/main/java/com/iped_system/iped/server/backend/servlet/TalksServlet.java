@@ -7,6 +7,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.Talk;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ public class TalksServlet extends HttpServlet {
             Talk talkValue = new Talk();
             talkValue.setPatientId((String) user.getProperty("patientId"));
             String authorId = (String) user.getProperty("authorId");
-            Map<String, Object> authorValue = domain.getByUserId(authorId);
-            talkValue.setAuthorName(authorValue.get("lastName") + " " + authorValue.get("firstName"));
+            User author = domain.getByUserId(authorId);
+            talkValue.setAuthorName(author.getLastName() + " " + author.getFirstName());
             talkValue.setCreatedAt((Date) user.getProperty("createdAt"));
             talkValue.setText((String) user.getProperty("text"));
             talks.add(talkValue);

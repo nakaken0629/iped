@@ -1,23 +1,25 @@
 package com.iped_system.iped.server.domain.model;
 
+import com.google.appengine.api.datastore.Entity;
+
 /**
  * Created by kenji on 2014/08/09.
  */
-public class User {
-    private long id;
-    private String userId;
-    private String lastName;
-    private String firstName;
-    private String password;
-    private String role;
-    private String patientId;
+public class User extends EntityWrapper {
+    @EntityProperty private String userId;
+    @EntityProperty private String lastName;
+    @EntityProperty private String firstName;
+    @EntityProperty private String password;
+    @EntityProperty private String role;
+    @EntityProperty private String patientId;
+    @EntityProperty private String faceKey;
 
-    public long getId() {
-        return id;
+    public User() {
+        super();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public User(Entity entity) {
+        super(entity);
     }
 
     public String getUserId() {
@@ -91,6 +93,14 @@ public class User {
 
     public boolean isPatientIdValid() {
         return true;
+    }
+
+    public String getFaceKey() {
+        return faceKey;
+    }
+
+    public void setFaceKey(String faceKey) {
+        this.faceKey = faceKey;
     }
 
     public boolean isValid() {

@@ -54,12 +54,20 @@
         <servlet-class>com.iped_system.iped.server.backend.servlet.UserEditServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Backend/FaceUploadServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.backend.servlet.FaceUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Backend/RemarksServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.RemarksServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Backend/TalksServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.TalksServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Backend/FaceServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.common.servlet.FaceServlet</servlet-class>
     </servlet>
 
     <!-- define servlet mappings -->
@@ -116,12 +124,20 @@
         <url-pattern>/backend/user/edit/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>Backend/FaceUploadServlet</servlet-name>
+        <url-pattern>/backend/user/faceupload/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Backend/RemarksServlet</servlet-name>
         <url-pattern>/backend/remarks</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Backend/TalksServlet</servlet-name>
         <url-pattern>/backend/talks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Backend/FaceServlet</servlet-name>
+        <url-pattern>/backend/face/*</url-pattern>
     </servlet-mapping>
 
     <!-- define filters -->

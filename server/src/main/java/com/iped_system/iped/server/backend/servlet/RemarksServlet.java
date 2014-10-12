@@ -33,8 +33,7 @@ public class RemarksServlet extends HttpServlet {
         PreparedQuery pq = service.prepare(query);
         ArrayList<Remark> remarks = new ArrayList<Remark>();
         for (Entity entity : pq.asIterable()) {
-            Remark remark = new Remark();
-            remark.fromEntity(entity);
+            Remark remark = new Remark(entity);
             remarks.add(remark);
         }
         req.setAttribute("remarks", remarks);

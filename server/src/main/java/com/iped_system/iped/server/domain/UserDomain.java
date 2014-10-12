@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class UserDomain {
         /* nop */
     }
 
-    public Map<String, Object> getByUserId(String userId) {
+    public User getByUserId(String userId) {
         try {
             return getByUserIdImpl(userId);
         } catch (Exception e) {
@@ -29,13 +30,20 @@ public class UserDomain {
         }
     }
 
-    private Map<String, Object> getByUserIdImpl(String userId) {
+    private User getByUserIdImpl(String userId) {
         /* TODO: キャッシュを使うようにすること */
         Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.EQUAL, userId);
         Query query = new Query("User").setFilter(filter);
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery preparedQuery = service.prepare(query);
-        Entity user = preparedQuery.asSingleEntity();
-        return user.getProperties();
+        Entity entity = preparedQuery.asSingleEntity();
+
+        User user = new User(entity);
+        return user;
+    }
+
+    public void update(User user) {
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        user.save(service);
     }
 }

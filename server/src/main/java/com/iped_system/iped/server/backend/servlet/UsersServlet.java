@@ -27,14 +27,8 @@ public class UsersServlet extends HttpServlet {
         Query query = new Query("User");
         PreparedQuery pq = service.prepare(query);
         ArrayList<User> users = new ArrayList<User>();
-        for(Entity userEntity : pq.asIterable()) {
-            User user = new User();
-            user.setId(userEntity.getKey().getId());
-            user.setUserId((String) userEntity.getProperty("userId"));
-            user.setLastName((String) userEntity.getProperty("lastName"));
-            user.setFirstName((String) userEntity.getProperty("firstName"));
-            user.setRole((String) userEntity.getProperty("role"));
-            user.setPatientId((String) userEntity.getProperty("patientId"));
+        for(Entity entity : pq.asIterable()) {
+            User user = new User(entity);
             users.add(user);
         }
         req.setAttribute("users", users);

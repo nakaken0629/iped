@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form action='<%=request.getAttribute("javax.servlet.forward.request_uri")%>' method="POST"
-      role="form">
+<% BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
+<c:if test='${method != "new"}'>
+    <form id="faceForm" action='<%= blobstoreService.createUploadUrl("/backend/user/faceupload") %>' method="POST" enctype="multipart/form-data" role="form">
+        <div class="form-group">
+            <label for="face">顔アイコン</label>
+            <input type="hidden" name="userId" value='<c:out value="${user.userId}" />'>
+            <input type="file" class="form-control" name="face" />
+            <img src='/backend/face/<c:out value="${user.faceKey}" />' />
+            <input type="button" name="register" class="btn btn-success" value="アップロード"/>
+        </div>
+    </form>
+</c:if>
+<form id="userForm" action='<%=request.getAttribute("javax.servlet.forward.request_uri")%>' method="POST" role="form">
     <div class="form-group">
         <label for="userId">ユーザID<span class="text-info">（必須）</span></label>
         <c:if test='${method == "new"}'>
