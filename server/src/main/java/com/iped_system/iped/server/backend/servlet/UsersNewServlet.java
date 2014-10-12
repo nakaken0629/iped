@@ -1,5 +1,6 @@
 package com.iped_system.iped.server.backend.servlet;
 
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.domain.model.User;
 import com.iped_system.iped.server.backend.UserUtils;
@@ -30,7 +31,8 @@ public class UsersNewServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = UserUtils.createFromRequest(req);
+        User user = new User();
+        UserUtils.createFromRequest(user, req);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.getRoles());
 
@@ -39,7 +41,7 @@ public class UsersNewServlet extends HttpServlet {
             return;
         }
 
-        UserUtils.insert(user);
+        user.save(DatastoreServiceFactory.getDatastoreService());
         resp.sendRedirect("/backend/users");
     }
 

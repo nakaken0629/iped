@@ -3,6 +3,10 @@ package com.iped_system.iped.server.backend.servlet;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.Transform;
 import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.User;
 
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by kenji on 2014/10/12.
  */
 public class FaceUploadServlet extends HttpServlet {
+    private static final int FACE_SIZE = 96;
     private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
     @Override
@@ -28,9 +33,10 @@ public class FaceUploadServlet extends HttpServlet {
         List<BlobKey> blobKeys = blobs.get("face");
 
         if (blobKeys != null || blobKeys.size() > 0) {
+            BlobKey blobKey = blobKeys.get(0);
             UserDomain domain = UserDomain.getInstance();
             User user = domain.getByUserId(userId);
-            user.setFaceKey(blobKeys.get(0).getKeyString());
+            user.setFaceKey(blobKey.getKeyString());
             domain.update(user);
 
             resp.getWriter().print(user.getFaceKey());

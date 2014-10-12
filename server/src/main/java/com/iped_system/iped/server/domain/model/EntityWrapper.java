@@ -62,4 +62,12 @@ public abstract class EntityWrapper {
 
         service.put(this.entity);
     }
+
+    public void delete(DatastoreService service) {
+        if (this.entity == null) {
+            return;
+        }
+        service.delete(this.entity.getKey());
+        this.entity = null;
+    }
 }

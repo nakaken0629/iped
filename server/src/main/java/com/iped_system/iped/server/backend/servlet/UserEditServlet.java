@@ -1,5 +1,7 @@
 package com.iped_system.iped.server.backend.servlet;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.User;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * Created by kenji on 2014/08/09.
  */
 public class UserEditServlet extends HttpServlet {
+    private DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getPathInfo().split("/")[1];
@@ -39,7 +43,9 @@ public class UserEditServlet extends HttpServlet {
     }
 
     private void doPostAsRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = UserUtils.createFromRequest(req);
+        UserDomain domain = UserDomain.getInstance();
+        User user = domain.getByUserId(req.getParameter("userId"));
+        UserUtils.createFromRequest(user, req);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.getRoles());
 
@@ -49,13 +55,15 @@ public class UserEditServlet extends HttpServlet {
             return;
         }
 
-        UserUtils.update(user);
+        user.save(this.datastoreService);
         resp.sendRedirect("/backend/users");
     }
 
     private void doPostAsDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getParameter("userId");
-        UserUtils.delete(userId);
+        UserDomain domain = UserDomain.getInstance();
+        User user = domain.getByUserId(userId);
+        user.delete(this.datastoreService);
         resp.sendRedirect("/backend/users");
     }
 }
