@@ -83,9 +83,10 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
 
         @Override
         protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
-            MeetingAdapter adapter = (MeetingAdapter) MeetingFragment.this.meetingListView.getAdapter();
+            MeetingAdapter adapter = (MeetingAdapter) parent.meetingListView.getAdapter();
             for(RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
+                item.setFaceKey(value.getFaceKey());
                 item.setAuthorName(value.getAuthorName());
                 item.setCreatedAt(value.getCreatedAt());
                 item.setText(value.getText());
@@ -95,6 +96,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
                 }
             }
             adapter.notifyDataSetChanged();
+            parent.meetingListView.setSelection(0);
             MeetingFragment.this.swipeLayout.setRefreshing(false);
         }
     }

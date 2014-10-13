@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class RemarkValue {
     private long id;
+    private String faceKey;
     private String authorName;
     private Date createdAt;
     private String text;
@@ -27,6 +28,14 @@ public class RemarkValue {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public String getFaceKey() {
+        return faceKey;
+    }
+
+    public void setFaceKey(String faceKey) {
+        this.faceKey = faceKey;
     }
 
     public Date getCreatedAt() {

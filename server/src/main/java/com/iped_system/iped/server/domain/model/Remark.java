@@ -13,7 +13,6 @@ public class Remark extends EntityWrapper {
     @EntityProperty private String authorName;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
-    @EntityProperty private String face;
 
     public Remark() {
         super();
@@ -63,13 +62,5 @@ public class Remark extends EntityWrapper {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getFace() {
-        return face;
-    }
-
-    public void setFace(String face) {
-        this.face = face;
     }
 }

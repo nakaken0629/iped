@@ -6,9 +6,18 @@ import java.util.Date;
  * Created by kenji on 2014/08/09.
  */
 public class MeetingItem {
+    private String faceKey;
     private String authorName;
     private Date createdAt;
     private String text;
+
+    public String getFaceKey() {
+        return faceKey;
+    }
+
+    public void setFaceKey(String faceKey) {
+        this.faceKey = faceKey;
+    }
 
     public String getAuthorName() {
         return authorName;

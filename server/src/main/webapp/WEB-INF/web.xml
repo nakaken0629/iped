@@ -10,6 +10,10 @@
         <servlet-class>com.iped_system.iped.server.api.servlet.RemarksServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>FaceServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.common.servlet.FaceServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>RemarksNewServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.RemarksNewServlet</servlet-class>
     </servlet>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>RemarksServlet</servlet-name>
         <url-pattern>/api/secure/remarks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FaceServlet</servlet-name>
+        <url-pattern>/api/face/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RemarksNewServlet</servlet-name>
