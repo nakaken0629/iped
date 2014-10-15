@@ -1,6 +1,7 @@
 package com.iped_system.iped.app.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ImageAsyncTask;
 
 import java.util.Calendar;
@@ -35,10 +37,12 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
 
     private static final String TAG = MeetingAdapter.class.getName();
     private LayoutInflater inflater;
+    private RetainFragment retainFragment;
 
-    public MeetingAdapter(Context context, int resource) {
+    public MeetingAdapter(Context context, int resource, RetainFragment retainFragment) {
         super(context, resource);
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.retainFragment = retainFragment;
     }
 
     @Override
@@ -62,9 +66,8 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
 
         holder.profileImage.setImageResource(R.drawable.anonymous);
         holder.profileImage.setTag(item.getFaceKey());
-        ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage);
+        ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
         task.execute(item.getFaceKey());
-
         return convertView;
     }
 }

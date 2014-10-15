@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.common.main.RemarkValue;
 import com.iped_system.iped.common.main.RemarksRequest;
@@ -52,7 +53,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.OnRegist
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
         swipeLayout.setOnRefreshListener(new RefreshListener());
         this.meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
-        MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0);
+        RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
+        MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0, retainFragment);
         this.meetingListView.setAdapter(adapter);
 
         reloadRemarks();
