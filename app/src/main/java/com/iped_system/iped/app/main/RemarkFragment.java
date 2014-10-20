@@ -11,12 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.widget.EditTextEx;
 import com.iped_system.iped.common.main.RemarksNewRequest;
@@ -28,14 +24,16 @@ public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
 
     private EditTextEx remarkEditText;
-//    /* TODO: ライフサイクルによってなくなってしまわないか？ */
-//    private ArrayList<Picture> pictures = new ArrayList<Picture>();
+    private ArrayList<Picture> pictures = new ArrayList<Picture>();
 
-    public interface OnRegisterListener {
+    public interface RemarkListener {
         public void onRegister();
     }
 
     public static RemarkFragment newInstance(Fragment fragment) {
+        if (!(fragment instanceof RemarkListener)) {
+            throw new ClassCastException("fragment need to implements " + RemarkListener.class.getName());
+        }
         RemarkFragment remarkFragment = new RemarkFragment();
         remarkFragment.setTargetFragment(fragment, 0);
         return remarkFragment;
@@ -46,17 +44,6 @@ public class RemarkFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
         this.remarkEditText = (EditTextEx) rootView.findViewById(R.id.remarkEditText);
-
-//        Bundle args = getArguments();
-//        if (args.containsKey("pictures")) {
-//            Picture picture = new Picture(args.getByteArray("pictures"));
-//            ViewGroup thumbnailLayout = (ViewGroup) rootView.findViewById(R.id.thumbnailLayout);
-//            ImageView thumbnailImageView = (ImageView) inflater.inflate(R.layout.thumbnail, thumbnailLayout, false);
-//            thumbnailImageView.setImageBitmap(picture.getThumbnailBitmap());
-//            thumbnailLayout.addView(thumbnailImageView);
-//            this.pictures.add(picture);
-//        }
-//
         rootView.findViewById(R.id.remarkButton).setOnClickListener(new RemarkButtonListener());
         return rootView;
     }
@@ -71,7 +58,7 @@ public class RemarkFragment extends DialogFragment {
         return dialog;
     }
 
-    class RemarkButtonListener implements View.OnClickListener {
+    private class RemarkButtonListener implements View.OnClickListener {
         private RemarkFragment parent = RemarkFragment.this;
 
         @Override
@@ -81,23 +68,17 @@ public class RemarkFragment extends DialogFragment {
                 return;
             }
 
-            RemarkFragment self = RemarkFragment.this;
-//            if (self.pictures.size() == 0) {
             RemarksNewRequest request = new RemarksNewRequest();
             request.setText(text);
             RemarksNewTask task = new RemarksNewTask(getActivity());
             task.execute(request);
-//            } else {
-//                bundle.putInt("pictureCount", self.pictures.size());
-//                bundle.putString("picturePath", UUID.randomUUID().toString());
-//                bundle.putByteArray("picture", pictures.get(0).getDisplay());
-//                self.getLoaderManager().restartLoader(LOADER_PICTURE, bundle, self.pictureUploadCallbacks);
-//            }
         }
     }
 
-    class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
-        RemarksNewTask(Activity activity) {
+    private class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
+        private RemarkFragment parent = RemarkFragment.this;
+
+        private RemarksNewTask(Activity activity) {
             super(activity);
         }
 
@@ -113,9 +94,9 @@ public class RemarkFragment extends DialogFragment {
 
         @Override
         protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
-            OnRegisterListener listener = (OnRegisterListener) getTargetFragment();
+            RemarkListener listener = (RemarkListener) getTargetFragment();
             listener.onRegister();
-            RemarkFragment.this.dismiss();
+            parent.dismiss();
         }
     }
 }

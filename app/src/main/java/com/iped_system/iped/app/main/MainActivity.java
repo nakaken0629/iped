@@ -1,5 +1,7 @@
 package com.iped_system.iped.app.main;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

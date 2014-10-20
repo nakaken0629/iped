@@ -35,7 +35,7 @@ public class CameraFragment extends DialogFragment {
 
     private Camera camera;
 
-    public interface OnTakePictureListener {
+    public interface CameraListener {
         public void onTakePicture(byte[] bitmapBytes);
     }
 
@@ -122,15 +122,15 @@ public class CameraFragment extends DialogFragment {
     };
 
     public static CameraFragment newInstance(Fragment fragment) {
-        if (!(fragment instanceof OnTakePictureListener)) {
-            throw new ClassCastException();
+        if (!(fragment instanceof CameraListener)) {
+            throw new ClassCastException("fragment need to implements " + CameraListener.class.getName());
         }
         CameraFragment cameraFragment = new CameraFragment();
         cameraFragment.setTargetFragment(fragment, 0);
         return cameraFragment;
     }
 
-    protected boolean isPortrait() {
+    private boolean isPortrait() {
         Configuration configuration = this.getResources().getConfiguration();
         return configuration.orientation == Configuration.ORIENTATION_PORTRAIT;
     }
@@ -165,11 +165,11 @@ public class CameraFragment extends DialogFragment {
         return dialog;
     }
 
-    class TakePictureListener implements View.OnClickListener {
+    private class TakePictureListener implements View.OnClickListener {
         private MyShutterCallback shutterCallback;
         private JpegPictureCallback jpegPictureCallback;
 
-        TakePictureListener() {
+        private TakePictureListener() {
             this.shutterCallback = new MyShutterCallback();
             this.jpegPictureCallback = new JpegPictureCallback();
         }
@@ -184,7 +184,7 @@ public class CameraFragment extends DialogFragment {
         }
     }
 
-    class MyShutterCallback implements Camera.ShutterCallback {
+    private class MyShutterCallback implements Camera.ShutterCallback {
         @Override
         public void onShutter() {
             /* Use handler cause continuing play unless CameraFragment is dismissed */
@@ -198,19 +198,16 @@ public class CameraFragment extends DialogFragment {
         }
     }
 
-    class JpegPictureCallback implements Camera.PictureCallback {
+    private class JpegPictureCallback implements Camera.PictureCallback {
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
-            final byte[] bitmapBytes = bytes;
-
+            final byte[] pictureBytes = bytes;
 
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    Fragment fragment = getTargetFragment();
-                    if (fragment instanceof OnTakePictureListener) {
-                        ((OnTakePictureListener) fragment).onTakePicture(bitmapBytes);
-                    }
+                    CameraListener listener = (CameraListener) getTargetFragment();
+                    listener.onTakePicture(pictureBytes);
                 }
             });
         }
