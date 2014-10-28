@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
@@ -18,15 +22,19 @@ import com.iped_system.iped.app.common.widget.EditTextEx;
 import com.iped_system.iped.common.main.RemarksNewRequest;
 import com.iped_system.iped.common.main.RemarksNewResponse;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RemarkFragment extends DialogFragment {
     private static final String TAG = RemarkFragment.class.getName();
+    private RemarkFragment parent = RemarkFragment.this;
 
     private EditTextEx remarkEditText;
-    private ArrayList<Picture> pictures = new ArrayList<Picture>();
+    private LinearLayout pictureLayout;
+    private TextView newPictureTextView;
 
     public interface RemarkListener {
+        public List<Picture> getPictures();
+        public void onNewPicture();
         public void onRegister();
     }
 
@@ -39,12 +47,28 @@ public class RemarkFragment extends DialogFragment {
         return remarkFragment;
     }
 
+    private RemarkListener getRemarkListener() {
+        return (RemarkListener) getTargetFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "call onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_remark, container, false);
         this.remarkEditText = (EditTextEx) rootView.findViewById(R.id.remarkEditText);
+        this.pictureLayout = (LinearLayout) rootView.findViewById(R.id.thumbnailLayout);
+        this.newPictureTextView = (TextView) rootView.findViewById(R.id.newPictureTextView);
+
+        for(Picture picture : getRemarkListener().getPictures()) {
+            ImageView imageView = new ImageView(this.getActivity());
+            imageView.setImageBitmap(picture.getThumbnailBitmap());
+            this.pictureLayout.addView(imageView);
+        }
+        this.newPictureTextView.setOnClickListener(new NewPictureListener());
+
         rootView.findViewById(R.id.remarkButton).setOnClickListener(new RemarkButtonListener());
+
         return rootView;
     }
 
@@ -59,8 +83,6 @@ public class RemarkFragment extends DialogFragment {
     }
 
     private class RemarkButtonListener implements View.OnClickListener {
-        private RemarkFragment parent = RemarkFragment.this;
-
         @Override
         public void onClick(View view) {
             String text = parent.remarkEditText.getTrimmedValue();
@@ -76,8 +98,6 @@ public class RemarkFragment extends DialogFragment {
     }
 
     private class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
-        private RemarkFragment parent = RemarkFragment.this;
-
         private RemarksNewTask(Activity activity) {
             super(activity);
         }
@@ -94,8 +114,15 @@ public class RemarkFragment extends DialogFragment {
 
         @Override
         protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
-            RemarkListener listener = (RemarkListener) getTargetFragment();
-            listener.onRegister();
+            getRemarkListener().onRegister();
+            parent.dismiss();
+        }
+    }
+
+    private class NewPictureListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            getRemarkListener().onNewPicture();
             parent.dismiss();
         }
     }

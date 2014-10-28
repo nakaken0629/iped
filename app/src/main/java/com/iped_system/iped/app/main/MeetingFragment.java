@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +18,19 @@ import com.iped_system.iped.common.main.RemarkValue;
 import com.iped_system.iped.common.main.RemarksRequest;
 import com.iped_system.iped.common.main.RemarksResponse;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class MeetingFragment extends Fragment implements RemarkFragment.RemarkListener {
+public class MeetingFragment extends Fragment implements RemarkFragment.RemarkListener, CameraFragment.CameraListener {
     private static final String TAG = MeetingFragment.class.getName();
+    private final MeetingFragment parent = this;
 
     private Date lastDate;
     private Date firstDate;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView meetingListView;
+    private ArrayList<Picture> pictures = new ArrayList<Picture>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,9 +46,9 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         rootView.findViewById(R.id.remarkImageView).setOnClickListener(remarkListener);
         rootView.findViewById(R.id.RemarkTextView).setOnClickListener(remarkListener);
 
-//        PhotoListener photoListener = new PhotoListener();
-//        rootView.findViewById(R.id.photoImageView).setOnClickListener(photoListener);
-//        rootView.findViewById(R.id.photoTextView).setOnClickListener(photoListener);
+        PhotoListener photoListener = new PhotoListener();
+        rootView.findViewById(R.id.pictureImageView).setOnClickListener(photoListener);
+        rootView.findViewById(R.id.pictureTextView).setOnClickListener(photoListener);
 
         /* リストビュー */
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
@@ -68,6 +73,12 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         request.setLastDate(this.lastDate);
         request.setFirstDate(this.firstDate);
         task.execute(request);
+    }
+
+    private void showCamera() {
+        CameraFragment fragment = CameraFragment.newInstance(parent);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        fragment.show(transaction, null);
     }
 
     private class RemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
@@ -116,10 +127,20 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     private class RemarkListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
+            RemarkFragment fragment = RemarkFragment.newInstance(parent);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             fragment.show(transaction, null);
         }
+    }
+
+    @Override
+    public List<Picture> getPictures() {
+        return this.pictures;
+    }
+
+    @Override
+    public void onNewPicture() {
+        showCamera();
     }
 
     @Override
@@ -127,21 +148,19 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         reloadRemarks();
     }
 
-//    private class PhotoListener implements View.OnClickListener {
-//        @Override
-//        public void onClick(View view) {
-//            CameraFragment fragment = CameraFragment.newInstance(MeetingFragment.this);
-//            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//            fragment.show(transaction, null);
-//        }
-//    }
-//
-//    @Override
-//    public void onTakePicture(byte[] bitmapBytes) {
-//        RemarkFragment fragment = RemarkFragment.newInstance(MeetingFragment.this);
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        fragment.show(transaction, null);
-//        Bundle args = new Bundle();
-//        args.putByteArray("pictureData", bitmapBytes);
-//    }
+    private class PhotoListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            showCamera();
+        }
+    }
+
+    @Override
+    public void onTakePicture(byte[] bitmapBytes) {
+        this.pictures.add(new Picture(bitmapBytes));
+
+        RemarkFragment fragment = RemarkFragment.newInstance(parent);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        fragment.show(transaction, null);
+    }
 }

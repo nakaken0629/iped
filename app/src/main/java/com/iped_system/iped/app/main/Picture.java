@@ -2,6 +2,7 @@ package com.iped_system.iped.app.main;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Picture implements Serializable {
     public Picture(byte[] original) {
         this.original = original;
         this.displayBitmap = convertTo(original, 800);
-        this.thumbnailBitmap = convertTo(original, 200);
+        this.thumbnailBitmap = convertTo(original, 128);
     }
 
     private Bitmap convertTo(byte[] original, int size) {
@@ -36,7 +37,9 @@ public class Picture implements Serializable {
         /* create bitmap */
         options.inJustDecodeBounds = false;
         Bitmap workBitmap = BitmapFactory.decodeByteArray(original, 0, original.length, options);
-        return Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), null, false);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(180);
+        return Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
     }
 
     public Bitmap getDisplayBitmap() {

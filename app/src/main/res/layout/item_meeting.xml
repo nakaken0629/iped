@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/profileImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="96px"
+            android:layout_height="96px"
             android:src="@drawable/anonymous"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

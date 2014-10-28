@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class CameraFragment extends DialogFragment {
     private static final String TAG = CameraFragment.class.getName();
+    private final CameraFragment parent = this;
 
     private Camera camera;
 
@@ -46,15 +47,15 @@ public class CameraFragment extends DialogFragment {
             for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
                 Camera.getCameraInfo(i, info);
                 if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                    camera = Camera.open(i);
+                    parent.camera = Camera.open(i);
                     break;
                 }
             }
-            if (camera == null) {
-                camera = Camera.open(0);
+            if (parent.camera == null) {
+                parent.camera = Camera.open(0);
             }
             try {
-                camera.setPreviewDisplay(surfaceHolder);
+                parent.camera.setPreviewDisplay(surfaceHolder);
             } catch (IOException e) {
                 Log.e(TAG, "camera error", e);
             }
@@ -62,8 +63,8 @@ public class CameraFragment extends DialogFragment {
 
         @Override
         public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-            camera.stopPreview();
-            Camera.Parameters parameters = camera.getParameters();
+            parent.camera.stopPreview();
+            Camera.Parameters parameters = parent.camera.getParameters();
 
             /* set orientation */
             boolean portrait = isPortrait();
@@ -72,7 +73,7 @@ public class CameraFragment extends DialogFragment {
                 parameters.set("orientation", portrait ? "portrait" : "landscape");
             } else {
                 /* 2.2 and later */
-                camera.setDisplayOrientation(portrait ? 90 : 0);
+                parent.camera.setDisplayOrientation(portrait ? 90 : 0);
             }
 
             /* Set width & height */
@@ -109,15 +110,15 @@ public class CameraFragment extends DialogFragment {
             layoutParams.height = (int) (layoutHeight * fact);
             getView().setLayoutParams(layoutParams);
 
-            camera.setParameters(parameters);
-            camera.startPreview();
+            parent.camera.setParameters(parameters);
+            parent.camera.startPreview();
         }
 
         @Override
         public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-            camera.stopPreview();
-            camera.release();
-            camera = null;
+            parent.camera.stopPreview();
+            parent.camera.release();
+            parent.camera = null;
         }
     };
 
@@ -176,15 +177,15 @@ public class CameraFragment extends DialogFragment {
 
         @Override
         public void onClick(View view) {
-            if (camera == null) {
+            if (parent.camera == null) {
                 return;
             }
-            camera.takePicture(shutterCallback, null, jpegPictureCallback);
-            CameraFragment.this.dismiss();
+            Log.d(TAG, "execute camera.takePicture");
+            parent.camera.takePicture(shutterCallback, null, jpegPictureCallback);
         }
     }
 
-    private class MyShutterCallback implements Camera.ShutterCallback {
+    class MyShutterCallback implements Camera.ShutterCallback {
         @Override
         public void onShutter() {
             /* Use handler cause continuing play unless CameraFragment is dismissed */
@@ -198,16 +199,17 @@ public class CameraFragment extends DialogFragment {
         }
     }
 
-    private class JpegPictureCallback implements Camera.PictureCallback {
+    class JpegPictureCallback implements Camera.PictureCallback {
         @Override
         public void onPictureTaken(byte[] bytes, Camera camera) {
-            final byte[] pictureBytes = bytes;
+            final byte[] bitmapBytes = bytes;
 
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
                     CameraListener listener = (CameraListener) getTargetFragment();
-                    listener.onTakePicture(pictureBytes);
+                    listener.onTakePicture(bitmapBytes);
+                    parent.dismiss();
                 }
             });
         }
