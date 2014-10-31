@@ -31,6 +31,7 @@ public class RemarksNewServlet extends BaseServlet {
         remark.setPatientId(userInfo.getPatientId());
         remark.setAuthorName(userInfo.getFullName());
         remark.setText(request.getText());
+        remark.setPictures(request.getPictures());
         remark.setCreatedAt(new Date());
         RemarkDomain domain = RemarkDomain.getInstance();
         domain.insert(remark);

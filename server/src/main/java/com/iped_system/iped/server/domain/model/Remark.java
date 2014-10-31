@@ -3,6 +3,7 @@ package com.iped_system.iped.server.domain.model;
 import com.google.appengine.api.datastore.Entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by kenji on 2014/08/10.
@@ -13,6 +14,7 @@ public class Remark extends EntityWrapper {
     @EntityProperty private String authorName;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
+    @EntityProperty private List<String> pictures;
 
     public Remark() {
         super();
@@ -62,5 +64,13 @@ public class Remark extends EntityWrapper {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }
