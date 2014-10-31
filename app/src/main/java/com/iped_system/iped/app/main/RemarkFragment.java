@@ -35,7 +35,7 @@ public class RemarkFragment extends DialogFragment {
     public interface RemarkListener {
         public List<Picture> getPictures();
         public void onNewPicture();
-        public void onRegister();
+        public void onRegister(String text);
     }
 
     public static RemarkFragment newInstance(Fragment fragment) {
@@ -90,31 +90,7 @@ public class RemarkFragment extends DialogFragment {
                 return;
             }
 
-            RemarksNewRequest request = new RemarksNewRequest();
-            request.setText(text);
-            RemarksNewTask task = new RemarksNewTask(getActivity());
-            task.execute(request);
-        }
-    }
-
-    private class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
-        private RemarksNewTask(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected boolean isSecure() {
-            return true;
-        }
-
-        @Override
-        protected String getApiName() {
-            return "remarks/new";
-        }
-
-        @Override
-        protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
-            getRemarkListener().onRegister();
+            getRemarkListener().onRegister(text);
             parent.dismiss();
         }
     }

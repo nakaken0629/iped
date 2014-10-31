@@ -1,6 +1,7 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +15,10 @@ import android.widget.ListView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.UploadAsyncTask;
 import com.iped_system.iped.common.main.RemarkValue;
+import com.iped_system.iped.common.main.RemarksNewRequest;
+import com.iped_system.iped.common.main.RemarksNewResponse;
 import com.iped_system.iped.common.main.RemarksRequest;
 import com.iped_system.iped.common.main.RemarksResponse;
 
@@ -98,7 +102,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         @Override
         protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
             MeetingAdapter adapter = (MeetingAdapter) parent.meetingListView.getAdapter();
-            for(RemarkValue value : remarksResponse.getRemarkValues()) {
+            for (RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
                 item.setFaceKey(value.getFaceKey());
                 item.setAuthorName(value.getAuthorName());
@@ -144,8 +148,51 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     }
 
     @Override
-    public void onRegister() {
-        reloadRemarks();
+    public void onRegister(String text) {
+        PhotoUploadTask task = new PhotoUploadTask(getActivity(), text);
+        task.execute((Picture[]) this.pictures.toArray(new Picture[0]));
+    }
+
+    private class PhotoUploadTask extends UploadAsyncTask {
+        private String text;
+
+        private PhotoUploadTask(Activity activity, String text) {
+            super(activity);
+            this.text = text;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> pictures) {
+            for (String picture : pictures) {
+                Log.d(TAG, "picture = " + picture);
+            }
+            RemarksNewRequest request = new RemarksNewRequest();
+            request.setText(text);
+            request.setPictures(pictures);
+            RemarksNewTask task = new RemarksNewTask(getActivity());
+            task.execute(request);
+        }
+    }
+
+    private class RemarksNewTask extends ApiAsyncTask<RemarksNewRequest, RemarksNewResponse> {
+        private RemarksNewTask(Activity activity) {
+            super(activity);
+        }
+
+        @Override
+        protected boolean isSecure() {
+            return true;
+        }
+
+        @Override
+        protected String getApiName() {
+            return "remarks/new";
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
+            reloadRemarks();
+        }
     }
 
     private class PhotoListener implements View.OnClickListener {

@@ -93,7 +93,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetPostUrlServlet</servlet-name>
-        <url-pattern>/api/getPostUrl</url-pattern>
+        <url-pattern>/api/secure/getPostUrl</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
