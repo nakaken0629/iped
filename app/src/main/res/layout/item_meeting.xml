@@ -6,51 +6,61 @@
 
     <RelativeLayout
         android:id="@+id/profileLayout"
+        style="@style/iped_remark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        style="@style/iped_remark">
+        android:layout_alignParentLeft="true">
 
         <ImageView
             android:id="@+id/profileImageView"
+            style="@style/iped_remark_image"
             android:layout_width="96px"
             android:layout_height="96px"
-            android:src="@drawable/anonymous"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            style="@style/iped_remark_image" />
+            android:layout_alignParentTop="true"
+            android:src="@drawable/anonymous" />
 
         <TextView
             android:id="@+id/authorNameTextView"
+            style="@style/iped_remark_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="author name"
-            android:layout_toRightOf="@+id/profileImageView"
             android:layout_alignTop="@id/profileImageView"
-            style="@style/iped_remark_author_name" />
+            android:layout_toRightOf="@+id/profileImageView"
+            android:text="author name"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
         <TextView
             android:id="@+id/createdAtTextView"
+            style="@style/iped_remark_created_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="created at"
             android:layout_alignLeft="@id/authorNameTextView"
             android:layout_below="@id/authorNameTextView"
-            style="@style/iped_remark_created_at" />
+            android:text="created at"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/textTextView"
+        style="@style/iped_remark_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:layout_below="@id/profileLayout"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/profileLayout"
         android:autoLink="web"
-        style="@style/iped_remark_text" />
+        android:text="New Text" />
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTextView">
+
+        <LinearLayout
+            android:id="@+id/picturesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </HorizontalScrollView>
 </RelativeLayout>

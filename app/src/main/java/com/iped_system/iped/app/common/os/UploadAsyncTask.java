@@ -11,6 +11,7 @@ import android.util.Log;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.main.Picture;
+import com.iped_system.iped.common.ResponseStatus;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -107,4 +108,15 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Stri
         }
         return result;
     }
+
+    @Override
+    protected final void onPostExecute(List<String> pictures) {
+        Activity activity = this.activityRef.get();
+        if (activity == null) {
+            return;
+        }
+        onPostExecuteOnSuccess(pictures);
+    }
+
+    protected abstract void onPostExecuteOnSuccess(List<String> pictures);
 }

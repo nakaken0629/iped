@@ -108,6 +108,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
                 item.setAuthorName(value.getAuthorName());
                 item.setCreatedAt(value.getCreatedAt());
                 item.setText(value.getText());
+                item.setPictureKeys(value.getPictures());
                 adapter.insert(item, index++);
                 if (lastDate == null || lastDate.before(value.getCreatedAt())) {
                     lastDate = value.getCreatedAt();
@@ -162,7 +163,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         }
 
         @Override
-        protected void onPostExecute(List<String> pictures) {
+        protected void onPostExecuteOnSuccess(List<String> pictures) {
             for (String picture : pictures) {
                 Log.d(TAG, "picture = " + picture);
             }

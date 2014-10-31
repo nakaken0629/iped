@@ -39,11 +39,11 @@ public class RemarksServlet extends BaseServlet {
             User user = userDomain.getByUserId(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());
-            logger.fine("userId = " + user.getUserId() + ", faceKey = " + user.getFaceKey());
             value.setFaceKey(user.getFaceKey());
             value.setAuthorName(remark.getAuthorName());
             value.setCreatedAt(remark.getCreatedAt());
             value.setText(remark.getText());
+            value.setPictures(remark.getPictures());
             response.getRemarkValues().add(value);
         }
 

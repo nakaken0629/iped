@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
@@ -26,12 +27,14 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         private TextView authorNameTextView;
         private TextView createdAtTextView;
         private TextView textTextView;
+        private LinearLayout picturesLayout;
 
         private ViewHolder(View view) {
             this.profileImage = (ImageView) view.findViewById(R.id.profileImageView);
             this.authorNameTextView = (TextView) view.findViewById(R.id.authorNameTextView);
             this.createdAtTextView = (TextView) view.findViewById(R.id.createdAtTextView);
             this.textTextView = (TextView) view.findViewById(R.id.textTextView);
+            this.picturesLayout = (LinearLayout) view.findViewById(R.id.picturesLayout);
         }
     }
 
@@ -63,11 +66,29 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         createdAt.setTime(item.getCreatedAt());
         holder.createdAtTextView.setText(DateFormat.format("yyyy/MM/dd kk:mm", createdAt));
         holder.textTextView.setText(item.getText());
-
         holder.profileImage.setImageResource(R.drawable.anonymous);
         holder.profileImage.setTag(item.getFaceKey());
         ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
         task.execute(item.getFaceKey());
+        if (item.getPictureKeys() == null || item.getPictureKeys().size() == 0) {
+            holder.picturesLayout.setVisibility(View.GONE);
+        } else {
+            holder.picturesLayout.setVisibility(View.VISIBLE);
+            int size = item.getPictureKeys().size();
+            for (int i = holder.picturesLayout.getChildCount(); i < size; i++) {
+                holder.picturesLayout.addView(new ImageView(getContext()));
+            }
+            if (holder.picturesLayout.getChildCount() > size) {
+                holder.picturesLayout.removeViews(size, holder.picturesLayout.getChildCount() - size);
+            }
+            for (int i = 0; i < size; i++) {
+                String key2 = item.getPictureKeys().get(i);
+                ImageView pictureView = (ImageView) holder.picturesLayout.getChildAt(i);
+                pictureView.setTag(key2);
+                ImageAsyncTask task2 = new ImageAsyncTask(getContext(), pictureView, this.retainFragment);
+                task2.execute(key2);
+            }
+        }
         return convertView;
     }
 }
