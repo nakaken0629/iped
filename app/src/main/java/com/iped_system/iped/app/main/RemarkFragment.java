@@ -2,6 +2,7 @@ package com.iped_system.iped.app.main;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -33,9 +34,11 @@ public class RemarkFragment extends DialogFragment {
     private TextView newPictureTextView;
 
     public interface RemarkListener {
+        public String getText();
         public List<Picture> getPictures();
-        public void onNewPicture();
+        public void onNewPicture(String text);
         public void onRegister(String text);
+        public void onCancel();
     }
 
     public static RemarkFragment newInstance(Fragment fragment) {
@@ -60,6 +63,7 @@ public class RemarkFragment extends DialogFragment {
         this.pictureLayout = (LinearLayout) rootView.findViewById(R.id.thumbnailLayout);
         this.newPictureTextView = (TextView) rootView.findViewById(R.id.newPictureTextView);
 
+        this.remarkEditText.setText(getRemarkListener().getText());
         for(Picture picture : getRemarkListener().getPictures()) {
             ImageView imageView = new ImageView(this.getActivity());
             imageView.setImageBitmap(picture.getThumbnailBitmap());
@@ -98,8 +102,21 @@ public class RemarkFragment extends DialogFragment {
     private class NewPictureListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            getRemarkListener().onNewPicture();
+            String text = parent.remarkEditText.getTrimmedValue();
+            getRemarkListener().onNewPicture(text);
             parent.dismiss();
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        getRemarkListener().onCancel();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Log.d(TAG, "call onDismiss");
     }
 }

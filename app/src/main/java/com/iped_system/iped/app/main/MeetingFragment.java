@@ -2,6 +2,7 @@ package com.iped_system.iped.app.main;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -34,6 +35,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     private Date firstDate;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView meetingListView;
+    private String text;
     private ArrayList<Picture> pictures = new ArrayList<Picture>();
 
     @Override
@@ -139,12 +141,24 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "RequestCode = " + requestCode + ", resultCode = " + resultCode);
+    }
+
+    @Override
+    public String getText() {
+        return this.text;
+    }
+
+    @Override
     public List<Picture> getPictures() {
         return this.pictures;
     }
 
     @Override
-    public void onNewPicture() {
+    public void onNewPicture(String text) {
+        this.text = text;
         showCamera();
     }
 
@@ -152,6 +166,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     public void onRegister(String text) {
         PhotoUploadTask task = new PhotoUploadTask(getActivity(), text);
         task.execute((Picture[]) this.pictures.toArray(new Picture[0]));
+        this.text = null;
+        this.pictures.clear();
     }
 
     private class PhotoUploadTask extends UploadAsyncTask {
@@ -164,9 +180,6 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
 
         @Override
         protected void onPostExecuteOnSuccess(List<String> pictures) {
-            for (String picture : pictures) {
-                Log.d(TAG, "picture = " + picture);
-            }
             RemarksNewRequest request = new RemarksNewRequest();
             request.setText(text);
             request.setPictures(pictures);
@@ -194,6 +207,12 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         protected void onPostExecuteOnSuccess(RemarksNewResponse remarksNewResponse) {
             reloadRemarks();
         }
+    }
+
+    @Override
+    public void onCancel() {
+        this.text = null;
+        this.pictures.clear();
     }
 
     private class PhotoListener implements View.OnClickListener {
