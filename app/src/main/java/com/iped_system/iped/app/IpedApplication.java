@@ -1,6 +1,9 @@
 package com.iped_system.iped.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 /**
  * Created by kenji on 2014/08/08.
@@ -46,4 +49,12 @@ public class IpedApplication extends Application {
         return patientId;
     }
 
+    public static boolean isConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if( ni != null ){
+            return cm.getActiveNetworkInfo().isConnected();
+        }
+        return false;
+    }
 }

@@ -1,6 +1,7 @@
 package com.iped_system.iped.app.common.os;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -36,6 +37,7 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     private WeakReference<Activity> activityRef;
     private long tokenId;
     private String baseUrl;
+    private boolean isConnected = true;
 
     public ApiAsyncTask(Activity activity) {
         IpedApplication application = (IpedApplication) activity.getApplication();
@@ -60,6 +62,11 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
 
     @Override
     protected T2 doInBackground(T1... requests) {
+        if (!IpedApplication.isConnected(this.activityRef.get())) {
+            this.isConnected = false;
+            return null;
+        }
+
         try {
             return doInBackgroundInner(requests);
         } catch (IOException e) {
@@ -101,14 +108,27 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         if (activity == null) {
             return;
         }
-        if (t2.getStatus() == ResponseStatus.SUCCESS) {
+        if (!this.isConnected) {
+            onDisconnected();
+        } else if (t2.getStatus() == ResponseStatus.SUCCESS) {
             onPostExecuteOnSuccess(t2);
         } else {
             onPostExecuteOnFailure(t2);
         }
     }
 
+    protected void onDisconnected() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = builder.setTitle("メッセージ")
+                .setMessage("インターネットにつながっていません。")
+                .setPositiveButton("確認", null)
+                .create();
+        dialog.show();
+    }
+
     protected abstract void onPostExecuteOnSuccess(T2 t2);
 
-    protected void onPostExecuteOnFailure(T2 t2) { /* nop */}
+    protected void onPostExecuteOnFailure(T2 t2) {
+        /* nop */
+    }
 }

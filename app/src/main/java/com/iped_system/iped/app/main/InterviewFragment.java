@@ -121,6 +121,11 @@ public class InterviewFragment extends Fragment {
             adapter.notifyDataSetChanged();
             interviewListView.setSelection(interviewListView.getCount() - 1);
         }
+
+        @Override
+        protected void onDisconnected() {
+            /* don't show dialog */
+        }
     }
 
     private void insertTalks(List<TalkValue> talkValues) {

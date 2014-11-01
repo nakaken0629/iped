@@ -123,6 +123,16 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
             parent.meetingListView.setSelection(0);
             MeetingFragment.this.swipeRefreshLayout.setRefreshing(false);
         }
+
+        @Override
+        protected void onPostExecuteOnFailure(RemarksResponse remarksResponse) {
+            MeetingFragment.this.swipeRefreshLayout.setRefreshing(false);
+        }
+
+        @Override
+        protected void onDisconnected() {
+            MeetingFragment.this.swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private class RefreshListener implements SwipeRefreshLayout.OnRefreshListener {
