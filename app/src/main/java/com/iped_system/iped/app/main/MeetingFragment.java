@@ -81,9 +81,12 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         task.execute(request);
     }
 
-    private void showCamera() {
+    private void showCamera(boolean fromRemarkDialog) {
         CameraFragment fragment = CameraFragment.newInstance(parent);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(CameraFragment.FROM_REMARK_DIALOG, fromRemarkDialog);
+        fragment.setArguments(bundle);
         fragment.show(transaction, null);
     }
 
@@ -159,7 +162,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     @Override
     public void onNewPicture(String text) {
         this.text = text;
-        showCamera();
+        showCamera(true);
     }
 
     @Override
@@ -218,7 +221,7 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     private class PhotoListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            showCamera();
+            showCamera(false);
         }
     }
 
@@ -226,6 +229,13 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     public void onTakePicture(byte[] bitmapBytes) {
         this.pictures.add(new Picture(bitmapBytes));
 
+        RemarkFragment fragment = RemarkFragment.newInstance(parent);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        fragment.show(transaction, null);
+    }
+
+    @Override
+    public void backToRemark() {
         RemarkFragment fragment = RemarkFragment.newInstance(parent);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         fragment.show(transaction, null);

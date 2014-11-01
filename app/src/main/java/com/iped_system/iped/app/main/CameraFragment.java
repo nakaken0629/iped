@@ -2,6 +2,7 @@ package com.iped_system.iped.app.main;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.media.AudioManager;
@@ -34,10 +35,13 @@ public class CameraFragment extends DialogFragment {
     private static final String TAG = CameraFragment.class.getName();
     private final CameraFragment parent = this;
 
+    public static final String FROM_REMARK_DIALOG = "fromRemarkDialog";
     private Camera camera;
+    private boolean fromRemarkDialog;
 
     public interface CameraListener {
         public void onTakePicture(byte[] bitmapBytes);
+        public void backToRemark();
     }
 
     private SurfaceHolder.Callback surfaceListener = new SurfaceHolder.Callback() {
@@ -139,6 +143,8 @@ public class CameraFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        this.fromRemarkDialog = bundle.containsKey(FROM_REMARK_DIALOG) ? bundle.getBoolean(FROM_REMARK_DIALOG) : false;
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
         /* camera */
@@ -212,6 +218,15 @@ public class CameraFragment extends DialogFragment {
                     parent.dismiss();
                 }
             });
+        }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        if (this.fromRemarkDialog) {
+            CameraListener listener = (CameraListener) getTargetFragment();
+            listener.backToRemark();
         }
     }
 }
