@@ -2,6 +2,9 @@ package com.iped_system.iped.app.common.os;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -46,6 +49,15 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         this.activityRef = new WeakReference<Activity>(activity);
     }
 
+
+    private boolean isConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if( ni != null ){
+            return cm.getActiveNetworkInfo().isConnected();
+        }
+        return false;
+    }
     protected boolean isSecure() {
         return true;
     }
@@ -62,7 +74,7 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
 
     @Override
     protected T2 doInBackground(T1... requests) {
-        if (!IpedApplication.isConnected(this.activityRef.get())) {
+        if (!this.isConnected(this.activityRef.get())) {
             this.isConnected = false;
             return null;
         }

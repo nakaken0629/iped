@@ -48,13 +48,4 @@ public class IpedApplication extends Application {
     public String getPatientId() {
         return patientId;
     }
-
-    public static boolean isConnected(Context context){
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if( ni != null ){
-            return cm.getActiveNetworkInfo().isConnected();
-        }
-        return false;
-    }
 }
