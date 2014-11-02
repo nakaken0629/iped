@@ -15,7 +15,7 @@ public class VersionServlet extends BaseServlet {
     protected BaseResponse execute(BaseRequest baseRequest) {
         VersionResponse response = new VersionResponse();
         response.setVersionCode(2);
-        response.setUrl("http://dummy.no.url");
+        response.setUrl("http://192.168.11.103/app-local-debug.apk");
         return response;
     }
 }

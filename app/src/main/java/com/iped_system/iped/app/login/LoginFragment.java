@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.UpdateAsyncTask;
 import com.iped_system.iped.app.common.widget.EditTextEx;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.login.LoginRequest;
@@ -37,6 +38,8 @@ public class LoginFragment extends Fragment {
     private EditTextEx passwordEditText;
     private Button loginButton;
 
+    private String updateUrl;
+
     public interface OnLoginListener {
         public void onLogin();
     }
@@ -57,6 +60,7 @@ public class LoginFragment extends Fragment {
         this.versionNameTextView.setText("バージョン " + getVersionName());
         this.updateTextView.setText("");
         this.updateButton.setVisibility(View.INVISIBLE);
+        this.updateButton.setOnClickListener(new UpdateButtonListener());
         this.loginButton = (Button) rootView.findViewById(R.id.loginButton);
         this.loginButton.setOnClickListener(new LoginButtonListener());
 
@@ -120,6 +124,7 @@ public class LoginFragment extends Fragment {
         @Override
         protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
             if (getVersionCode() < versionResponse.getVersionCode()) {
+                parent.updateUrl = versionResponse.getUrl();
                 parent.updateTextView.setText("最新版にアップデートしてください");
                 parent.updateButton.setVisibility(View.VISIBLE);
                 parent.updateButton.setEnabled(true);
@@ -131,6 +136,14 @@ public class LoginFragment extends Fragment {
         @Override
         protected void onPostExecuteOnFailure(VersionResponse versionResponse) {
             parent.updateTextView.setText("最新版の有無の取得に失敗しました");
+        }
+    }
+
+    class UpdateButtonListener implements  View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            UpdateAsyncTask task = new UpdateAsyncTask(parent.getActivity());
+            task.execute(parent.updateUrl);
         }
     }
 
