@@ -2,13 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:activity="com.iped_system.iped.app.login.LoginFragment">
 
+    <TextView
+        android:id="@+id/versionNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="ver x.y.z" />
+
+    <TextView
+        android:id="@+id/updateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/versionNameTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="アプリケーションの更新情報" />
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/updateTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="最新版のダウンロード" />
+
     <RelativeLayout
+        android:id="@+id/loginLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -18,26 +45,26 @@
             android:id="@+id/userIdEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
+            android:hint="ユーザーID"
             android:inputType="textEmailAddress"
-            android:hint="ユーザーID"/>
+            android:singleLine="true" />
 
         <com.iped_system.iped.app.common.widget.EditTextEx
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:inputType="textPassword"
             android:layout_alignLeft="@id/userIdEditText"
             android:layout_below="@id/userIdEditText"
-            android:hint="パスワード"/>
+            android:hint="パスワード"
+            android:inputType="textPassword"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/passwordEditText"
+            android:layout_centerHorizontal="true"
             android:text="ログイン" />
     </RelativeLayout>
 

@@ -2,6 +2,10 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <!-- define servlets -->
     <servlet>
+        <servlet-name>VersionServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.api.servlet.VersionServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.LoginServlet</servlet-class>
     </servlet>
@@ -75,6 +79,10 @@
     </servlet>
 
     <!-- define servlet mappings -->
+    <servlet-mapping>
+        <servlet-name>VersionServlet</servlet-name>
+        <url-pattern>/api/version</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/api/login</url-pattern>
