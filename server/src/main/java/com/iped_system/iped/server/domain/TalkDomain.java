@@ -29,7 +29,7 @@ public final class TalkDomain {
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Entity entity = new Entity("TalkValue");
+        Entity entity = new Entity("Talk");
         entity.setProperty("authorId", authorId);
         entity.setProperty("patientId", patientId);
         entity.setProperty("text", text);
@@ -49,7 +49,7 @@ public final class TalkDomain {
             Query.Filter lastUpdateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastUpdate);
             filter = Query.CompositeFilterOperator.and(filter, lastUpdateFilter);
         }
-        Query query = new Query("TalkValue").setFilter(filter);
+        Query query = new Query("Talk").setFilter(filter);
         query.addSort("createdAt");
         PreparedQuery pq = service.prepare(query);
         UserDomain userDomain = UserDomain.getInstance();

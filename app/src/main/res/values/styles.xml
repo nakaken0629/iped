@@ -7,6 +7,7 @@
     <style name="iped_actionbar_style" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">#ff008800</item>
         <item name="android:titleTextStyle">@style/iped_title_style</item>
+        <item name="android:icon">@android:color/transparent</item>
     </style>
     <style name="iped_title_style" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#ffffffff</item>

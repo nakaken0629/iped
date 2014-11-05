@@ -13,5 +13,4 @@
         <property name="patientId" direction="asc"/>
         <property name="createdAt" direction="asc"/>
     </datastore-index>
-
 </datastore-indexes>
