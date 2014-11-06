@@ -33,10 +33,6 @@ public class AuthInfo {
         this.lastName = lastName;
     }
 
-    public String getFullName() {
-        return this.lastName + " " + this.firstName;
-    }
-
     public String getPatientId() {
         return patientId;
     }

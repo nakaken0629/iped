@@ -11,7 +11,6 @@ import java.util.List;
 public class Remark extends EntityWrapper {
     @EntityProperty private String userId;
     @EntityProperty private String patientId;
-    @EntityProperty private String authorName;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
     @EntityProperty private List<String> pictures;
@@ -39,14 +38,6 @@ public class Remark extends EntityWrapper {
 
     public void setPatientId(String patientId) {
         this.patientId = patientId;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public Date getCreatedAt() {

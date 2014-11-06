@@ -29,7 +29,6 @@ public class RemarksNewServlet extends BaseServlet {
         Remark remark = new Remark();
         remark.setUserId(userInfo.getUserId());
         remark.setPatientId(userInfo.getPatientId());
-        remark.setAuthorName(userInfo.getFullName());
         remark.setText(request.getText());
         remark.setPictures(request.getPictures());
         remark.setCreatedAt(new Date());

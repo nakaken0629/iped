@@ -40,7 +40,7 @@ public class RemarksServlet extends BaseServlet {
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());
             value.setFaceKey(user.getFaceKey());
-            value.setAuthorName(remark.getAuthorName());
+            value.setAuthorName(user.getName());
             value.setCreatedAt(remark.getCreatedAt());
             value.setText(remark.getText());
             value.setPictures(remark.getPictures());
