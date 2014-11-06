@@ -89,6 +89,7 @@ public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
+        Log.d(TAG, "onPostExecute");
         ImageView imageView = this.imageViewRef.get();
         if (isAlive(imageView)) {
             imageView.setImageBitmap(bitmap);
@@ -97,6 +98,7 @@ public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onCancelled() {
+        Log.d(TAG, "onCancelled");
         ImageView imageView = this.imageViewRef.get();
         if (isAlive(imageView)) {
             imageView.setImageResource(R.drawable.anonymous);

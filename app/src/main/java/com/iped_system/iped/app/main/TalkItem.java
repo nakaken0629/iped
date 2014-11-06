@@ -6,10 +6,19 @@ import java.util.Date;
  * Created by kenji on 2014/08/25.
  */
 public class TalkItem {
+    private String faceKey;
     private String youText;
     private String authorName;
     private String meText;
     private Date createdAt;
+
+    public String getFaceKey() {
+        return faceKey;
+    }
+
+    public void setFaceKey(String faceKey) {
+        this.faceKey = faceKey;
+    }
 
     public String getYouText() {
         return youText;

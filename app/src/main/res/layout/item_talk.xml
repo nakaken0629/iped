@@ -6,37 +6,39 @@
 
     <RelativeLayout
         android:id="@+id/youLayout"
+        style="@style/iped_talk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/profileImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/anonymous"
-            android:layout_alignParentTop="true"
+            style="@style/iped_talk_image"
+            android:layout_width="96px"
+            android:layout_height="96px"
             android:layout_alignParentLeft="true"
-            style="@style/iped_talk_image" />
+            android:layout_alignParentTop="true"
+            android:src="@drawable/anonymous" />
 
         <TextView
             android:id="@+id/authorNameTextView"
+            style="@style/iped_talk_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="author name"
-            android:layout_toRightOf="@+id/profileImageView"
             android:layout_alignTop="@id/profileImageView"
-            style="@style/iped_talk_author_name" />
+            android:layout_toRightOf="@+id/profileImageView"
+            android:text="author name"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/youTextTextView"
+            style="@style/iped_talk_text_you"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:layout_below="@id/authorNameTextView"
             android:layout_alignLeft="@id/authorNameTextView"
-            style="@style/iped_talk_text_you" />
+            android:layout_below="@id/authorNameTextView"
+            android:text="New Text" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/meLayout"
         android:layout_width="match_parent"
@@ -45,20 +47,21 @@
 
         <TextView
             android:id="@+id/meTextTextView"
+            style="@style/iped_talk_text_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            style="@style/iped_talk_text_me" />
+            android:layout_alignParentTop="true"
+            android:text="New Text" />
 
     </RelativeLayout>
+
     <TextView
         android:id="@+id/createdAtTextView"
+        style="@style/iped_talk_created_at"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="yyyy/MM/dd hh:mm"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/meLayout"
-        style="@style/iped_talk_created_at"/>
+        android:layout_centerHorizontal="true"
+        android:text="yyyy/MM/dd hh:mm" />
 </RelativeLayout>

@@ -40,7 +40,7 @@ public class TalksServlet extends BaseServlet {
                 User user = userDomain.getByUserId(talk.getUserId());
                 talkValue.setFaceKey(user.getFaceKey());
                 talkValue.setYouText(talk.getText());
-                talkValue.setAuthorName(user.getLastName());
+                talkValue.setAuthorName(user.getName());
             }
             talkValue.setCreatedAt(talk.getCreatedAt());
             response.getTalkValues().add(talkValue);

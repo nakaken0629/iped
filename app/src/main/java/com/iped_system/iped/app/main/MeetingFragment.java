@@ -119,7 +119,6 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
                     lastDate = value.getCreatedAt();
                 }
             }
-            adapter.notifyDataSetChanged();
             parent.meetingListView.setSelection(0);
             MeetingFragment.this.swipeRefreshLayout.setRefreshing(false);
         }

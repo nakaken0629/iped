@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.common.main.TalkValue;
 import com.iped_system.iped.common.main.TalksNewRequest;
@@ -48,7 +49,8 @@ public class InterviewFragment extends Fragment {
 
         /* リストビュー */
         this.interviewListView = (ListView) rootView.findViewById(R.id.interviewListView);
-        InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0);
+        RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
+        InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0, retainFragment);
         this.interviewListView.setAdapter(adapter);
 
         this.reloadTalks();
@@ -110,6 +112,7 @@ public class InterviewFragment extends Fragment {
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
             for(TalkValue talkValue : talksResponse.getTalkValues()) {
                 TalkItem item = new TalkItem();
+                item.setFaceKey(talkValue.getFaceKey());
                 item.setAuthorName(talkValue.getAuthorName());
                 item.setCreatedAt(talkValue.getCreatedAt());
                 item.setMeText(talkValue.getMeText());
@@ -119,7 +122,6 @@ public class InterviewFragment extends Fragment {
                     lastUpdate = talkValue.getCreatedAt();
                 }
             }
-            adapter.notifyDataSetChanged();
             interviewListView.setSelection(interviewListView.getCount() - 1);
         }
 
