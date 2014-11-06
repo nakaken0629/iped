@@ -29,17 +29,12 @@ public class TalksServlet extends HttpServlet {
         /* prepare talks */
         UserDomain domain = UserDomain.getInstance();
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Query query = new Query("TalkValue");
+        Query query = new Query("Talk");
         query.addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         ArrayList<Talk> talks = new ArrayList<Talk>();
-        for (Entity user : pq.asIterable()) {
-            Talk talkValue = new Talk();
-            talkValue.setPatientId((String) user.getProperty("patientId"));
-            String authorId = (String) user.getProperty("authorId");
-            User author = domain.getByUserId(authorId);
-            talkValue.setCreatedAt((Date) user.getProperty("createdAt"));
-            talkValue.setText((String) user.getProperty("text"));
+        for (Entity talk : pq.asIterable()) {
+            Talk talkValue = new Talk(talk);
             talks.add(talkValue);
         }
         req.setAttribute("talks", talks);

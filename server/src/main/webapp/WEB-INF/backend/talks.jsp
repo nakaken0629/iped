@@ -14,18 +14,18 @@
     </div>
     <table class="table">
         <tr>
+            <th>ユーザID</th>
             <th>患者ID</th>
-            <th>投稿者名</th>
             <th>投稿日</th>
             <th>テキスト</th>
         </tr>
         <c:forEach var="talk" items="${talks}">
             <tr>
                 <td>
-                    <c:out value="${talk.patientId}"/>
+                    <c:out value="${talk.userId}"/>
                 </td>
                 <td>
-                    <c:out value="${talk.authorName}"/>
+                    <c:out value="${talk.patientId}"/>
                 </td>
                 <td>
                     <c:out value="${talk.createdAt}"/>
