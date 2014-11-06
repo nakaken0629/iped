@@ -7,6 +7,9 @@ import com.iped_system.iped.common.main.TalksRequest;
 import com.iped_system.iped.common.main.TalksResponse;
 import com.iped_system.iped.server.api.filter.AuthInfo;
 import com.iped_system.iped.server.domain.TalkDomain;
+import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.Talk;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -27,8 +30,21 @@ public class TalksServlet extends BaseServlet {
         String userId = authInfo.getUserId();
         String patientId = authInfo.getPatientId();
         TalksResponse response = new TalksResponse();
-        List<TalkValue> talkValues = TalkDomain.getInstance().search(userId, patientId, request.getLastUpdate());
-        response.setTalkValues(talkValues);
+        TalkDomain talkDomain = TalkDomain.getInstance();
+        UserDomain userDomain = UserDomain.getInstance();
+        for(Talk talk : talkDomain.search(userId, patientId, request.getLastUpdate())) {
+            TalkValue talkValue = new TalkValue();
+            if (talk.getUserId().equals(userId)) {
+                talkValue.setMeText(talk.getText());
+            } else {
+                User user = userDomain.getByUserId(talk.getUserId());
+                talkValue.setFaceKey(user.getFaceKey());
+                talkValue.setYouText(talk.getText());
+                talkValue.setAuthorName(user.getLastName());
+            }
+            talkValue.setCreatedAt(talk.getCreatedAt());
+            response.getTalkValues().add(talkValue);
+        }
         return response;
     }
 }

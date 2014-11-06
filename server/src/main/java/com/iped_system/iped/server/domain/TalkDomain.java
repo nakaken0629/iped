@@ -6,6 +6,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.main.TalkValue;
+import com.iped_system.iped.server.domain.model.Talk;
 import com.iped_system.iped.server.domain.model.User;
 
 import java.util.ArrayList;
@@ -25,12 +26,12 @@ public final class TalkDomain {
         /* nop */
     }
 
-    public Entity insert(String authorId, String patientId, String text) {
+    public Entity insert(String userId, String patientId, String text) {
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Entity entity = new Entity("Talk");
-        entity.setProperty("authorId", authorId);
+        entity.setProperty("userId", userId);
         entity.setProperty("patientId", patientId);
         entity.setProperty("text", text);
         entity.setProperty("createdAt", createdAt);
@@ -38,11 +39,11 @@ public final class TalkDomain {
         return entity;
     }
 
-    public List<TalkValue> search(String userId, String patientId) {
+    public List<Talk> search(String userId, String patientId) {
         return search(userId, patientId, null);
     }
 
-    public List<TalkValue> search(String userId, String patientId, Date lastUpdate) {
+    public List<Talk> search(String userId, String patientId, Date lastUpdate) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);
         if (lastUpdate != null) {
@@ -53,25 +54,12 @@ public final class TalkDomain {
         query.addSort("createdAt");
         PreparedQuery pq = service.prepare(query);
         UserDomain userDomain = UserDomain.getInstance();
-        ArrayList<TalkValue> talkValues = new ArrayList<TalkValue>();
-        for(Entity talk : pq.asIterable()) {
-            TalkValue talkValue = new TalkValue();
-            String authorId = (String) talk.getProperty("authorId");
-            String text = (String) talk.getProperty("text");
-            if (userId.equals(authorId)) {
-                /* do as me */
-                talkValue.setMeText(text);
-            } else {
-                /* do as other people */
-                User authorValue = userDomain.getByUserId(authorId);
-                String authorName = authorValue.getLastName() + " " + authorValue.getFirstName();
-                talkValue.setAuthorName(authorName);
-                talkValue.setYouText(text);
-            }
-            talkValue.setCreatedAt((Date) talk.getProperty("createdAt"));
-            talkValues.add(talkValue);
+        ArrayList<Talk> talks = new ArrayList<Talk>();
+        for(Entity entity : pq.asIterable()) {
+            Talk talk = new Talk(entity);
+            talks.add(talk);
         }
 
-        return talkValues;
+        return talks;
     }
 }

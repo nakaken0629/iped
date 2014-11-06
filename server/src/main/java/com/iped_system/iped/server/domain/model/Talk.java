@@ -1,15 +1,33 @@
 package com.iped_system.iped.server.domain.model;
 
+import com.google.appengine.api.datastore.Entity;
+
 import java.util.Date;
 
 /**
  * Created by kenji on 2014/08/10.
  */
-public class Talk {
-    private String patientId;
-    private String authorName;
-    private Date createdAt;
-    private String text;
+public class Talk extends EntityWrapper {
+    @EntityProperty private String userId;
+    @EntityProperty private String patientId;
+    @EntityProperty private Date createdAt;
+    @EntityProperty private String text;
+
+    public Talk() {
+        super();
+    }
+
+    public Talk(Entity entity) {
+        super(entity);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getPatientId() {
 
@@ -18,14 +36,6 @@ public class Talk {
 
     public void setPatientId(String patientId) {
         this.patientId = patientId;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
     }
 
     public Date getCreatedAt() {

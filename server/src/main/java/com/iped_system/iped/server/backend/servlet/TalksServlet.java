@@ -38,7 +38,6 @@ public class TalksServlet extends HttpServlet {
             talkValue.setPatientId((String) user.getProperty("patientId"));
             String authorId = (String) user.getProperty("authorId");
             User author = domain.getByUserId(authorId);
-            talkValue.setAuthorName(author.getLastName() + " " + author.getFirstName());
             talkValue.setCreatedAt((Date) user.getProperty("createdAt"));
             talkValue.setText((String) user.getProperty("text"));
             talks.add(talkValue);

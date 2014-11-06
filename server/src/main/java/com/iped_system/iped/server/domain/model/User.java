@@ -103,6 +103,10 @@ public class User extends EntityWrapper {
         this.faceKey = faceKey;
     }
 
+    public String getName() {
+        return this.lastName + " " + this.firstName;
+    }
+
     public boolean isValid() {
         return isUserIdValid()
                 && isLastNameValid()

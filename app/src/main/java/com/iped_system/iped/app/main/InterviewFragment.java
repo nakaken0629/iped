@@ -27,6 +27,7 @@ import java.util.TimerTask;
 
 public class InterviewFragment extends Fragment {
     private static final String TAG = InterviewFragment.class.getName();
+    private final InterviewFragment parent = this;
 
     private Date lastUpdate;
     private ListView interviewListView;
@@ -172,7 +173,7 @@ public class InterviewFragment extends Fragment {
 
                 @Override
                 protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
-                    insertTalks(talksNewResponse.getTalkValues());
+                    parent.reloadTalks();
                 }
             };
             TalksNewRequest request = new TalksNewRequest();

@@ -31,8 +31,6 @@ public class TalksNewServlet extends BaseServlet {
         TalkDomain.getInstance().insert(userId, patientId, text);
 
         TalksNewResponse response = new TalksNewResponse();
-        List<TalkValue> talkValues = TalkDomain.getInstance().search(userId, patientId, request.getLastUpdate());
-        response.setTalkValues(talkValues);
         return response;
     }
 }
