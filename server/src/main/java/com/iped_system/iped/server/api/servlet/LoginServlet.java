@@ -29,23 +29,17 @@ public class LoginServlet extends BaseServlet {
         LoginRequest request = (LoginRequest) baseRequest;
         String userId = request.getUserId();
         String password = request.getPassword();
-        User user = UserDomain.getInstance().getByUserId(userId);
+        UserDomain.LoginResult result = UserDomain.getInstance().login(userId, password);
 
         LoginResponse response = new LoginResponse();
-        if (user != null && password.equals(user.getPassword())) {
-            Entity token = new Entity("Token");
-            token.setProperty("userId", userId);
-            Calendar calendar = Calendar.getInstance();
-            token.setProperty("refreshDate", calendar.getTime());
-            DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-            service.put(token);
-
-            response.setTokenId(token.getKey().getId());
+        if (result != null) {
+            response.setTokenId(result.getTokenId());
+            User user = result.getUser();
             response.setUserId(userId);
-            response.setLastName((String) user.getLastName());
-            response.setFirstName((String) user.getFirstName());
-            response.setRole((String) user.getRole());
-            response.setPatientId((String) user.getPatientId());
+            response.setLastName(user.getLastName());
+            response.setFirstName(user.getFirstName());
+            response.setRole(user.getRole());
+            response.setPatientId(user.getPatientId());
         } else {
             response.setStatus(ResponseStatus.FAIL);
         }

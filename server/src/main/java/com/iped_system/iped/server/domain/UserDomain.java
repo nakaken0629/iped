@@ -7,6 +7,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.server.domain.model.User;
 
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -19,6 +20,39 @@ public class UserDomain {
 
     private UserDomain() {
         /* nop */
+    }
+
+    public class LoginResult {
+        private User user;
+        private long tokenId;
+
+        public LoginResult(User user, long tokenId) {
+            this.user = user;
+            this.tokenId = tokenId;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
+        public long getTokenId() {
+            return tokenId;
+        }
+    }
+
+    public LoginResult login(String userId, String password) {
+        User user = getByUserId(userId);
+        if (user != null && password.equals(user.getPassword())) {
+            Entity token = new Entity("Token");
+            token.setProperty("userId", userId);
+            Calendar calendar = Calendar.getInstance();
+            token.setProperty("refreshDate", calendar.getTime());
+            DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+            service.put(token);
+            return new LoginResult(user, token.getKey().getId());
+        } else {
+            return null;
+        }
     }
 
     public User getByUserId(String userId) {
