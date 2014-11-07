@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
     <!-- define servlets -->
+    <!-- api -->
     <servlet>
         <servlet-name>VersionServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.VersionServlet</servlet-class>
@@ -45,6 +46,18 @@
         <servlet-name>TalksNewServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.api.servlet.TalksNewServlet</servlet-class>
     </servlet>
+
+    <!-- web -->
+    <servlet>
+        <servlet-name>web/LoginServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.web.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>web/MainServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.web.servlet.MainServlet</servlet-class>
+    </servlet>
+
+    <!-- backend -->
     <servlet>
         <servlet-name>Backend/IndexServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.backend.servlet.IndexServlet</servlet-class>
@@ -79,6 +92,7 @@
     </servlet>
 
     <!-- define servlet mappings -->
+    <!-- api -->
     <servlet-mapping>
         <servlet-name>VersionServlet</servlet-name>
         <url-pattern>/api/version</url-pattern>
@@ -123,6 +137,18 @@
         <servlet-name>TalksNewServlet</servlet-name>
         <url-pattern>/api/secure/talks/new</url-pattern>
     </servlet-mapping>
+
+    <!-- web -->
+    <servlet-mapping>
+        <servlet-name>web/LoginServlet</servlet-name>
+        <url-pattern>/web/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>web/MainServlet</servlet-name>
+        <url-pattern>/web/secure/main</url-pattern>
+    </servlet-mapping>
+
+    <!-- backend -->
     <servlet-mapping>
         <servlet-name>Backend/IndexServlet</servlet-name>
         <url-pattern>/backend/index</url-pattern>
