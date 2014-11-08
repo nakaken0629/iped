@@ -187,10 +187,18 @@
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.iped_system.iped.server.api.filter.AuthFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>web/AuthenticationFilter</filter-name>
+        <filter-class>com.iped_system.iped.server.web.filter.AuthFilter</filter-class>
+    </filter>
 
     <!-- define filter mappings -->
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/api/secure/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>web/AuthenticationFilter</filter-name>
+        <url-pattern>/web/secure/*</url-pattern>
     </filter-mapping>
 </web-app>

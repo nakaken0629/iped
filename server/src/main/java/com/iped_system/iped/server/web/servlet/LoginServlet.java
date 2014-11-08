@@ -1,6 +1,7 @@
 package com.iped_system.iped.server.web.servlet;
 
 import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.web.filter.AuthFilter;
 
 import java.io.IOException;
 
@@ -26,6 +27,7 @@ public class LoginServlet extends HttpServlet {
         UserDomain.LoginResult result = UserDomain.getInstance().login(userId, password);
 
         if (result != null) {
+            req.getSession().setAttribute(AuthFilter.TOKEN_KEY, result.getTokenId());
             resp.sendRedirect("/web/secure/main");
         } else {
             req.setAttribute("userId", userId);
