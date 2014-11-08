@@ -33,6 +33,10 @@ public class RemarkDomain {
         remark.save(service);
     }
 
+    public List<Remark> search(String patientId) {
+        return search(patientId, null);
+    }
+
     public List<Remark> search(String patientId, Date lastDate) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);

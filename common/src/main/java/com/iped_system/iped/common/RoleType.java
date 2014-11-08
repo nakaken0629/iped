@@ -11,9 +11,10 @@ public abstract class RoleType {
     
     static {
         roles = new ArrayList<String>();
-        roles.add("教員");
-        roles.add("生徒");
+        roles.add("研究者");
+        roles.add("学生");
         roles.add("患者");
+        roles.add("医療者");
     }
 
     public static List<String> getRoles() {

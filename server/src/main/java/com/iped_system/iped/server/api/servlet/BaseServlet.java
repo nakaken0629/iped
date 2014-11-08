@@ -3,6 +3,7 @@ package com.iped_system.iped.server.api.servlet;
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.server.api.filter.AuthInfo;
+import com.iped_system.iped.server.common.filter.BaseAuthFilter;
 
 import net.arnx.jsonic.JSON;
 
@@ -34,7 +35,7 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     private void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.authInfo = (AuthInfo) request.getAttribute("authInfo");
+        this.authInfo = (AuthInfo) request.getAttribute(BaseAuthFilter.AUTH_INFO_KEY);
         String parameter = request.getParameter("parameter");
         BaseRequest baseRequest = JSON.decode(parameter, getRequestClass());
         BaseResponse baseResponse = execute(baseRequest);

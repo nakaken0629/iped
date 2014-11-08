@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class BaseAuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(BaseAuthFilter.class.getName());
+    public static final String AUTH_INFO_KEY = "authInfo";
 
     public class UnauthorizedException extends Exception {
         public UnauthorizedException(String message) {
@@ -101,7 +102,7 @@ public abstract class BaseAuthFilter implements Filter {
         authInfo.setFirstName((String) user.getProperty("firstName"));
         authInfo.setLastName((String) user.getProperty("lastName"));
         authInfo.setPatientId((String) user.getProperty("patientId"));
-        request.setAttribute("authInfo", authInfo);
+        request.setAttribute(AUTH_INFO_KEY, authInfo);
     }
 
     private Entity selectUser(String userId) {
