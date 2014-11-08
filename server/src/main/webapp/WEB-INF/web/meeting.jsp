@@ -16,12 +16,13 @@
   <li role="presentation"><a href="#">インタビュー</a></li>
 </ul>
 <div class="container">
-<form class="form-inline" role="form" action="/web/meeting" method="post">
+<form id="remarkForm" class="form-inline" role="form" action="/web/meeting" method="post">
+  <input id="tokenId" type="hidden" value='<c:out value="${token}" />' />
   <div class="form-group">
     <label class="sr-only" for="remark">発言</label>
-    <textarea class="form-control" id="remark" rows="2" name="remark"></textarea>
+    <textarea id="remark" class="form-control" rows="2" name="remark"></textarea>
   </div>
-  <button type="submit" class="btn btn-primary">発言</button>
+  <button id="remarkButton" type="submit" class="btn btn-primary">発言</button>
 </form>
 </div>
 <div class="container">
@@ -29,7 +30,7 @@
   <div class="panel">
     <div class="panel-heading">
       <c:if test='${!empty remark.faceKey}'>
-        <img class="face" src='/web/face/<c:out value="${remark.faceKey}"/>' />
+        <img class="face" src='/web/face/<c:out value="${remark.faceKey}" />' />
       </c:if>
       <c:if test='${empty remark.faceKey}'>
         <img class="face" src="/image/anonymous.png" />
@@ -41,10 +42,16 @@
     </div>
     <div class="panel-body">
       <p><c:out value="${remark.text}"/></p>
+      <div style="overflow: scroll">
+      <c:forEach var="picture" items="${remark.pictures}">
+        <img class="picture" src='/web/face/<c:out value="${picture}" />' />
+      </c:forEach>
+      </div>
     </div>
   </div>
 </c:forEach>
 </div>
 <jsp:include page="/WEB-INF/web/partial/footer.jsp"/>
+<script src="/web/js/meeting.js"></script>
 </body>
 </html>

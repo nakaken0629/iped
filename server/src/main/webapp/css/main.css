@@ -1,1 +1,2 @@
 img.face { width:64px; height: 64px; float:left; margin: 2px; }
+img.picture { display: block; max-width: 320px; width: auto; height: auto; }
