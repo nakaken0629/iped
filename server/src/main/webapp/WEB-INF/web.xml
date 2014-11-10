@@ -57,6 +57,10 @@
         <servlet-class>com.iped_system.iped.server.web.servlet.MainServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>web/InterviewServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.web.servlet.InterviewServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>web/FaceServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.common.servlet.FaceServlet</servlet-class>
     </servlet>
@@ -150,6 +154,10 @@
     <servlet-mapping>
         <servlet-name>web/MainServlet</servlet-name>
         <url-pattern>/web/secure/main</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>web/InterviewServlet</servlet-name>
+        <url-pattern>/web/secure/interview</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FaceServlet</servlet-name>

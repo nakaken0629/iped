@@ -102,6 +102,7 @@ public abstract class BaseAuthFilter implements Filter {
         authInfo.setFirstName((String) user.getProperty("firstName"));
         authInfo.setLastName((String) user.getProperty("lastName"));
         authInfo.setPatientId((String) user.getProperty("patientId"));
+        authInfo.setRole((String) user.getProperty("role"));
         request.setAttribute(AUTH_INFO_KEY, authInfo);
     }
 

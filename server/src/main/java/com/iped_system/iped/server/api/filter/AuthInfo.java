@@ -7,6 +7,7 @@ public class AuthInfo {
     private String userId;
     private String firstName;
     private String lastName;
+    private String role;
     private String patientId;
 
     public String getUserId() {
@@ -31,6 +32,14 @@ public class AuthInfo {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPatientId() {

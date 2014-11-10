@@ -1,2 +1,62 @@
 img.face { width:64px; height: 64px; float:left; margin: 2px; }
 img.picture { display: block; max-width: 320px; width: auto; height: auto; }
+.you_box {
+	position: relative;
+	background: #ffffff;
+	padding: 4px;
+	margin: 4px;
+	border: 1px solid #000000;
+}
+.you_box:after, .you_box:before {
+	right: 100%;
+	top: 12px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.you_box:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #ffffff;
+	border-width: 4px;
+	margin-top: -4px;
+}
+.you_box:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-right-color: #000000;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.me_box {
+	position: relative;
+	background: #ffffff;
+	padding: 4px;
+	margin: 4px;
+	border: 1px solid #000000;
+}
+.me_box:after, .me_box:before {
+	left: 100%;
+	top: 12px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.me_box:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #ffffff;
+	border-width: 4px;
+	margin-top: -4px;
+}
+.me_box:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-left-color: #000000;
+	border-width: 5px;
+	margin-top: -5px;
+}

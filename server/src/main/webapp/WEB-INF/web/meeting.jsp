@@ -13,7 +13,7 @@
 </nav>
 <ul class="nav nav-tabs" role="tablist">
   <li role="presentation" class="active"><a href="#">ミーティング</a></li>
-  <li role="presentation"><a href="#">インタビュー</a></li>
+  <li role="presentation"><a href="/web/secure/interview">インタビュー</a></li>
 </ul>
 <div class="container">
 <form id="remarkForm" class="form-inline" role="form" action="/web/meeting" method="post">
@@ -37,7 +37,7 @@
       </c:if>
       <p>
         <b><c:out value="${remark.authorName}"/></b><br />
-        <fmt:formatDate value="${remark.createdAt}" pattern="yyyy/MM/dd H:mm" />
+        <fmt:formatDate value="${remark.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" />
       </p>
     </div>
     <div class="panel-body">

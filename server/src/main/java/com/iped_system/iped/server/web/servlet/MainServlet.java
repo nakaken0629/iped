@@ -23,10 +23,6 @@ import javax.servlet.http.HttpServletResponse;
  * Created by kenji on 2014/11/07.
  */
 public class MainServlet extends HttpServlet {
-    public static final String TAB_KEY = "tab";
-    public static final String MEETING = "meeting";
-    public static final String INTERVIEW = "interview";
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AuthInfo authInfo = (AuthInfo) req.getAttribute(AuthFilter.AUTH_INFO_KEY);
