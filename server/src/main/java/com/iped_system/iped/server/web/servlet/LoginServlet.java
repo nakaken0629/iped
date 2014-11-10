@@ -28,7 +28,8 @@ public class LoginServlet extends HttpServlet {
 
         if (result != null) {
             req.getSession().setAttribute(AuthFilter.TOKEN_KEY, result.getTokenId());
-            resp.sendRedirect("/web/secure/main");
+            String role = result.getUser().getRole();
+            resp.sendRedirect("/web/secure/meeting");
         } else {
             req.setAttribute("userId", userId);
             req.setAttribute("globalError", true);

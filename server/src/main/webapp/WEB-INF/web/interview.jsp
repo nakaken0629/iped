@@ -15,7 +15,7 @@
   <c:if test='${authInfo.role != "患者"}'>
     <li role="presentation"><a href="/web/secure/meeting">ミーティング</a></li>
   </c:if>
-  <li role="presentation class="active""><a href="#">インタビュー</a></li>
+  <li role="presentation" class="active"><a href="#">インタビュー</a></li>
 </ul>
 <div class="container">
 <c:forEach var="talk" items="${talks}">
@@ -48,16 +48,16 @@
 </c:forEach>
 </div>
 <div class="container">
-<form id="remarkForm" class="form-inline" role="form" action="/web/interview" method="post">
+<form id="talkForm" class="form-inline" role="form" action="/web/interview" method="post">
   <input id="tokenId" type="hidden" value='<c:out value="${token}" />' />
   <div class="form-group">
-    <label class="sr-only" for="remark">発言</label>
-    <textarea id="remark" class="form-control" rows="2" name="remark"></textarea>
+    <label class="sr-only" for="talk">発言</label>
+    <textarea id="talk" class="form-control" rows="2" name="talk"></textarea>
   </div>
-  <button id="remarkButton" type="submit" class="btn btn-primary">発言</button>
+  <button id="talkButton" type="submit" class="btn btn-primary">発言</button>
 </form>
 </div>
 <jsp:include page="/WEB-INF/web/partial/footer.jsp"/>
-<script src="/web/js/meeting.js"></script>
+<script src="/web/js/interview.js"></script>
 </body>
 </html>

@@ -22,10 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by kenji on 2014/11/07.
  */
-public class MainServlet extends HttpServlet {
+public class MeetingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AuthInfo authInfo = (AuthInfo) req.getAttribute(AuthFilter.AUTH_INFO_KEY);
+        if ("患者".equals(authInfo.getRole())) {
+            resp.sendRedirect("/web/secure/interview");
+        }
         String patientId = authInfo.getPatientId();
 
         RemarkDomain remarkDomain = RemarkDomain.getInstance();

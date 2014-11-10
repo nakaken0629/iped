@@ -53,8 +53,8 @@
         <servlet-class>com.iped_system.iped.server.web.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>web/MainServlet</servlet-name>
-        <servlet-class>com.iped_system.iped.server.web.servlet.MainServlet</servlet-class>
+        <servlet-name>web/MeetingServlet</servlet-name>
+        <servlet-class>com.iped_system.iped.server.web.servlet.MeetingServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>web/InterviewServlet</servlet-name>
@@ -152,8 +152,8 @@
         <url-pattern>/web/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>web/MainServlet</servlet-name>
-        <url-pattern>/web/secure/main</url-pattern>
+        <servlet-name>web/MeetingServlet</servlet-name>
+        <url-pattern>/web/secure/meeting</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>web/InterviewServlet</servlet-name>
