@@ -33,7 +33,7 @@
         <img class="face" src='/web/face/<c:out value="${remark.faceKey}" />' />
       </c:if>
       <c:if test='${empty remark.faceKey}'>
-        <img class="face" src="/image/anonymous.png" />
+        <img class="face" src="/web/image/anonymous.png" />
       </c:if>
       <p>
         <b><c:out value="${remark.authorName}"/></b><br />
