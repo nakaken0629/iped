@@ -21,14 +21,14 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by kenji on 2014/11/08.
  */
 public abstract class BaseAuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(BaseAuthFilter.class.getName());
+    private static final int TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
+
     public static final String AUTH_INFO_KEY = "authInfo";
 
     public class UnauthorizedException extends Exception {
@@ -47,6 +47,7 @@ public abstract class BaseAuthFilter implements Filter {
     }
 
     protected abstract long getTokenId(ServletRequest request) throws UnauthorizedException;
+
     protected abstract void onUnauthorized(ServletResponse response) throws IOException;
 
     @Override
@@ -75,8 +76,8 @@ public abstract class BaseAuthFilter implements Filter {
             throw new UnauthorizedException("no token", e);
         }
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, -30);
-        if(calendar.before(token.getProperty("refreshDate"))) {
+        calendar.add(Calendar.MILLISECOND, -TOKEN_EXPIRE_TIME);
+        if (calendar.getTime().compareTo((Date) token.getProperty("refreshDate")) >= 0) {
             throw new UnauthorizedException("expired token");
         }
 
@@ -88,7 +89,7 @@ public abstract class BaseAuthFilter implements Filter {
             if (user == null) {
                 throw new UnauthorizedException("no user");
             }
-        } catch(PreparedQuery.TooManyResultsException e) {
+        } catch (PreparedQuery.TooManyResultsException e) {
             throw new UnauthorizedException("duplicate users + " + userId, e);
         }
 
