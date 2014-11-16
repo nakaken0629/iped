@@ -19,6 +19,7 @@ import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UpdateAsyncTask;
 import com.iped_system.iped.app.common.widget.EditTextEx;
 import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.common.login.LoginRequest;
 import com.iped_system.iped.common.login.LoginResponse;
 import com.iped_system.iped.common.login.VersionRequest;
@@ -186,7 +187,7 @@ public class LoginFragment extends Fragment {
             String userId = resp.getUserId();
             String lastName = resp.getLastName();
             String firstName = resp.getFirstName();
-            String role = resp.getRole();
+            RoleType role = resp.getRole();
             String patientId = resp.getPatientId();
             IpedApplication application = (IpedApplication) this.getActivity().getApplication();
             application.authenticate(tokenId, userId, lastName, firstName, role, patientId);

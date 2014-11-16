@@ -11,6 +11,7 @@ import android.widget.TabHost;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.common.RoleType;
 
 public class MainActivity extends FragmentActivity {
     private LruCache<String, Bitmap> imageCache;
@@ -33,8 +34,8 @@ public class MainActivity extends FragmentActivity {
         host.setup(this, getSupportFragmentManager(), R.id.content);
 
         IpedApplication application = (IpedApplication) getApplication();
-        String role = application.getRole();
-        if ("患者".equals(role)) {
+        RoleType role = application.getRole();
+        if (role == RoleType.PATIENT) {
             createAsPatient(host);
         } else {
             createAsMember(host);

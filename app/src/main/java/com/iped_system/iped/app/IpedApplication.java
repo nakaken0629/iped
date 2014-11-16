@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.iped_system.iped.common.RoleType;
+
 /**
  * Created by kenji on 2014/08/08.
  */
@@ -13,10 +15,10 @@ public class IpedApplication extends Application {
     private String userId;
     private String lastName;
     private String firstName;
-    private String role;
+    private RoleType role;
     private String patientId;
 
-    public void authenticate(long tokenId, String userId, String lastName, String firstName, String role, String patientId) {
+    public void authenticate(long tokenId, String userId, String lastName, String firstName, RoleType role, String patientId) {
         this.tokenId = tokenId;
         this.userId = userId;
         this.lastName = lastName;
@@ -41,7 +43,7 @@ public class IpedApplication extends Application {
         return firstName;
     }
 
-    public String getRole() {
+    public RoleType getRole() {
         return role;
     }
 

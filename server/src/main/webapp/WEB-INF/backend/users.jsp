@@ -33,7 +33,7 @@
                     <c:out value="${user.firstName}"/>
                 </td>
                 <td>
-                    <c:out value="${user.role}"/>
+                    <c:out value="${user.role.displayName}"/>
                 </td>
                 <td>
                     <c:out value="${user.patientId}"/>

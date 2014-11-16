@@ -49,7 +49,7 @@
                 <input type="radio" name="role" value='<c:out value="${role}" />'
                 <c:if test="${role == user.role}"> checked="checked"</c:if>
                 >
-                <c:out value="${role}"/>
+                <c:out value="${role.displayName}"/>
             </label>
         </c:forEach>
     </div>

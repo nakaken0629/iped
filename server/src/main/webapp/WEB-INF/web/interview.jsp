@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.iped_system.iped.common.RoleType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -12,7 +13,8 @@
   <p class="navbar-text">iPED - メイン画面</p>
 </nav>
 <ul class="nav nav-tabs" role="tablist">
-  <c:if test='${authInfo.role != "患者"}'>
+  <c:set var="PATIENT" value="<%= RoleType.PATIENT %>" />
+  <c:if test="${authInfo.role != PATIENT}">
     <li role="presentation"><a href="/web/secure/meeting">ミーティング</a></li>
   </c:if>
   <li role="presentation" class="active"><a href="#">インタビュー</a></li>

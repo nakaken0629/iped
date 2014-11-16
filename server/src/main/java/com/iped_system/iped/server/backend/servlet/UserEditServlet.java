@@ -27,7 +27,7 @@ public class UserEditServlet extends HttpServlet {
         UserDomain domain = UserDomain.getInstance();
         User user = domain.getByUserId(userId);
         req.setAttribute("user", user);
-        req.setAttribute("roles", RoleType.getRoles());
+        req.setAttribute("roles", RoleType.values());
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/edit-user.jsp");
         dispatcher.forward(req, resp);
@@ -47,7 +47,7 @@ public class UserEditServlet extends HttpServlet {
         User user = domain.getByUserId(req.getParameter("userId"));
         UserUtils.createFromRequest(user, req);
         req.setAttribute("user", user);
-        req.setAttribute("roles", RoleType.getRoles());
+        req.setAttribute("roles", RoleType.values());
 
         if (!user.isValid()) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/backend/edit-user.jsp");

@@ -1,5 +1,6 @@
 package com.iped_system.iped.server.web.servlet;
 
+import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.common.main.RemarkValue;
 import com.iped_system.iped.server.api.filter.AuthInfo;
 import com.iped_system.iped.server.domain.RemarkDomain;
@@ -10,8 +11,7 @@ import com.iped_system.iped.server.web.filter.AuthFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,10 +23,12 @@ import javax.servlet.http.HttpServletResponse;
  * Created by kenji on 2014/11/07.
  */
 public class MeetingServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(MeetingServlet.class.getName());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AuthInfo authInfo = (AuthInfo) req.getAttribute(AuthFilter.AUTH_INFO_KEY);
-        if ("患者".equals(authInfo.getRole())) {
+        if (authInfo.getRole() == RoleType.PATIENT) {
             resp.sendRedirect("/web/secure/interview");
         }
         String patientId = authInfo.getPatientId();
@@ -34,7 +36,7 @@ public class MeetingServlet extends HttpServlet {
         RemarkDomain remarkDomain = RemarkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<RemarkValue> remarkValues = new ArrayList<RemarkValue>();
-        for(Remark remark : remarkDomain.search(patientId)) {
+        for (Remark remark : remarkDomain.search(patientId)) {
             User user = userDomain.getByUserId(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());

@@ -2,10 +2,13 @@ package com.iped_system.iped.server.domain.model;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
+import com.iped_system.iped.common.RoleType;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.management.relation.Role;
 
 /**
  * Created by kenji on 2014/10/11.
@@ -31,7 +34,11 @@ public abstract class EntityWrapper {
             try {
                 Field field = clazz.getDeclaredField(entry.getKey());
                 field.setAccessible(true);
-                field.set(this, entry.getValue());
+                if (field.getType() == RoleType.class) {
+                    field.set(this, RoleType.valueOf((String) entry.getValue()));
+                } else {
+                    field.set(this, entry.getValue());
+                }
             } catch (NoSuchFieldException e) {
                 /* ignore */
             } catch (IllegalAccessException e) {
@@ -54,7 +61,11 @@ public abstract class EntityWrapper {
             }
             try {
                 field.setAccessible(true);
-                this.entity.setProperty(field.getName(), field.get(this));
+                if (field.getType() == RoleType.class) {
+                    this.entity.setProperty(field.getName(), ((RoleType) field.get(this)).name());
+                } else {
+                    this.entity.setProperty(field.getName(), field.get(this));
+                }
             } catch (IllegalAccessException e) {
                 /* ignore */
             }

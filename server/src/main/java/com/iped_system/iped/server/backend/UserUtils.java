@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.domain.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public final class UserUtils {
         user.setLastName(req.getParameter("lastName"));
         user.setFirstName(req.getParameter("firstName"));
         user.setPassword(req.getParameter("password"));
-        user.setRole(req.getParameter("role"));
+        user.setRole(RoleType.valueOf(req.getParameter("role")));
         user.setPatientId(req.getParameter("patientId"));
     }
 }

@@ -24,7 +24,7 @@ public class UsersNewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = new User();
         req.setAttribute("user", user);
-        req.setAttribute("roles", RoleType.getRoles());
+        req.setAttribute("roles", RoleType.values());
 
         dispatchSelf(req, resp);
     }
@@ -34,7 +34,7 @@ public class UsersNewServlet extends HttpServlet {
         User user = new User();
         UserUtils.createFromRequest(user, req);
         req.setAttribute("user", user);
-        req.setAttribute("roles", RoleType.getRoles());
+        req.setAttribute("roles", RoleType.values());
 
         if (!user.isValid()) {
             dispatchSelf(req, resp);
