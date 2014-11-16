@@ -5,7 +5,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.iped_system.iped.server.common.filter.BaseAuthFilter;
 import com.iped_system.iped.server.domain.model.User;
+import com.iped_system.iped.server.web.filter.AuthFilter;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -46,7 +48,7 @@ public class UserDomain {
             Entity token = new Entity("Token");
             token.setProperty("userId", userId);
             Calendar calendar = Calendar.getInstance();
-            token.setProperty("refreshDate", calendar.getTime());
+            token.setProperty(BaseAuthFilter.TOKEN_EXPIRE_KEY, calendar.getTime());
             DatastoreService service = DatastoreServiceFactory.getDatastoreService();
             service.put(token);
             return new LoginResult(user, token.getKey().getId());

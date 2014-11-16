@@ -10,6 +10,8 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.api.filter.AuthInfo;
+import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.User;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -30,7 +32,8 @@ public abstract class BaseAuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(BaseAuthFilter.class.getName());
     private static final int TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
 
-    public static final String AUTH_INFO_KEY = "authInfo";
+    public static final String TOKEN_EXPIRE_KEY = BaseAuthFilter.class.getName() + ":TOKEN_EXPIRE_KEY";
+    public static final String AUTH_INFO_KEY = BaseAuthFilter.class.getName() + ":AUTH_INFO_KEY";
 
     public class UnauthorizedException extends Exception {
         public UnauthorizedException(String message) {
@@ -78,15 +81,15 @@ public abstract class BaseAuthFilter implements Filter {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, -TOKEN_EXPIRE_TIME);
-        if (calendar.getTime().compareTo((Date) token.getProperty("refreshDate")) >= 0) {
+        if (calendar.getTime().compareTo((Date) token.getProperty(TOKEN_EXPIRE_KEY)) >= 0) {
             throw new UnauthorizedException("expired token");
         }
 
         /* set authentication information */
         String userId = (String) token.getProperty("userId");
-        Entity user;
+        User user;
         try {
-            user = selectUser(userId);
+            user = UserDomain.getInstance().getByUserId(userId);
             if (user == null) {
                 throw new UnauthorizedException("no user");
             }
@@ -95,26 +98,17 @@ public abstract class BaseAuthFilter implements Filter {
         }
 
         /* refresh token */
-        token.setProperty("refreshDate", new Date());
+        token.setProperty(TOKEN_EXPIRE_KEY, new Date());
         service.put(token);
 
         /* store user information in a request attribute */
         AuthInfo authInfo = new AuthInfo();
         authInfo.setUserId(userId);
-        authInfo.setFirstName((String) user.getProperty("firstName"));
-        authInfo.setLastName((String) user.getProperty("lastName"));
-        authInfo.setPatientId((String) user.getProperty("patientId"));
-        authInfo.setRole(RoleType.valueOf((String) user.getProperty("role")));
+        authInfo.setFirstName(user.getFirstName());
+        authInfo.setLastName(user.getLastName());
+        authInfo.setPatientId(user.getPatientId());
+        authInfo.setRole(user.getRole());
         request.setAttribute(AUTH_INFO_KEY, authInfo);
-    }
-
-    private Entity selectUser(String userId) {
-        Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.EQUAL, userId);
-        Query query = new Query("User").setFilter(filter);
-        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        PreparedQuery preparedQuery = service.prepare(query);
-        Entity entity = preparedQuery.asSingleEntity();
-        return entity;
     }
 
     @Override

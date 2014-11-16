@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,7 +93,8 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Long
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             picture.getDisplayBitmap().compress(Bitmap.CompressFormat.JPEG, 100, stream);
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addBinaryBody("myFile", stream.toByteArray(), ContentType.create("image/jpeg"), "dummy.jpg");
+            String filename = "p" + Long.toString(new Date().getTime()) + ".jpg";
+            builder.addBinaryBody("myFile", stream.toByteArray(), ContentType.create("image/jpeg"), filename);
             post.setEntity(builder.build());
 
             /* access server */
