@@ -7,18 +7,18 @@ import java.util.List;
  * Created by kenji on 2014/08/09.
  */
 public class MeetingItem {
-    private String faceKey;
+    private long faceId;
     private String authorName;
     private Date createdAt;
     private String text;
-    private List<String> pictureKeys;
+    private List<Long> pictureIdList;
 
-    public String getFaceKey() {
-        return faceKey;
+    public long getFaceId() {
+        return faceId;
     }
 
-    public void setFaceKey(String faceKey) {
-        this.faceKey = faceKey;
+    public void setFaceId(long faceId) {
+        this.faceId = faceId;
     }
 
     public String getAuthorName() {
@@ -45,11 +45,11 @@ public class MeetingItem {
         this.text = text;
     }
 
-    public List<String> getPictureKeys() {
-        return pictureKeys;
+    public List<Long> getPictureIdList() {
+        return pictureIdList;
     }
 
-    public void setPictureKeys(List<String> pictureKeys) {
-        this.pictureKeys = pictureKeys;
+    public void setPictureIdList(List<Long> pictureIdList) {
+        this.pictureIdList = pictureIdList;
     }
 }

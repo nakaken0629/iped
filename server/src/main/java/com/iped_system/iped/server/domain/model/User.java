@@ -13,7 +13,7 @@ public class User extends EntityWrapper {
     @EntityProperty private String password;
     @EntityProperty private RoleType role;
     @EntityProperty private String patientId;
-    @EntityProperty private String faceKey;
+    @EntityProperty private long faceId;
 
     public User() {
         super();
@@ -96,12 +96,12 @@ public class User extends EntityWrapper {
         return true;
     }
 
-    public String getFaceKey() {
-        return faceKey;
+    public long getFaceId() {
+        return faceId;
     }
 
-    public void setFaceKey(String faceKey) {
-        this.faceKey = faceKey;
+    public void setFaceId(long faceId) {
+        this.faceId = faceId;
     }
 
     public String getName() {

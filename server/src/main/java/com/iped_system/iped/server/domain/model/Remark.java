@@ -13,7 +13,7 @@ public class Remark extends EntityWrapper {
     @EntityProperty private String patientId;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
-    @EntityProperty private List<String> pictures;
+    @EntityProperty private List<Long> pictureIdList;
 
     public Remark() {
         super();
@@ -57,11 +57,11 @@ public class Remark extends EntityWrapper {
         this.text = text;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public List<Long> getPictureIdList() {
+        return pictureIdList;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPictureIdList(List<Long> pictureIdList) {
+        this.pictureIdList = pictureIdList;
     }
 }

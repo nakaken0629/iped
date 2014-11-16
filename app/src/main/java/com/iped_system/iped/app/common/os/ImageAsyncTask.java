@@ -1,12 +1,10 @@
 package com.iped_system.iped.app.common.os;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.LruCache;
 import android.widget.ImageView;
 
 import com.iped_system.iped.R;
@@ -21,12 +19,12 @@ import java.net.URL;
 /**
  * Created by kenji on 2014/10/13.
  */
-public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
+public class ImageAsyncTask extends AsyncTask<Long, Void, Bitmap> {
     private static final String TAG = ImageAsyncTask.class.getName();
 
     private String baseUrl;
     private WeakReference<ImageView> imageViewRef;
-    private String faceKey;
+    private Long imageId;
     private RetainFragment retainFragment;
 
     public ImageAsyncTask(Context context, ImageView imageView, RetainFragment retainFragment) {
@@ -36,9 +34,9 @@ public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(String... strings) {
+    protected Bitmap doInBackground(Long... imageIdList) {
         try {
-            return doInBackgroundInner(strings);
+            return doInBackgroundInner(imageIdList);
         } catch (MalformedURLException e) {
             Log.e(TAG, "error", e);
         } catch (IOException e) {
@@ -48,23 +46,23 @@ public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
         return null;
     }
 
-    private Bitmap doInBackgroundInner(String... strings) throws MalformedURLException, IOException {
-        this.faceKey = strings[0];
-        if (faceKey == null) {
+    private Bitmap doInBackgroundInner(Long... imageIdList) throws MalformedURLException, IOException {
+        this.imageId = imageIdList[0];
+        if (imageId == null) {
             cancel(true);
             return null;
         }
-        Bitmap bitmap = this.retainFragment.getBitmapFromMemCache(faceKey);
+        Bitmap bitmap = this.retainFragment.getBitmapFromMemCache(imageId);
         if (bitmap != null) {
             return bitmap;
         }
 
-        String faceUrl = this.baseUrl + "/api/face/" + this.faceKey;
+        String faceUrl = this.baseUrl + "/api/face/" + this.imageId;
         InputStream stream = null;
         try {
             stream = new URL(faceUrl).openStream();
             bitmap = BitmapFactory.decodeStream(stream);
-            this.retainFragment.addBitmapToMemoryCache(faceKey, bitmap);
+            this.retainFragment.addBitmapToMemoryCache(imageId, bitmap);
             return bitmap;
         } finally {
             if (stream != null) {
@@ -81,7 +79,7 @@ public class ImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
         if (imageView == null) {
             return false;
         }
-        if (this.faceKey == null || !this.faceKey.equals(imageView.getTag())) {
+        if (this.imageId == null || !this.imageId.equals(imageView.getTag())) {
             return false;
         }
         return true;

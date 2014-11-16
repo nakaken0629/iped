@@ -1,9 +1,7 @@
 package com.iped_system.iped.app.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,14 +65,14 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         holder.createdAtTextView.setText(DateFormat.format("yyyy/MM/dd kk:mm", createdAt));
         holder.textTextView.setText(item.getText());
         holder.profileImage.setImageResource(R.drawable.anonymous);
-        holder.profileImage.setTag(item.getFaceKey());
+        holder.profileImage.setTag(item.getFaceId());
         ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
-        task.execute(item.getFaceKey());
-        if (item.getPictureKeys() == null || item.getPictureKeys().size() == 0) {
+        task.execute(item.getFaceId());
+        if (item.getPictureIdList() == null || item.getPictureIdList().size() == 0) {
             holder.picturesLayout.setVisibility(View.GONE);
         } else {
             holder.picturesLayout.setVisibility(View.VISIBLE);
-            int size = item.getPictureKeys().size();
+            int size = item.getPictureIdList().size();
             for (int i = holder.picturesLayout.getChildCount(); i < size; i++) {
                 holder.picturesLayout.addView(new ImageView(getContext()));
             }
@@ -82,11 +80,11 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
                 holder.picturesLayout.removeViews(size, holder.picturesLayout.getChildCount() - size);
             }
             for (int i = 0; i < size; i++) {
-                String key2 = item.getPictureKeys().get(i);
+                long imageId2 = item.getPictureIdList().get(i);
                 ImageView pictureView = (ImageView) holder.picturesLayout.getChildAt(i);
-                pictureView.setTag(key2);
+                pictureView.setTag(imageId2);
                 ImageAsyncTask task2 = new ImageAsyncTask(getContext(), pictureView, this.retainFragment);
-                task2.execute(key2);
+                task2.execute(imageId2);
             }
         }
         return convertView;

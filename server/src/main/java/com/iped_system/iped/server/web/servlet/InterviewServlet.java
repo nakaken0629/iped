@@ -1,7 +1,6 @@
 package com.iped_system.iped.server.web.servlet;
 
 import com.iped_system.iped.common.main.TalkValue;
-import com.iped_system.iped.common.main.TalksResponse;
 import com.iped_system.iped.server.api.filter.AuthInfo;
 import com.iped_system.iped.server.domain.TalkDomain;
 import com.iped_system.iped.server.domain.UserDomain;
@@ -36,7 +35,7 @@ public class InterviewServlet extends HttpServlet {
                 talkValue.setMeText(talk.getText());
             } else {
                 User user = userDomain.getByUserId(talk.getUserId());
-                talkValue.setFaceKey(user.getFaceKey());
+                talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
                 talkValue.setAuthorName(user.getName());
             }

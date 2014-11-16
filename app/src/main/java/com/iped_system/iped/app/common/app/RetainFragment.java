@@ -37,13 +37,14 @@ public class RetainFragment extends Fragment {
         };
     }
 
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
+    public void addBitmapToMemoryCache(long imageId, Bitmap bitmap) {
+        String key = Long.toString(imageId);
+        if (getBitmapFromMemCache(imageId) == null) {
             this.cache.put(key, bitmap);
         }
     }
 
-    public Bitmap getBitmapFromMemCache(String key) {
-        return (Bitmap)this.cache.get(key);
+    public Bitmap getBitmapFromMemCache(long imageId) {
+        return (Bitmap)this.cache.get(Long.toString(imageId));
     }
 }

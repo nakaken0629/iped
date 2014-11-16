@@ -1,7 +1,6 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -109,11 +108,11 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
             MeetingAdapter adapter = (MeetingAdapter) parent.meetingListView.getAdapter();
             for (RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
-                item.setFaceKey(value.getFaceKey());
+                item.setFaceId(value.getFaceId());
                 item.setAuthorName(value.getAuthorName());
                 item.setCreatedAt(value.getCreatedAt());
                 item.setText(value.getText());
-                item.setPictureKeys(value.getPictures());
+                item.setPictureIdList(value.getPictureIdList());
                 adapter.insert(item, index++);
                 if (lastDate == null || lastDate.before(value.getCreatedAt())) {
                     lastDate = value.getCreatedAt();
@@ -191,10 +190,10 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         }
 
         @Override
-        protected void onPostExecuteOnSuccess(List<String> pictures) {
+        protected void onPostExecuteOnSuccess(List<Long> pictureIdList) {
             RemarksNewRequest request = new RemarksNewRequest();
             request.setText(text);
-            request.setPictures(pictures);
+            request.setPictureIdList(pictureIdList);
             RemarksNewTask task = new RemarksNewTask(getActivity());
             task.execute(request);
         }

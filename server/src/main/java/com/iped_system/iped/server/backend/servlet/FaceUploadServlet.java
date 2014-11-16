@@ -3,11 +3,9 @@ package com.iped_system.iped.server.backend.servlet;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.Transform;
+import com.iped_system.iped.server.domain.PictureDomain;
 import com.iped_system.iped.server.domain.UserDomain;
+import com.iped_system.iped.server.domain.model.Picture;
 import com.iped_system.iped.server.domain.model.User;
 
 import java.io.IOException;
@@ -34,12 +32,19 @@ public class FaceUploadServlet extends HttpServlet {
 
         if (blobKeys != null || blobKeys.size() > 0) {
             BlobKey blobKey = blobKeys.get(0);
-            UserDomain domain = UserDomain.getInstance();
-            User user = domain.getByUserId(userId);
-            user.setFaceKey(blobKey.getKeyString());
-            domain.update(user);
 
-            resp.getWriter().print(user.getFaceKey());
+            PictureDomain pictureDomain = PictureDomain.getInstance();
+            Picture picture = new Picture();
+            picture.setBlobKey(blobKey.getKeyString());
+            picture.setOwner(null);
+            pictureDomain.insert(picture);
+
+            UserDomain userDomain = UserDomain.getInstance();
+            User user = userDomain.getByUserId(userId);
+            user.setFaceId(picture.getId());
+            userDomain.update(user);
+
+            resp.getWriter().print(user.getFaceId());
         }
     }
 }

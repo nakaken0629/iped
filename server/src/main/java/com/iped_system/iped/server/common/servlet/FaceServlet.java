@@ -3,6 +3,8 @@ package com.iped_system.iped.server.common.servlet;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.iped_system.iped.server.domain.PictureDomain;
+import com.iped_system.iped.server.domain.model.Picture;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -20,10 +22,10 @@ public class FaceServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        logger.fine("pathInfo = " + req.getPathInfo());
-        String faceKey = req.getPathInfo().split("/")[1];
-        logger.fine("faceKey = " + faceKey);
-        BlobKey blobKey = new BlobKey(faceKey);
+        long faceId = Long.parseLong(req.getPathInfo().split("/")[1]);
+        PictureDomain domain = PictureDomain.getInstance();
+        Picture picture = domain.get(faceId);
+        BlobKey blobKey = new BlobKey(picture.getBlobKey());
         this.blobstoreService.serve(blobKey, resp);
     }
 }

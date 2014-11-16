@@ -9,7 +9,7 @@
             <label for="face">顔アイコン</label>
             <input type="hidden" name="userId" value='<c:out value="${user.userId}" />'>
             <input type="file" class="form-control" name="face" />
-            <img src='/backend/face/<c:out value="${user.faceKey}" />' />
+            <img src='/backend/face/<c:out value="${user.faceId}" />' />
             <input type="button" name="register" class="btn btn-success" value="アップロード"/>
         </div>
     </form>

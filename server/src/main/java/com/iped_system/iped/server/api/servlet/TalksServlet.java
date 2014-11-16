@@ -11,9 +11,6 @@ import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.Talk;
 import com.iped_system.iped.server.domain.model.User;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by kenji on 2014/08/25.
  */
@@ -38,7 +35,7 @@ public class TalksServlet extends BaseServlet {
                 talkValue.setMeText(talk.getText());
             } else {
                 User user = userDomain.getByUserId(talk.getUserId());
-                talkValue.setFaceKey(user.getFaceKey());
+                talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
                 talkValue.setAuthorName(user.getName());
             }

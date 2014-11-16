@@ -3,6 +3,8 @@ package com.iped_system.iped.server.api.servlet;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.iped_system.iped.server.domain.PictureDomain;
+import com.iped_system.iped.server.domain.model.Picture;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +25,11 @@ public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
         BlobKey blobKey = blobs.get("myFile").get(0);
-        resp.getWriter().write(blobKey.getKeyString());
+        PictureDomain domain = PictureDomain.getInstance();
+        Picture picture = new Picture();
+        picture.setBlobKey(blobKey.getKeyString());
+        domain.insert(picture);
+        resp.getWriter().write(Long.toString(picture.getId()));
         resp.flushBuffer();
     }
 }

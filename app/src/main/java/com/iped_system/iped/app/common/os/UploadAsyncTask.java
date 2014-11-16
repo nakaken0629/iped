@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Created by kenji on 2014/08/09.
  */
-public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<String>> {
+public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Long>> {
     private static final String TAG = UploadAsyncTask.class.getName();
 
     private long tokenId;
@@ -72,7 +72,7 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Stri
     }
 
     @Override
-    protected List<String> doInBackground(Picture... pictures) {
+    protected List<Long> doInBackground(Picture... pictures) {
         try {
             return doInBackgroundInner(pictures);
         } catch (IOException e) {
@@ -81,9 +81,9 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Stri
         }
     }
 
-    private List<String> doInBackgroundInner(Picture[] pictures) throws IOException {
+    private List<Long> doInBackgroundInner(Picture[] pictures) throws IOException {
         HttpClient client = new DefaultHttpClient();
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<Long> result = new ArrayList<Long>();
 
         for(Picture picture : pictures) {
             HttpPost post = new HttpPost(getPath());
@@ -104,19 +104,19 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Stri
 
             HttpEntity entity = response.getEntity();
             String entityString = EntityUtils.toString(entity);
-            result.add(entityString);
+            result.add(Long.parseLong(entityString));
         }
         return result;
     }
 
     @Override
-    protected final void onPostExecute(List<String> pictures) {
+    protected final void onPostExecute(List<Long> pictureIdList) {
         Activity activity = this.activityRef.get();
         if (activity == null) {
             return;
         }
-        onPostExecuteOnSuccess(pictures);
+        onPostExecuteOnSuccess(pictureIdList);
     }
 
-    protected abstract void onPostExecuteOnSuccess(List<String> pictures);
+    protected abstract void onPostExecuteOnSuccess(List<Long> pictureIdList);
 }

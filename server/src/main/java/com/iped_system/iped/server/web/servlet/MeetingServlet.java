@@ -40,11 +40,11 @@ public class MeetingServlet extends HttpServlet {
             User user = userDomain.getByUserId(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());
-            value.setFaceKey(user.getFaceKey());
+            value.setFaceId(user.getFaceId());
             value.setAuthorName(user.getName());
             value.setCreatedAt(remark.getCreatedAt());
             value.setText(remark.getText());
-            value.setPictures(remark.getPictures());
+            value.setPictureIdList(remark.getPictureIdList());
             remarkValues.add(value);
         }
 

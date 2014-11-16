@@ -25,10 +25,10 @@
     <div class="panel-body">
       <c:if test='${!empty talk.youText}'>
       　<div>
-          <c:if test='${!empty talk.faceKey}'>
-            <img class="face" src='/web/face/<c:out value="${talk.faceKey}" />' />
+          <c:if test='${!empty talk.faceId}'>
+            <img class="face" src='/web/face/<c:out value="${talk.faceId}" />' />
           </c:if>
-          <c:if test='${empty talk.faceKey}'>
+          <c:if test='${empty talk.faceId}'>
             <img class="face" src="/web/image/anonymous.png" />
           </c:if>
         </div>

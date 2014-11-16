@@ -112,7 +112,7 @@ public class InterviewFragment extends Fragment {
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
             for(TalkValue talkValue : talksResponse.getTalkValues()) {
                 TalkItem item = new TalkItem();
-                item.setFaceKey(talkValue.getFaceKey());
+                item.setFaceId(talkValue.getFaceId());
                 item.setAuthorName(talkValue.getAuthorName());
                 item.setCreatedAt(talkValue.getCreatedAt());
                 item.setMeText(talkValue.getMeText());

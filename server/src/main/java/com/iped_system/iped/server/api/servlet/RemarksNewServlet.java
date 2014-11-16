@@ -2,7 +2,6 @@ package com.iped_system.iped.server.api.servlet;
 
 import com.iped_system.iped.common.BaseRequest;
 import com.iped_system.iped.common.BaseResponse;
-import com.iped_system.iped.common.main.RemarkValue;
 import com.iped_system.iped.common.main.RemarksNewRequest;
 import com.iped_system.iped.common.main.RemarksNewResponse;
 import com.iped_system.iped.server.api.filter.AuthInfo;
@@ -30,7 +29,7 @@ public class RemarksNewServlet extends BaseServlet {
         remark.setUserId(userInfo.getUserId());
         remark.setPatientId(userInfo.getPatientId());
         remark.setText(request.getText());
-        remark.setPictures(request.getPictures());
+        remark.setPictureIdList(request.getPictureIdList());
         remark.setCreatedAt(new Date());
         RemarkDomain domain = RemarkDomain.getInstance();
         domain.insert(remark);

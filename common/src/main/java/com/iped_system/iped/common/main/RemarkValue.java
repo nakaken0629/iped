@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class RemarkValue {
     private long id;
-    private String faceKey;
+    private long faceId;
     private String authorName;
     private Date createdAt;
     private String text;
-    private List<String> pictures;
+    private List<Long> pictureIdList;
 
     public long getId() {
         return id;
@@ -30,12 +30,12 @@ public class RemarkValue {
         this.authorName = authorName;
     }
 
-    public String getFaceKey() {
-        return faceKey;
+    public long getFaceId() {
+        return faceId;
     }
 
-    public void setFaceKey(String faceKey) {
-        this.faceKey = faceKey;
+    public void setFaceId(long faceId) {
+        this.faceId = faceId;
     }
 
     public Date getCreatedAt() {
@@ -54,11 +54,11 @@ public class RemarkValue {
         this.text = text;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public List<Long> getPictureIdList() {
+        return pictureIdList;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPictureIdList(List<Long> pictureIdList) {
+        this.pictureIdList = pictureIdList;
     }
 }

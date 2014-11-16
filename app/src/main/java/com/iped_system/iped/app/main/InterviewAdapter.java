@@ -71,9 +71,9 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
             holder.youTextTextView.setText(youText);
             holder.authorNameTextView.setText(item.getAuthorName());
             holder.profileImage.setImageResource(R.drawable.anonymous);
-            holder.profileImage.setTag(item.getFaceKey());
+            holder.profileImage.setTag(item.getFaceId());
             ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
-            task.execute(item.getFaceKey());
+            task.execute(item.getFaceId());
         } else {
             holder.youLayout.setVisibility(View.GONE);
             holder.meLayout.setVisibility(View.VISIBLE);

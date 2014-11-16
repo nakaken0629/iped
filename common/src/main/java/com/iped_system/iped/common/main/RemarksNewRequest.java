@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class RemarksNewRequest extends BaseRequest {
     private String text;
-    private List<String> pictures;
+    private List<Long> pictureIdList;
 
     @Override
     @JSONHint(ignore=true)
@@ -28,11 +28,11 @@ public class RemarksNewRequest extends BaseRequest {
         this.text = text;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public List<Long> getPictureIdList() {
+        return pictureIdList;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPictureIdList(List<Long> pictureIdList) {
+        this.pictureIdList = pictureIdList;
     }
 }

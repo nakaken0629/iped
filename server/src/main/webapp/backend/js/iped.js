@@ -9,8 +9,8 @@ $(function() {
       processData: false,
       data: formData,
       dataType: "text",
-      success: function(faceKey) {
-        $("#faceForm img").attr("src", "/backend/face/" + faceKey);
+      success: function(faceId) {
+        $("#faceForm img").attr("src", "/backend/face/" + faceId);
       },
     });
 

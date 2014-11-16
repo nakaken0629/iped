@@ -29,10 +29,10 @@
 <c:forEach var="remark" items="${remarks}">
   <div class="panel">
     <div class="panel-heading">
-      <c:if test='${!empty remark.faceKey}'>
-        <img class="face" src='/web/face/<c:out value="${remark.faceKey}" />' />
+      <c:if test='${!empty remark.faceId}'>
+        <img class="face" src='/web/face/<c:out value="${remark.faceId}" />' />
       </c:if>
-      <c:if test='${empty remark.faceKey}'>
+      <c:if test='${empty remark.faceId}'>
         <img class="face" src="/web/image/anonymous.png" />
       </c:if>
       <p>
@@ -43,7 +43,7 @@
     <div class="panel-body">
       <p><c:out value="${remark.text}"/></p>
       <div style="overflow: scroll">
-      <c:forEach var="picture" items="${remark.pictures}">
+      <c:forEach var="picture" items="${remark.pictureIdList}">
         <img class="picture" src='/web/face/<c:out value="${picture}" />' />
       </c:forEach>
       </div>
