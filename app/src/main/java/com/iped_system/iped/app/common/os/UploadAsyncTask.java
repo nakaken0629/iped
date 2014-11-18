@@ -1,17 +1,13 @@
 package com.iped_system.iped.app.common.os;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.main.Picture;
-import com.iped_system.iped.common.ResponseStatus;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,14 +15,12 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,11 +35,13 @@ import java.util.List;
 public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Long>> {
     private static final String TAG = UploadAsyncTask.class.getName();
 
+    private String patientId;
     private long tokenId;
     private String url;
     private WeakReference<Activity> activityRef;
 
-    public UploadAsyncTask(Activity activity) {
+    public UploadAsyncTask(Activity activity, String patientId) {
+        this.patientId = patientId;
         IpedApplication application = (IpedApplication) activity.getApplication();
         this.tokenId = application.getTokenId();
         this.url = activity.getString(R.string.server_baseurl) + "/api/secure/getPostUrl";
@@ -54,12 +50,12 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Long
 
     private String getPath() throws IOException {
         HttpClient client = new DefaultHttpClient();
-        HttpGet get = new HttpGet(this.url);
+        HttpGet get = new HttpGet(this.url + "?patientId=" + this.patientId);
         get.setHeader("X-IPED-TOKEN-ID", Long.toString(this.tokenId));
         HttpResponse response = client.execute(get);
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         StringBuilder builder = new StringBuilder();
-        while(true) {
+        while (true) {
             String line = reader.readLine();
             if (line == null) {
                 break;
@@ -86,7 +82,7 @@ public abstract class UploadAsyncTask extends AsyncTask<Picture, Void, List<Long
         HttpClient client = new DefaultHttpClient();
         ArrayList<Long> result = new ArrayList<Long>();
 
-        for(Picture picture : pictures) {
+        for (Picture picture : pictures) {
             HttpPost post = new HttpPost(getPath());
 
             /* add picture */

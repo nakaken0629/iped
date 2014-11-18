@@ -19,7 +19,8 @@ public class GetPostUrlServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BlobstoreService service = BlobstoreServiceFactory.getBlobstoreService();
-        String postUrl = service.createUploadUrl("/upload");
+        String patientId = req.getParameter("patientId");
+        String postUrl = service.createUploadUrl("/upload/" + patientId);
         if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development) {
             String hostName = InetAddress.getLocalHost().getHostName();
             String hostAddress = InetAddress.getLocalHost().getHostAddress();

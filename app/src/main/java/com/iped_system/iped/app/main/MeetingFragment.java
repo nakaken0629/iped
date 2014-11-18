@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UploadAsyncTask;
@@ -175,7 +176,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
 
     @Override
     public void onRegister(String text) {
-        PhotoUploadTask task = new PhotoUploadTask(getActivity(), text);
+        IpedApplication application = (IpedApplication) getActivity().getApplicationContext();
+        PhotoUploadTask task = new PhotoUploadTask(getActivity(), application.getPatientId(), text);
         task.execute((Picture[]) this.pictures.toArray(new Picture[0]));
         this.text = null;
         this.pictures.clear();
@@ -184,8 +186,8 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
     private class PhotoUploadTask extends UploadAsyncTask {
         private String text;
 
-        private PhotoUploadTask(Activity activity, String text) {
-            super(activity);
+        private PhotoUploadTask(Activity activity, String patientId, String text) {
+            super(activity, patientId);
             this.text = text;
         }
 
