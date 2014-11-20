@@ -37,7 +37,7 @@ public class MeetingServlet extends HttpServlet {
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<RemarkValue> remarkValues = new ArrayList<RemarkValue>();
         for (Remark remark : remarkDomain.search(patientId)) {
-            User user = userDomain.getByUserId(remark.getUserId());
+            User user = userDomain.getUser(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());
             value.setFaceId(user.getFaceId());

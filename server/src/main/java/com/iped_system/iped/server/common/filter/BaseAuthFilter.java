@@ -87,7 +87,7 @@ public abstract class BaseAuthFilter implements Filter {
         String userId = (String) token.getProperty("userId");
         User user;
         try {
-            user = UserDomain.getInstance().getByUserId(userId);
+            user = UserDomain.getInstance().getUser(userId);
             if (user == null) {
                 throw new UnauthorizedException("no user");
             }

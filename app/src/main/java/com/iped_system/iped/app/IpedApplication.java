@@ -1,30 +1,33 @@
 package com.iped_system.iped.app;
 
 import android.app.Application;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.util.Log;
 
+import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
+
+import java.util.List;
 
 /**
  * Created by kenji on 2014/08/08.
  */
 public class IpedApplication extends Application {
+    private static final String TAG = IpedApplication.class.getName();
+
     private long tokenId;
     private String userId;
     private String lastName;
     private String firstName;
     private RoleType role;
-    private String patientId;
+    private List<Patient> patients;
 
-    public void authenticate(long tokenId, String userId, String lastName, String firstName, RoleType role, String patientId) {
+    public void authenticate(long tokenId, String userId, String lastName, String firstName, RoleType role, List<Patient> patients) {
         this.tokenId = tokenId;
         this.userId = userId;
         this.lastName = lastName;
         this.firstName = firstName;
         this.role = role;
-        this.patientId = patientId;
+        this.patients = patients;
     }
 
     public long getTokenId() {
@@ -47,7 +50,11 @@ public class IpedApplication extends Application {
         return role;
     }
 
+    public List<Patient> getPatients() {
+        return patients;
+    }
+
     public String getPatientId() {
-        return patientId;
+        return this.patients.get(0).getUserId();
     }
 }

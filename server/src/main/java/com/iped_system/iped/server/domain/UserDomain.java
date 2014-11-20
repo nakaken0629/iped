@@ -5,17 +5,21 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.server.common.filter.BaseAuthFilter;
 import com.iped_system.iped.server.domain.model.User;
-import com.iped_system.iped.server.web.filter.AuthFilter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by kenji on 2014/08/10.
  */
 public class UserDomain {
+    private static final Logger logger = Logger.getLogger(UserDomain.class.getName());
+
     public static UserDomain getInstance() {
         return new UserDomain();
     }
@@ -43,7 +47,7 @@ public class UserDomain {
     }
 
     public LoginResult login(String userId, String password) {
-        User user = getByUserId(userId);
+        User user = getUser(userId);
         if (user != null && password.equals(user.getPassword())) {
             Entity token = new Entity("Token");
             token.setProperty("userId", userId);
@@ -57,16 +61,16 @@ public class UserDomain {
         }
     }
 
-    public User getByUserId(String userId) {
+    public User getUser(String userId) {
         try {
-            return getByUserIdImpl(userId);
+            return getUserImpl(userId);
         } catch (Exception e) {
             /* TODO: 例外の種類は正しく考えること */
             return null;
         }
     }
 
-    private User getByUserIdImpl(String userId) {
+    private User getUserImpl(String userId) {
         /* TODO: キャッシュを使うようにすること */
         Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.EQUAL, userId);
         Query query = new Query("User").setFilter(filter);
@@ -81,5 +85,23 @@ public class UserDomain {
     public void update(User user) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         user.save(service);
+    }
+
+    public List<Patient> getPatients(List<String> patientIdList) {
+        Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.IN, patientIdList);
+        Query query = new Query("User").setFilter(filter);
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery preparedQuery = service.prepare(query);
+        ArrayList<Patient> patients = new ArrayList<Patient>();
+        for(Entity entity : preparedQuery.asIterable()) {
+            User user = new User(entity);
+            Patient patient = new Patient();
+            patient.setUserId(user.getUserId());
+            patient.setFirstName(user.getFirstName());
+            patient.setLastName(user.getLastName());
+            patients.add(patient);
+        }
+        return patients;
+
     }
 }

@@ -36,7 +36,7 @@ public class RemarksServlet extends BaseServlet {
         RemarkDomain remarkDomain = RemarkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
         for(Remark remark : remarkDomain.search(patientId, lastDate)) {
-            User user = userDomain.getByUserId(remark.getUserId());
+            User user = userDomain.getUser(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());
             value.setFaceId(user.getFaceId());

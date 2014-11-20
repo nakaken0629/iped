@@ -25,7 +25,7 @@ public class UserEditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getPathInfo().split("/")[1];
         UserDomain domain = UserDomain.getInstance();
-        User user = domain.getByUserId(userId);
+        User user = domain.getUser(userId);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.values());
 
@@ -44,7 +44,7 @@ public class UserEditServlet extends HttpServlet {
 
     private void doPostAsRegister(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserDomain domain = UserDomain.getInstance();
-        User user = domain.getByUserId(req.getParameter("userId"));
+        User user = domain.getUser(req.getParameter("userId"));
         UserUtils.createFromRequest(user, req);
         req.setAttribute("user", user);
         req.setAttribute("roles", RoleType.values());
@@ -62,7 +62,7 @@ public class UserEditServlet extends HttpServlet {
     private void doPostAsDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userId = req.getParameter("userId");
         UserDomain domain = UserDomain.getInstance();
-        User user = domain.getByUserId(userId);
+        User user = domain.getUser(userId);
         user.delete(this.datastoreService);
         resp.sendRedirect("/backend/users");
     }

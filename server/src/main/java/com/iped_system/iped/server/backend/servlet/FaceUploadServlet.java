@@ -40,7 +40,7 @@ public class FaceUploadServlet extends HttpServlet {
             pictureDomain.insert(picture);
 
             UserDomain userDomain = UserDomain.getInstance();
-            User user = userDomain.getByUserId(userId);
+            User user = userDomain.getUser(userId);
             user.setFaceId(picture.getId());
             userDomain.update(user);
 

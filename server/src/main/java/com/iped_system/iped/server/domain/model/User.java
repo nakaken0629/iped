@@ -94,10 +94,6 @@ public class User extends EntityWrapper {
         this.patientIdList = patientIdList;
     }
 
-    public boolean isPatientIdValid() {
-        return true;
-    }
-
     public long getFaceId() {
         return faceId;
     }

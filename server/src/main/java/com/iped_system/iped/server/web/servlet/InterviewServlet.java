@@ -34,7 +34,7 @@ public class InterviewServlet extends HttpServlet {
             if (talk.getUserId().equals(userId)) {
                 talkValue.setMeText(talk.getText());
             } else {
-                User user = userDomain.getByUserId(talk.getUserId());
+                User user = userDomain.getUser(talk.getUserId());
                 talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
                 talkValue.setAuthorName(user.getName());

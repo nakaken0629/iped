@@ -1,7 +1,10 @@
 package com.iped_system.iped.common.login;
 
 import com.iped_system.iped.common.BaseResponse;
+import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
+
+import java.util.List;
 
 /**
  * Created by kenji on 2014/08/04.
@@ -12,7 +15,7 @@ public class LoginResponse extends BaseResponse {
     private String lastName;
     private String firstName;
     private RoleType role;
-    private String patientId;
+    private List<Patient> patients;
 
     public long getTokenId() {
         return tokenId;
@@ -54,11 +57,11 @@ public class LoginResponse extends BaseResponse {
         this.role = role;
     }
 
-    public String getPatientId() {
-        return patientId;
+    public List<Patient> getPatients() {
+        return patients;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setPatients(List<Patient> patients) {
+        this.patients = patients;
     }
 }
