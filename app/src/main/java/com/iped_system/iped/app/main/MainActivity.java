@@ -13,6 +13,7 @@ import android.widget.TabHost;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
@@ -31,9 +32,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
             }
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        adapter.add("中垣健志");
-        adapter.add("永谷真一郎");
+        IpedApplication application = (IpedApplication) getApplication();
+
+        ArrayAdapter<Patient> adapter = new ArrayAdapter<Patient>(this, android.R.layout.simple_spinner_dropdown_item);
+        for(Patient patient : application.getPatients()) {
+            adapter.add(patient);
+        }
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(adapter, this);
@@ -42,7 +46,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         FragmentTabHost host = (FragmentTabHostEx) findViewById(android.R.id.tabhost);
         host.setup(this, getSupportFragmentManager(), R.id.content);
 
-        IpedApplication application = (IpedApplication) getApplication();
         RoleType role = application.getRole();
         if (role != RoleType.PATIENT) {
             prepareMeetingTab(host);
