@@ -56,7 +56,7 @@
     <div class="form-group">
         <label for="patientId">担当患者ID<span class="text-info">（役割が患者のときはユーザIDと同じ）</span></label>
         <input type="text" class="form-control" id="patientId" placeholder="例：nakagaki.kenji"
-               name="patientId" value='<c:out value="${user.patientId}" />'>
+               name="patientIdList" value='<c:forEach var="patientId" items="${user.patientIdList}" varStatus="status"><c:out value="${patientId}" /><c:if test="${!status.last}">,</c:if></c:forEach>' />
     </div>
     <p>
         <input type="submit" name="register" class="btn btn-primary" value="登録する"/>

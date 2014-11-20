@@ -3,6 +3,8 @@ package com.iped_system.iped.server.domain.model;
 import com.google.appengine.api.datastore.Entity;
 import com.iped_system.iped.common.RoleType;
 
+import java.util.List;
+
 /**
  * Created by kenji on 2014/08/09.
  */
@@ -12,7 +14,7 @@ public class User extends EntityWrapper {
     @EntityProperty private String firstName;
     @EntityProperty private String password;
     @EntityProperty private RoleType role;
-    @EntityProperty private String patientId;
+    @EntityProperty private List<String> patientIdList;
     @EntityProperty private long faceId;
 
     public User() {
@@ -84,12 +86,12 @@ public class User extends EntityWrapper {
         return this.role != null;
     }
 
-    public String getPatientId() {
-        return patientId;
+    public List<String> getPatientIdList() {
+        return patientIdList;
     }
 
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
+    public void setPatientIdList(List<String> patientIdList) {
+        this.patientIdList = patientIdList;
     }
 
     public boolean isPatientIdValid() {

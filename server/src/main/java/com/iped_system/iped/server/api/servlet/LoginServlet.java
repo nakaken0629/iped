@@ -39,7 +39,8 @@ public class LoginServlet extends BaseServlet {
             response.setLastName(user.getLastName());
             response.setFirstName(user.getFirstName());
             response.setRole(user.getRole());
-            response.setPatientId(user.getPatientId());
+            /* TODO: set selected patient id */
+            response.setPatientId(user.getPatientIdList().get(0));
         } else {
             response.setStatus(ResponseStatus.FAIL);
         }

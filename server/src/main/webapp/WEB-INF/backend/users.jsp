@@ -36,7 +36,7 @@
                     <c:out value="${user.role.displayName}"/>
                 </td>
                 <td>
-                    <c:out value="${user.patientId}"/>
+                    <c:out value="${user.patientIdList}"/>
                 </td>
                 <td>
                     <a class="btn btn-info"

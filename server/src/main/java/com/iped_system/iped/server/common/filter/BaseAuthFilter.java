@@ -7,8 +7,6 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.api.filter.AuthInfo;
 import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.User;
@@ -106,7 +104,8 @@ public abstract class BaseAuthFilter implements Filter {
         authInfo.setUserId(userId);
         authInfo.setFirstName(user.getFirstName());
         authInfo.setLastName(user.getLastName());
-        authInfo.setPatientId(user.getPatientId());
+        /* TODO: set selected patient id */
+        authInfo.setPatientId(user.getPatientIdList().get(0));
         authInfo.setRole(user.getRole());
         request.setAttribute(AUTH_INFO_KEY, authInfo);
     }

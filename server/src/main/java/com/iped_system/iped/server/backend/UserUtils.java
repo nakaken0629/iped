@@ -1,12 +1,10 @@
 package com.iped_system.iped.server.backend;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.domain.model.User;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +22,7 @@ public final class UserUtils {
         user.setFirstName(req.getParameter("firstName"));
         user.setPassword(req.getParameter("password"));
         user.setRole(RoleType.valueOf(req.getParameter("role")));
-        user.setPatientId(req.getParameter("patientId"));
+        List<String> patients = Arrays.asList(req.getParameter("patientIdList").split(","));
+        user.setPatientIdList(patients);
     }
 }
