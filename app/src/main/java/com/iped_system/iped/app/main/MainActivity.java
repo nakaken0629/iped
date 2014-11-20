@@ -74,6 +74,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        IpedApplication application = (IpedApplication) getApplication();
+        application.setPatientIndex(itemPosition);
         return true;
     }
 }

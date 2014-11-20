@@ -20,6 +20,7 @@ public class IpedApplication extends Application {
     private String firstName;
     private RoleType role;
     private List<Patient> patients;
+    private int index;
 
     public void authenticate(long tokenId, String userId, String lastName, String firstName, RoleType role, List<Patient> patients) {
         this.tokenId = tokenId;
@@ -28,6 +29,7 @@ public class IpedApplication extends Application {
         this.firstName = firstName;
         this.role = role;
         this.patients = patients;
+        this.index = 0;
     }
 
     public long getTokenId() {
@@ -55,6 +57,10 @@ public class IpedApplication extends Application {
     }
 
     public String getPatientId() {
-        return this.patients.get(0).getUserId();
+        return this.patients.get(this.index).getUserId();
+    }
+
+    public void setPatientIndex(int index) {
+        this.index = index;
     }
 }
