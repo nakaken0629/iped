@@ -133,7 +133,7 @@ public class LoginFragment extends Fragment {
                 parent.updateButton.setVisibility(View.VISIBLE);
                 parent.updateButton.setEnabled(true);
             } else {
-                parent.updateTextView.setText("最新版のアプリを利用しています");
+                parent.updateTextView.setText("最新版を利用しています");
             }
         }
 
