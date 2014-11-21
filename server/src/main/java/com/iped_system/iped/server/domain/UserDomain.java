@@ -6,6 +6,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.Patient;
+import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.server.common.filter.BaseAuthFilter;
 import com.iped_system.iped.server.domain.model.User;
 
@@ -88,8 +89,9 @@ public final class UserDomain {
     }
 
     public List<Patient> getPatients(List<String> patientIdList) {
-        Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.IN, patientIdList);
-        Query query = new Query("User").setFilter(filter);
+        Query.Filter userIdFilter = new Query.FilterPredicate("userId", Query.FilterOperator.IN, patientIdList);
+        Query.Filter roleFilter = new Query.FilterPredicate("role", Query.FilterOperator.EQUAL, RoleType.PATIENT.name());
+        Query query = new Query("User").setFilter(Query.CompositeFilterOperator.and(userIdFilter, roleFilter));
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery preparedQuery = service.prepare(query);
         ArrayList<Patient> patients = new ArrayList<Patient>();
