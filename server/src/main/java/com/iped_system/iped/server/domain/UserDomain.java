@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Created by kenji on 2014/08/10.
  */
-public class UserDomain {
+public final class UserDomain {
     private static final Logger logger = Logger.getLogger(UserDomain.class.getName());
 
     public static UserDomain getInstance() {

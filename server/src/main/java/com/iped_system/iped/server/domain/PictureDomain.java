@@ -11,7 +11,7 @@ import com.iped_system.iped.server.domain.model.Picture;
 /**
  * Created by kenji on 2014/11/16.
  */
-public class PictureDomain {
+public final class PictureDomain {
     public static PictureDomain getInstance() {
         return new PictureDomain();
     }

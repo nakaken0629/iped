@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by kenji on 2014/08/10.
  */
-public class RemarkDomain {
+public final class RemarkDomain {
     private static final int FETCH_SIZE = 30;
 
     public static RemarkDomain getInstance() {
