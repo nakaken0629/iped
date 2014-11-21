@@ -42,6 +42,12 @@ public class AuthFilter extends BaseAuthFilter {
     }
 
     @Override
+    protected String getPatientId(ServletRequest request) throws UnauthorizedException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        return httpServletRequest.getHeader("X-IPED-PATIENT-ID");
+    }
+
+    @Override
     protected void onUnauthorized(ServletResponse response) throws IOException {
         ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }

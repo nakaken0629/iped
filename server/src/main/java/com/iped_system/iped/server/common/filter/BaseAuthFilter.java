@@ -50,12 +50,14 @@ public abstract class BaseAuthFilter implements Filter {
 
     protected abstract long getTokenId(ServletRequest request) throws UnauthorizedException;
 
+    protected abstract String getPatientId(ServletRequest request) throws UnauthorizedException;
+
     protected abstract void onUnauthorized(ServletResponse response) throws IOException;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            this.doFilterInner(request, response);
+            this.doFilterInner(request);
             chain.doFilter(request, response);
         } catch (UnauthorizedException e) {
             logger.warning("unauthorized request: " + e.getMessage());
@@ -63,7 +65,7 @@ public abstract class BaseAuthFilter implements Filter {
         }
     }
 
-    protected void doFilterInner(ServletRequest request, ServletResponse response) throws IOException, ServletException, UnauthorizedException {
+    protected void doFilterInner(ServletRequest request) throws IOException, ServletException, UnauthorizedException {
         /* check parameters */
         long tokenId = getTokenId(request);
 
@@ -104,8 +106,7 @@ public abstract class BaseAuthFilter implements Filter {
         authInfo.setUserId(userId);
         authInfo.setFirstName(user.getFirstName());
         authInfo.setLastName(user.getLastName());
-        /* TODO: set selected patient id */
-        authInfo.setPatientId(user.getPatientIdList().get(0));
+        authInfo.setPatientId(getPatientId(request));
         authInfo.setRole(user.getRole());
         request.setAttribute(AUTH_INFO_KEY, authInfo);
     }

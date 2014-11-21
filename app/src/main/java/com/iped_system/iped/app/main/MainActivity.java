@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     private static final String TAG = MainActivity.class.getName();
     private final MainActivity parent = this;
 
+    /* TODO: FragmentTabHostから現在のfragmentが取得できれば、このインターフェイスは不要 */
     public interface RefreshObserver {
         public void refresh();
     }
@@ -63,6 +64,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
             @Override
             public void onTabChanged(String tab) {
                 parent.currentTab = tab;
+                /* TODO: ここで呼ぶのが妥当な気はしない */
                 if (parent.observers.containsKey(tab)) {
                     RefreshObserver observer = parent.observers.get(tab);
                     observer.refresh();

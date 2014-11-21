@@ -37,9 +37,11 @@ import java.util.ArrayList;
 public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseResponse> extends AsyncTask<T1, Void, T2> {
     private static final String TAG = ApiAsyncTask.class.getName();
 
-    private WeakReference<Activity> activityRef;
     private long tokenId;
     private String baseUrl;
+    private WeakReference<Activity> activityRef;
+    private String patientId;
+
     private boolean isConnected = true;
 
     public ApiAsyncTask(Activity activity) {
@@ -47,8 +49,10 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         this.tokenId = application.getTokenId();
         this.baseUrl = activity.getString(R.string.server_baseurl);
         this.activityRef = new WeakReference<Activity>(activity);
+        if (isSecure()) {
+            this.patientId = application.getPatientId();
+        }
     }
-
 
     private boolean isConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -95,6 +99,7 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         HttpPost post = new HttpPost(url);
         if (this.isSecure()) {
             post.setHeader("X-IPED-TOKEN-ID", Long.toString(this.tokenId));
+            post.setHeader("X-IPED-PATIENT-ID", this.patientId);
         }
 
         /* prepare parameters */
