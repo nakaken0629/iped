@@ -65,9 +65,11 @@ public class MeetingAdapter extends ArrayAdapter<MeetingItem> {
         holder.createdAtTextView.setText(DateFormat.format("yyyy/MM/dd kk:mm", createdAt));
         holder.textTextView.setText(item.getText());
         holder.profileImage.setImageResource(R.drawable.anonymous);
-        holder.profileImage.setTag(item.getFaceId());
-        ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
-        task.execute(item.getFaceId());
+        if (item.getFaceId() > 0) {
+            holder.profileImage.setTag(item.getFaceId());
+            ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
+            task.execute(item.getFaceId());
+        }
         if (item.getPictureIdList() == null || item.getPictureIdList().size() == 0) {
             holder.picturesLayout.setVisibility(View.GONE);
         } else {
