@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MeetingFragment extends Fragment implements RemarkFragment.RemarkListener, CameraFragment.CameraListener {
+public class MeetingFragment extends Fragment implements MainActivity.RefreshObserver, RemarkFragment.RemarkListener, CameraFragment.CameraListener {
     private static final String TAG = MeetingFragment.class.getName();
     private final MeetingFragment parent = this;
 
@@ -64,13 +64,13 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0, retainFragment);
         this.meetingListView.setAdapter(adapter);
 
-        reloadRemarks();
         return rootView;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ((MainActivity) activity).addObserver("meeting", this);
     }
 
     private void reloadRemarks() {
@@ -249,5 +249,13 @@ public class MeetingFragment extends Fragment implements RemarkFragment.RemarkLi
         RemarkFragment fragment = RemarkFragment.newInstance(parent);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         fragment.show(transaction, null);
+    }
+
+    @Override
+    public void refresh() {
+        this.lastDate = null;
+        this.firstDate = null;
+        ((MeetingAdapter) this.meetingListView.getAdapter()).clear();
+        reloadRemarks();
     }
 }

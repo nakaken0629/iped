@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class InterviewFragment extends Fragment {
+public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver {
     private static final String TAG = InterviewFragment.class.getName();
     private final InterviewFragment parent = this;
 
@@ -53,9 +53,13 @@ public class InterviewFragment extends Fragment {
         InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0, retainFragment);
         this.interviewListView.setAdapter(adapter);
 
-        this.reloadTalks();
-
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).addObserver("interview", this);
     }
 
     @Override
@@ -183,5 +187,12 @@ public class InterviewFragment extends Fragment {
             request.setLastUpdate(lastUpdate);
             task.execute(request);
         }
+    }
+
+    @Override
+    public void refresh() {
+        this.lastUpdate = null;
+        ((InterviewAdapter) this.interviewListView.getAdapter()).clear();
+        reloadTalks();
     }
 }

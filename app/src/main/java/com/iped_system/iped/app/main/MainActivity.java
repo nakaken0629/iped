@@ -16,8 +16,24 @@ import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
 
+import java.util.HashMap;
+
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+    private static final String TAG = MainActivity.class.getName();
+    private final MainActivity parent = this;
+
+    public interface RefreshObserver {
+        public void refresh();
+    }
+
     private LruCache<String, Bitmap> imageCache;
+    private FragmentTabHost host;
+    private HashMap<String, RefreshObserver> observers = new HashMap<String, RefreshObserver>();
+    private String currentTab;
+
+    private IpedApplication getIpedApplication() {
+        return (IpedApplication) getApplication();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +48,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
             }
         };
 
-        IpedApplication application = (IpedApplication) getApplication();
-
         ArrayAdapter<Patient> adapter = new ArrayAdapter<Patient>(this, android.R.layout.simple_spinner_dropdown_item);
-        for(Patient patient : application.getPatients()) {
+        for (Patient patient : getIpedApplication().getPatients()) {
             adapter.add(patient);
         }
         ActionBar actionBar = getActionBar();
@@ -43,26 +57,36 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         actionBar.setListNavigationCallbacks(adapter, this);
 
         setContentView(R.layout.activity_main);
-        FragmentTabHost host = (FragmentTabHostEx) findViewById(android.R.id.tabhost);
-        host.setup(this, getSupportFragmentManager(), R.id.content);
+        this.host = (FragmentTabHostEx) findViewById(android.R.id.tabhost);
+        this.host.setup(this, getSupportFragmentManager(), R.id.content);
+        this.host.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tab) {
+                parent.currentTab = tab;
+                if (parent.observers.containsKey(tab)) {
+                    RefreshObserver observer = parent.observers.get(tab);
+                    observer.refresh();
+                }
+            }
+        });
 
-        RoleType role = application.getRole();
+        RoleType role = getIpedApplication().getRole();
         if (role != RoleType.PATIENT) {
-            prepareMeetingTab(host);
+            prepareMeetingTab();
         }
-        prepareInterviewTab(host);
+        prepareInterviewTab();
     }
 
-    private void prepareMeetingTab(FragmentTabHost host) {
-        TabHost.TabSpec tabSpecMeeting = host.newTabSpec("meeting");
+    private void prepareMeetingTab() {
+        TabHost.TabSpec tabSpecMeeting = this.host.newTabSpec("meeting");
         tabSpecMeeting.setIndicator("ミーティング");
-        host.addTab(tabSpecMeeting, MeetingFragment.class, null);
+        this.host.addTab(tabSpecMeeting, MeetingFragment.class, null);
     }
 
-    private void prepareInterviewTab(FragmentTabHost host) {
-        TabHost.TabSpec tabSpecInterview = host.newTabSpec("interview");
+    private void prepareInterviewTab() {
+        TabHost.TabSpec tabSpecInterview = this.host.newTabSpec("interview");
         tabSpecInterview.setIndicator("インタビュー");
-        host.addTab(tabSpecInterview, InterviewFragment.class, null);
+        this.host.addTab(tabSpecInterview, InterviewFragment.class, null);
     }
 
     @Override
@@ -74,8 +98,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        IpedApplication application = (IpedApplication) getApplication();
-        application.setPatientIndex(itemPosition);
+        getIpedApplication().setPatientIndex(itemPosition);
+        RefreshObserver observer = this.observers.get(this.currentTab);
+        observer.refresh();
         return true;
+    }
+
+    public void addObserver(String key, RefreshObserver observer) {
+        this.observers.put(key, observer);
     }
 }
