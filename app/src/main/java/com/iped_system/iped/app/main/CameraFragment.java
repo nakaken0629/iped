@@ -100,7 +100,7 @@ public class CameraFragment extends DialogFragment {
             previewHeight = tmpHeight;
 
             parameters.setPreviewSize(previewWidth, previewHeight);
-            parameters.setRotation(90);
+            parameters.setRotation(-90);
 
             /* Adjust SurfaceView size */
             ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
