@@ -14,6 +14,7 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ImageAsyncTask;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 
 /**
@@ -78,7 +79,7 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
             holder.youTextTextView.setVisibility(youText != null && youText.length() > 0 ? View.VISIBLE : View.GONE);
             holder.youTextTextView.setText(youText);
             holder.youPictogramImageView.setVisibility(youPictogramKey != null && youPictogramKey.length() > 0 ? View.VISIBLE : View.GONE);
-//            holder.youPictogramImageView.setImageResource();
+            holder.youPictogramImageView.setImageResource(getPictogramResourceId(youPictogramKey));
             holder.authorNameTextView.setText(item.getAuthorName());
             holder.profileImage.setImageResource(R.drawable.anonymous);
             if (item.getFaceId() > 0) {
@@ -92,12 +93,26 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
             holder.meTextTextView.setVisibility(meText != null && meText.length() > 0 ? View.VISIBLE : View.GONE);
             holder.meTextTextView.setText(meText);
             holder.mePictogramImageView.setVisibility(mePictogramKey != null && mePictogramKey.length() > 0 ? View.VISIBLE : View.GONE);
-//            holder.mePictogramImageView.setImageBitmap();
+            holder.mePictogramImageView.setImageResource(getPictogramResourceId(mePictogramKey));
         }
         Calendar createdAt = Calendar.getInstance();
         createdAt.setTime(item.getCreatedAt());
         holder.createdAtTextView.setText(DateFormat.format("yyyy/MM/dd kk:mm", createdAt));
 
         return convertView;
+    }
+
+    private int getPictogramResourceId(String pictogramKey) {
+        Field[] fields = R.drawable.class.getFields();
+        for(Field field : fields) {
+            if (field.getName().equals(pictogramKey)) {
+                try {
+                    return field.getInt(null);
+                } catch (IllegalAccessException e) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
     }
 }
