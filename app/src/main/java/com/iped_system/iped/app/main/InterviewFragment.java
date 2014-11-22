@@ -124,7 +124,6 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 item.setMeText(talkValue.getMeText());
                 item.setMePictogramKey(talkValue.getMePictogramKey());
                 item.setYouText(talkValue.getYouText());
-                item.setYouPictogramKey(talkValue.getYouPictogramKey());
                 adapter.add(item);
                 if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
                     lastUpdate = talkValue.getCreatedAt();
