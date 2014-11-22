@@ -139,23 +139,25 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         }
     }
 
-    private void insertTalks(List<TalkValue> talkValues) {
-        ListView interviewListView = (ListView) getView().findViewById(R.id.interviewListView);
-        InterviewAdapter adapter = (InterviewAdapter) interviewListView.getAdapter();
-        for (TalkValue talkValue : talkValues) {
-            TalkItem item = new TalkItem();
-            item.setYouText(talkValue.getYouText());
-            item.setAuthorName(talkValue.getAuthorName());
-            item.setMeText(talkValue.getMeText());
-            item.setCreatedAt(talkValue.getCreatedAt());
-            adapter.add(item);
-
-            if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
-                lastUpdate = talkValue.getCreatedAt();
-            }
+    class TalkTask extends ApiAsyncTask<TalksNewRequest, TalksNewResponse> {
+        TalkTask(Activity activity) {
+            super(activity);
         }
-        adapter.notifyDataSetChanged();
-        interviewListView.setSelection(interviewListView.getCount() - 1);
+
+        @Override
+        protected boolean isSecure() {
+            return true;
+        }
+
+        @Override
+        protected String getApiName() {
+            return "talks/new";
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
+            parent.reloadTalks();
+        }
     }
 
     class PostListener implements View.OnClickListener {
@@ -170,22 +172,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             }
 
             postEditText.setText("");
-            ApiAsyncTask<TalksNewRequest, TalksNewResponse> task = new ApiAsyncTask<TalksNewRequest, TalksNewResponse>(InterviewFragment.this.getActivity()) {
-                @Override
-                protected boolean isSecure() {
-                    return true;
-                }
-
-                @Override
-                protected String getApiName() {
-                    return "talks/new";
-                }
-
-                @Override
-                protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
-                    parent.reloadTalks();
-                }
-            };
+            TalkTask task = new TalkTask(self.getActivity());
             TalksNewRequest request = new TalksNewRequest();
             request.setText(text);
             request.setLastUpdate(lastUpdate);
@@ -205,7 +192,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     }
 
     @Override
-    public void onFragmentInteraction(String pictogramkey) {
+    public void onFragmentInteraction(String pictogramKey) {
 
     }
 

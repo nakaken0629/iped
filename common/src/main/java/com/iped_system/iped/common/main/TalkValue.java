@@ -8,8 +8,10 @@ import java.util.Date;
 public class TalkValue {
     private long faceId;
     private String youText;
+    private String youPictogram;
     private String authorName;
     private String meText;
+    private String mePictogram;
     private Date createdAt;
 
     public long getFaceId() {
@@ -28,6 +30,14 @@ public class TalkValue {
         this.youText = youText;
     }
 
+    public String getYouPictogram() {
+        return youPictogram;
+    }
+
+    public void setYouPictogram(String youPictogram) {
+        this.youPictogram = youPictogram;
+    }
+
     public String getAuthorName() {
 
         return authorName;
@@ -44,6 +54,14 @@ public class TalkValue {
 
     public void setMeText(String meText) {
         this.meText = meText;
+    }
+
+    public String getMePictogram() {
+        return mePictogram;
+    }
+
+    public void setMePictogram(String mePictogram) {
+        this.mePictogram = mePictogram;
     }
 
     public Date getCreatedAt() {
