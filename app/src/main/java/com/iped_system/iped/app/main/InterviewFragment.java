@@ -1,9 +1,11 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver {
+public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener {
     private static final String TAG = InterviewFragment.class.getName();
     private final InterviewFragment parent = this;
 
@@ -46,6 +48,8 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         /* コマンド */
         Button postButton = (Button) rootView.findViewById(R.id.postButton);
         postButton.setOnClickListener(new PostListener());
+        Button pictogramButton = (Button) rootView.findViewById(R.id.pictogramButton);
+        pictogramButton.setOnClickListener(new PictogramListener());
 
         /* リストビュー */
         this.interviewListView = (ListView) rootView.findViewById(R.id.interviewListView);
@@ -187,6 +191,22 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             request.setLastUpdate(lastUpdate);
             task.execute(request);
         }
+    }
+
+    class PictogramListener implements View.OnClickListener {
+        private InterviewFragment parent = InterviewFragment.this;
+
+        @Override
+        public void onClick(View view) {
+            PictogramFragment fragment = PictogramFragment.newInstance(parent);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            fragment.show(transaction, null);
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(String pictogramkey) {
+
     }
 
     @Override

@@ -4,57 +4,73 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/iped_actionbar_style</item>
     </style>
+
     <style name="iped_actionbar_style" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">#ff008800</item>
         <item name="android:titleTextStyle">@style/iped_title_style</item>
         <item name="android:icon">@android:color/transparent</item>
     </style>
+
     <style name="iped_title_style" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="iped_remark">
         <item name="android:layout_margin">4px</item>
     </style>
-    <style name="iped_remark_image" parent="iped_remark">
-    </style>
+
+    <style name="iped_remark_image" parent="iped_remark"></style>
+
     <style name="iped_remark_author_name" parent="iped_remark">
         <item name="android:textColor">#ff000000</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="iped_remark_created_at" parent="iped_remark">
-    </style>
+
+    <style name="iped_remark_created_at" parent="iped_remark"></style>
+
     <style name="iped_remark_text" parent="iped_remark">
         <item name="android:textColor">#ff000000</item>
     </style>
+
     <style name="iped_meeting_command">
         <item name="android:background">#ff44cc44</item>
         <item name="android:padding">8px</item>
     </style>
+
     <style name="iped_thumbnail">
         <item name="android:layout_width">96dp</item>
         <item name="android:layout_height">128dp</item>
         <item name="android:layout_margin">4dp</item>
     </style>
+
     <style name="iped_talk">
         <item name="android:layout_margin">4px</item>
     </style>
-    <style name="iped_talk_image" parent="iped_talk">
-    </style>
+
+    <style name="iped_talk_image" parent="iped_talk"></style>
+
     <style name="iped_talk_author_name" parent="iped_talk">
         <item name="android:textColor">#ff000000</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="iped_talk_text" parent="iped_talk">
         <item name="android:textColor">#ff000000</item>
         <item name="android:padding">16px</item>
     </style>
+
     <style name="iped_talk_text_you" parent="iped_talk_text">
         <item name="android:background">@drawable/bubble_you</item>
     </style>
+
     <style name="iped_talk_text_me" parent="iped_talk_text">
         <item name="android:background">@drawable/bubble_me</item>
     </style>
-    <style name="iped_talk_created_at" parent="iped_talk">
+
+    <style name="iped_talk_created_at" parent="iped_talk"></style>
+
+    <style name="iped_pictogram">
+        <item name="android:layout_margin">4px</item>
     </style>
 </resources>

@@ -7,11 +7,19 @@
     <!-- TODO: Wrap Button and EditText by Layer -->
 
     <Button
+        android:id="@+id/pictogramButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ピクト"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+
+    <Button
         android:id="@+id/postButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="投稿する"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@id/pictogramButton"
         android:layout_alignParentBottom="true" />
 
     <EditText

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.main.MainActivity;
+import com.iped_system.iped.app.main.PictogramFragment;
 
 public class LoginActivity extends FragmentActivity implements LoginFragment.OnLoginListener {
 
