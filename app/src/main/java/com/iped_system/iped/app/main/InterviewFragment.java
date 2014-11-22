@@ -1,7 +1,6 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -24,13 +23,12 @@ import com.iped_system.iped.common.main.TalksRequest;
 import com.iped_system.iped.common.main.TalksResponse;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener {
     private static final String TAG = InterviewFragment.class.getName();
-    private final InterviewFragment parent = this;
+    private final InterviewFragment self = this;
 
     private Date lastUpdate;
     private ListView interviewListView;
@@ -124,7 +122,9 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 item.setAuthorName(talkValue.getAuthorName());
                 item.setCreatedAt(talkValue.getCreatedAt());
                 item.setMeText(talkValue.getMeText());
+                item.setMePictogramKey(talkValue.getMePictogramKey());
                 item.setYouText(talkValue.getYouText());
+                item.setYouPictogramKey(talkValue.getYouPictogramKey());
                 adapter.add(item);
                 if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
                     lastUpdate = talkValue.getCreatedAt();
@@ -156,13 +156,11 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
         @Override
         protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
-            parent.reloadTalks();
+            self.reloadTalks();
         }
     }
 
     class PostListener implements View.OnClickListener {
-        private InterviewFragment self = InterviewFragment.this;
-
         @Override
         public void onClick(View view) {
             EditText postEditText = (EditText) getView().findViewById(R.id.postEditText);
@@ -193,7 +191,11 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
     @Override
     public void onFragmentInteraction(String pictogramKey) {
-
+        TalkTask task = new TalkTask(self.getActivity());
+        TalksNewRequest request = new TalksNewRequest();
+        request.setPictogramKey(pictogramKey);
+        request.setLastUpdate(lastUpdate);
+        task.execute(request);
     }
 
     @Override

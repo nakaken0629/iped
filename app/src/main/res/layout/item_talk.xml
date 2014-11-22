@@ -37,6 +37,15 @@
             android:layout_alignLeft="@id/authorNameTextView"
             android:layout_below="@id/authorNameTextView"
             android:text="New Text" />
+
+        <ImageView
+            android:id="@+id/youPictogramImageView"
+            style="@style/iped_pictogram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/authorNameTextView"
+            android:layout_below="@id/youTextTextView"
+            android:src="@drawable/icon_001" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,6 +63,14 @@
             android:layout_alignParentTop="true"
             android:text="New Text" />
 
+        <ImageView
+            android:id="@+id/mePictogramImageView"
+            style="@style/iped_pictogram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/meTextTextView"
+            android:src="@drawable/icon_001" />
     </RelativeLayout>
 
     <TextView

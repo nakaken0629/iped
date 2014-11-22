@@ -29,14 +29,16 @@ public class InterviewServlet extends HttpServlet {
         TalkDomain talkDomain = TalkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
         ArrayList<TalkValue> talks = new ArrayList<TalkValue>();
-        for(Talk talk : talkDomain.search(userId, patientId)) {
+        for(Talk talk : talkDomain.search(patientId)) {
             TalkValue talkValue = new TalkValue();
             if (talk.getUserId().equals(userId)) {
                 talkValue.setMeText(talk.getText());
+                talkValue.setMePictogramKey(talk.getPictogramKey());
             } else {
                 User user = userDomain.getUser(talk.getUserId());
                 talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
+                talkValue.setYouPictogramKey(talk.getPictogramKey());
                 talkValue.setAuthorName(user.getName());
             }
             talkValue.setCreatedAt(talk.getCreatedAt());

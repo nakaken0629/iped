@@ -12,6 +12,7 @@ public class Talk extends EntityWrapper {
     @EntityProperty private String patientId;
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
+    @EntityProperty private String pictogramKey;
 
     public Talk() {
         super();
@@ -53,5 +54,13 @@ public class Talk extends EntityWrapper {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPictogramKey() {
+        return pictogramKey;
+    }
+
+    public void setPictogramKey(String pictogramKey) {
+        this.pictogramKey = pictogramKey;
     }
 }

@@ -26,7 +26,7 @@ public final class TalkDomain {
         /* nop */
     }
 
-    public Entity insert(String userId, String patientId, String text) {
+    public Entity insert(String userId, String patientId, String text, String pictogramKey) {
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
@@ -34,16 +34,17 @@ public final class TalkDomain {
         entity.setProperty("userId", userId);
         entity.setProperty("patientId", patientId);
         entity.setProperty("text", text);
+        entity.setProperty("pictogramKey", pictogramKey);
         entity.setProperty("createdAt", createdAt);
         service.put(entity);
         return entity;
     }
 
-    public List<Talk> search(String userId, String patientId) {
-        return search(userId, patientId, null);
+    public List<Talk> search(String patientId) {
+        return search(patientId, null);
     }
 
-    public List<Talk> search(String userId, String patientId, Date lastUpdate) {
+    public List<Talk> search(String patientId, Date lastUpdate) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);
         if (lastUpdate != null) {

@@ -24,18 +24,22 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
         private RelativeLayout youLayout;
         private ImageView profileImage;
         private TextView youTextTextView;
+        private ImageView youPictogramImageView;
         private RelativeLayout meLayout;
         private TextView authorNameTextView;
         private TextView meTextTextView;
+        private ImageView mePictogramImageView;
         private TextView createdAtTextView;
 
         private ViewHolder(View view) {
             this.youLayout = (RelativeLayout) view.findViewById(R.id.youLayout);
             this.profileImage = (ImageView) view.findViewById(R.id.profileImageView);
             this.youTextTextView = (TextView) view.findViewById(R.id.youTextTextView);
+            this.youPictogramImageView = (ImageView) view.findViewById(R.id.youPictogramImageView);
             this.meLayout = (RelativeLayout) view.findViewById(R.id.meLayout);
             this.authorNameTextView = (TextView) view.findViewById(R.id.authorNameTextView);
             this.meTextTextView = (TextView) view.findViewById(R.id.meTextTextView);
+            this.mePictogramImageView = (ImageView) view.findViewById(R.id.mePictogramImageView);
             this.createdAtTextView = (TextView) view.findViewById(R.id.createdAtTextView);
         }
     }
@@ -64,22 +68,31 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
         }
 
         String youText = item.getYouText();
-        if (youText != null && youText.length() > 0) {
-            holder.youLayout.setVisibility(View.VISIBLE);
+        String youPictogramKey = item.getYouPictogramKey();
+        String meText = item.getMeText();
+        String mePictogramKey = item.getMePictogramKey();
+        if ((youText != null && youText.length() > 0) || (youPictogramKey != null && youPictogramKey.length() > 0)) {
             holder.meLayout.setVisibility(View.GONE);
-            holder.youLayout.setVisibility(youText == null || youText.length() == 0 ? View.GONE : View.VISIBLE);
+            holder.youLayout.setVisibility(View.VISIBLE);
+            holder.youLayout.setVisibility(View.VISIBLE);
+            holder.youTextTextView.setVisibility(youText != null && youText.length() > 0 ? View.VISIBLE : View.GONE);
             holder.youTextTextView.setText(youText);
+            holder.youPictogramImageView.setVisibility(youPictogramKey != null && youPictogramKey.length() > 0 ? View.VISIBLE : View.GONE);
+//            holder.youPictogramImageView.setImageResource();
             holder.authorNameTextView.setText(item.getAuthorName());
             holder.profileImage.setImageResource(R.drawable.anonymous);
-            holder.profileImage.setTag(item.getFaceId());
-            ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
-            task.execute(item.getFaceId());
+            if (item.getFaceId() > 0) {
+                holder.profileImage.setTag(item.getFaceId());
+                ImageAsyncTask task = new ImageAsyncTask(getContext(), holder.profileImage, this.retainFragment);
+                task.execute(item.getFaceId());
+            }
         } else {
             holder.youLayout.setVisibility(View.GONE);
             holder.meLayout.setVisibility(View.VISIBLE);
-            String meText = item.getMeText();
-            holder.meLayout.setVisibility(meText == null || meText.length() == 0 ? View.GONE : View.VISIBLE);
+            holder.meTextTextView.setVisibility(meText != null && meText.length() > 0 ? View.VISIBLE : View.GONE);
             holder.meTextTextView.setText(meText);
+            holder.mePictogramImageView.setVisibility(mePictogramKey != null && mePictogramKey.length() > 0 ? View.VISIBLE : View.GONE);
+//            holder.mePictogramImageView.setImageBitmap();
         }
         Calendar createdAt = Calendar.getInstance();
         createdAt.setTime(item.getCreatedAt());

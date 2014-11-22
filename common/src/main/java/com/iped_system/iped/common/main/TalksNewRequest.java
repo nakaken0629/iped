@@ -13,6 +13,7 @@ import java.util.Date;
 public class TalksNewRequest extends BaseRequest {
     private Date lastUpdate;
     private String text;
+    private String pictogramKey;
 
     @Override
     @JSONHint(ignore=true)
@@ -35,5 +36,13 @@ public class TalksNewRequest extends BaseRequest {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getPictogramKey() {
+        return pictogramKey;
+    }
+
+    public void setPictogramKey(String pictogramKey) {
+        this.pictogramKey = pictogramKey;
     }
 }

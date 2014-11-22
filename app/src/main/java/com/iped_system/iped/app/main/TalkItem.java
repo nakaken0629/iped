@@ -8,8 +8,10 @@ import java.util.Date;
 public class TalkItem {
     private long faceId;
     private String youText;
+    private String youPictogramKey;
     private String authorName;
     private String meText;
+    private String mePictogramKey;
     private Date createdAt;
 
     public long getFaceId() {
@@ -28,6 +30,14 @@ public class TalkItem {
         this.youText = text;
     }
 
+    public String getYouPictogramKey() {
+        return youPictogramKey;
+    }
+
+    public void setYouPictogramKey(String youPictogramKey) {
+        this.youPictogramKey = youPictogramKey;
+    }
+
     public String getAuthorName() {
         return authorName;
     }
@@ -42,6 +52,14 @@ public class TalkItem {
 
     public void setMeText(String meText) {
         this.meText = meText;
+    }
+
+    public String getMePictogramKey() {
+        return mePictogramKey;
+    }
+
+    public void setMePictogramKey(String mePictogramKey) {
+        this.mePictogramKey = mePictogramKey;
     }
 
     public Date getCreatedAt() {

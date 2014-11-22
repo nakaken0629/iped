@@ -29,14 +29,16 @@ public class TalksServlet extends BaseServlet {
         TalksResponse response = new TalksResponse();
         TalkDomain talkDomain = TalkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
-        for(Talk talk : talkDomain.search(userId, patientId, request.getLastUpdate())) {
+        for(Talk talk : talkDomain.search(patientId, request.getLastUpdate())) {
             TalkValue talkValue = new TalkValue();
             if (talk.getUserId().equals(userId)) {
                 talkValue.setMeText(talk.getText());
+                talkValue.setMePictogramKey(talk.getPictogramKey());
             } else {
                 User user = userDomain.getUser(talk.getUserId());
                 talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
+                talkValue.setYouPictogramKey(talk.getPictogramKey());
                 talkValue.setAuthorName(user.getName());
             }
             talkValue.setCreatedAt(talk.getCreatedAt());
