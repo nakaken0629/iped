@@ -6,174 +6,197 @@
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/imageView1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/icon_001"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:src="@drawable/icon_002"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView1"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
-        android:src="@drawable/icon_003"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView2"
-        android:layout_toEndOf="@+id/imageView2"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView4"
-        android:src="@drawable/icon_004"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView3"
-        android:layout_toEndOf="@+id/imageView3"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView5"
-        android:src="@drawable/icon_005"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView4"
-        android:layout_toEndOf="@+id/imageView4"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView6"
-        android:src="@drawable/icon_006"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView5"
-        android:layout_toEndOf="@+id/imageView5"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView7"
-        android:src="@drawable/icon_007"
-        android:layout_below="@+id/imageView1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView8"
-        android:src="@drawable/icon_008"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView7"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView9"
-        android:src="@drawable/icon_009"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView8"
-        android:layout_toEndOf="@+id/imageView8"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView10"
-        android:src="@drawable/icon_010"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView9"
-        android:layout_toEndOf="@+id/imageView9"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView11"
-        android:src="@drawable/icon_011"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView10"
-        android:layout_toEndOf="@+id/imageView10"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView12"
-        android:src="@drawable/icon_012"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView11"
-        android:layout_toEndOf="@+id/imageView11"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView101"
-        android:src="@drawable/icon_101"
-        android:layout_below="@+id/imageView7"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView102"
-        android:src="@drawable/icon_102"
-        android:layout_below="@+id/imageView7"
-        android:layout_toRightOf="@+id/imageView101"
-        android:layout_toEndOf="@+id/imageView101"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView102b"
-        android:src="@drawable/icon_102b"
-        android:layout_below="@+id/imageView7"
-        android:layout_toRightOf="@+id/imageView102"
-        android:layout_toEndOf="@+id/imageView102"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView103"
-        android:src="@drawable/icon_103"
-        android:layout_below="@+id/imageView7"
-        android:layout_toRightOf="@+id/imageView102b"
-        android:layout_toEndOf="@+id/imageView102b"
-        style="@style/iped_pictogram" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView104"
-        android:src="@drawable/icon_104"
-        android:layout_below="@+id/imageView7"
-        android:layout_toRightOf="@+id/imageView103"
-        android:layout_toEndOf="@+id/imageView103"
         style="@style/iped_pictogram"
-        android:longClickable="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/icon_001"
+        android:tag="icon_001" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView1"
+        android:layout_toRightOf="@+id/imageView1"
+        android:src="@drawable/icon_002"
+        android:tag="icon_002" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView2"
+        android:src="@drawable/icon_003"
+        android:tag="icon_003" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView3"
+        android:layout_toRightOf="@+id/imageView3"
+        android:src="@drawable/icon_004"
+        android:tag="icon_004" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView4"
+        android:layout_toRightOf="@+id/imageView4"
+        android:src="@drawable/icon_005"
+        android:tag="icon_005" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView5"
+        android:layout_toRightOf="@+id/imageView5"
+        android:src="@drawable/icon_006"
+        android:tag="icon_006" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView1"
+        android:src="@drawable/icon_007"
+        android:tag="icon_007" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView7"
+        android:layout_toRightOf="@+id/imageView7"
+        android:src="@drawable/icon_008"
+        android:tag="icon_008" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView8"
+        android:layout_toRightOf="@+id/imageView8"
+        android:src="@drawable/icon_009"
+        android:tag="icon_009" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView9"
+        android:layout_toRightOf="@+id/imageView9"
+        android:src="@drawable/icon_010"
+        android:tag="icon_010" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView10"
+        android:layout_toRightOf="@+id/imageView10"
+        android:src="@drawable/icon_011"
+        android:tag="icon_011" />
+
+    <ImageView
+        android:id="@+id/imageView12"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_toEndOf="@+id/imageView11"
+        android:layout_toRightOf="@+id/imageView11"
+        android:src="@drawable/icon_012"
+        android:tag="icon_0012" />
+
+    <ImageView
+        android:id="@+id/imageView101"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView7"
+        android:src="@drawable/icon_101"
+        android:tag="icon_101" />
+
+    <ImageView
+        android:id="@+id/imageView102"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView7"
+        android:layout_toEndOf="@+id/imageView101"
+        android:layout_toRightOf="@+id/imageView101"
+        android:src="@drawable/icon_102"
+        android:tag="icon_102" />
+
+    <ImageView
+        android:id="@+id/imageView102b"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView7"
+        android:layout_toEndOf="@+id/imageView102"
+        android:layout_toRightOf="@+id/imageView102"
+        android:src="@drawable/icon_102b"
+        android:tag="icon_102b" />
+
+    <ImageView
+        android:id="@+id/imageView103"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView7"
+        android:layout_toEndOf="@+id/imageView102b"
+        android:layout_toRightOf="@+id/imageView102b"
+        android:src="@drawable/icon_103"
+        android:tag="icon_103" />
+
+    <ImageView
+        android:id="@+id/imageView104"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView7"
+        android:layout_toEndOf="@+id/imageView103"
+        android:layout_toRightOf="@+id/imageView103"
+        android:src="@drawable/icon_104"
+        android:tag="icon_104" />
+
+    <TextView
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32px"
+        android:layout_below="@id/imageView101"
+        android:layout_centerHorizontal="true"
+        android:text="これらのピクトグラムおよびアイコンは、日本学術振興会科学研究費助成事業（科研費）挑戦的萌芽研究「患者の気持ちを医療者に伝えるソーシャル・アプリの開発と評価」（代表：日紫喜光良（東邦大学），期間：平成25~26年度）で制作されました。"/>
 </RelativeLayout>

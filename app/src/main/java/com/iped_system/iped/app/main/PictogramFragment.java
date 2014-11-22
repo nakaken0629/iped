@@ -1,16 +1,15 @@
 package com.iped_system.iped.app.main;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.iped_system.iped.R;
 
@@ -19,25 +18,8 @@ import java.util.ArrayList;
 
 public class PictogramFragment extends DialogFragment {
     private static final String TAG = PictogramFragment.class.getName();
-    private static final ArrayList<Integer> pictograms = new ArrayList<Integer>();
 
-    static {
-        Field[] fields = R.drawable.class.getFields();
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            if (!fieldName.startsWith("icon_")) {
-                continue;
-            }
-            Log.d(TAG, fieldName);
-            try {
-                pictograms.add(field.getInt(null));
-            } catch (IllegalAccessException e) {
-                /* nop */
-            }
-        }
-    }
-
-
+    private final PictogramFragment self = this;
     private OnFragmentInteractionListener mListener;
 
     public static PictogramFragment newInstance(Fragment fragment) {
@@ -53,15 +35,32 @@ public class PictogramFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private OnFragmentInteractionListener getListener() {
+        return (OnFragmentInteractionListener) getTargetFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_pictogram, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pictogram, container, false);
+        rootView.findViewById(R.id.imageView1).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView2).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView3).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView4).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView5).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView6).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView7).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView8).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView9).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView10).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView11).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView12).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView101).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView102).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView102b).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView103).setOnClickListener(new PictogramListener());
+        rootView.findViewById(R.id.imageView104).setOnClickListener(new PictogramListener());
+        return rootView;
     }
 
     @NonNull
@@ -70,6 +69,15 @@ public class PictogramFragment extends DialogFragment {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
+    }
+
+    private class PictogramListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String pictogramKey = (String) view.getTag();
+            getListener().onFragmentInteraction(pictogramKey);
+            self.dismiss();
+        }
     }
 
     @Override
