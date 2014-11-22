@@ -49,6 +49,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
             }
         };
 
+        preparePatientSpinner();
+
+        RoleType role = getIpedApplication().getRole();
+        if (role != RoleType.PATIENT) {
+            prepareMeetingTab();
+        }
+        prepareInterviewTab();
+    }
+
+    private void preparePatientSpinner() {
         ArrayAdapter<Patient> adapter = new ArrayAdapter<Patient>(this, android.R.layout.simple_spinner_dropdown_item);
         for (Patient patient : getIpedApplication().getPatients()) {
             adapter.add(patient);
@@ -71,12 +81,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
                 }
             }
         });
-
-        RoleType role = getIpedApplication().getRole();
-        if (role != RoleType.PATIENT) {
-            prepareMeetingTab();
-        }
-        prepareInterviewTab();
     }
 
     private void prepareMeetingTab() {
