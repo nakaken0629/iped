@@ -135,7 +135,7 @@
         android:layout_toEndOf="@+id/imageView11"
         android:layout_toRightOf="@+id/imageView11"
         android:src="@drawable/icon_012"
-        android:tag="icon_0012" />
+        android:tag="icon_012" />
 
     <ImageView
         android:id="@+id/imageView101"
