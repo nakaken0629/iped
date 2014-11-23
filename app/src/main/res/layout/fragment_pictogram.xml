@@ -6,7 +6,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/icon001ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,186 +17,131 @@
         android:tag="icon_001" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/icon002ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_toEndOf="@+id/icon001ImageView"
+        android:layout_toRightOf="@+id/icon001ImageView"
         android:src="@drawable/icon_002"
         android:tag="icon_002" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/icon003ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView2"
-        android:layout_toRightOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/icon002ImageView"
+        android:layout_toRightOf="@+id/icon002ImageView"
         android:src="@drawable/icon_003"
         android:tag="icon_003" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/icon004ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView3"
-        android:layout_toRightOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/icon003ImageView"
+        android:layout_toRightOf="@+id/icon003ImageView"
         android:src="@drawable/icon_004"
         android:tag="icon_004" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/icon005ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView4"
-        android:layout_toRightOf="@+id/imageView4"
+        android:layout_toEndOf="@+id/icon004ImageView"
+        android:layout_toRightOf="@+id/icon004ImageView"
         android:src="@drawable/icon_005"
         android:tag="icon_005" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/icon006ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView5"
-        android:layout_toRightOf="@+id/imageView5"
+        android:layout_toEndOf="@+id/icon005ImageView"
+        android:layout_toRightOf="@+id/icon005ImageView"
         android:src="@drawable/icon_006"
         android:tag="icon_006" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/icon007ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/icon001ImageView"
         android:src="@drawable/icon_007"
         android:tag="icon_007" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/icon008ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView7"
-        android:layout_toRightOf="@+id/imageView7"
+        android:layout_below="@+id/icon001ImageView"
+        android:layout_toEndOf="@+id/icon007ImageView"
+        android:layout_toRightOf="@+id/icon007ImageView"
         android:src="@drawable/icon_008"
         android:tag="icon_008" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/icon009ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView8"
-        android:layout_toRightOf="@+id/imageView8"
+        android:layout_below="@+id/icon001ImageView"
+        android:layout_toEndOf="@+id/icon008ImageView"
+        android:layout_toRightOf="@+id/icon008ImageView"
         android:src="@drawable/icon_009"
         android:tag="icon_009" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/icon010ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView9"
-        android:layout_toRightOf="@+id/imageView9"
+        android:layout_below="@+id/icon001ImageView"
+        android:layout_toEndOf="@+id/icon009ImageView"
+        android:layout_toRightOf="@+id/icon009ImageView"
         android:src="@drawable/icon_010"
         android:tag="icon_010" />
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/icon011ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView10"
-        android:layout_toRightOf="@+id/imageView10"
+        android:layout_below="@+id/icon001ImageView"
+        android:layout_toEndOf="@+id/icon010ImageView"
+        android:layout_toRightOf="@+id/icon010ImageView"
         android:src="@drawable/icon_011"
         android:tag="icon_011" />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/icon012ImageView"
         style="@style/iped_pictogram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toEndOf="@+id/imageView11"
-        android:layout_toRightOf="@+id/imageView11"
+        android:layout_below="@+id/icon001ImageView"
+        android:layout_toEndOf="@+id/icon011ImageView"
+        android:layout_toRightOf="@+id/icon011ImageView"
         android:src="@drawable/icon_012"
         android:tag="icon_012" />
 
-    <ImageView
-        android:id="@+id/imageView101"
-        style="@style/iped_pictogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView7"
-        android:src="@drawable/icon_101"
-        android:tag="icon_101" />
-
-    <ImageView
-        android:id="@+id/imageView102"
-        style="@style/iped_pictogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView101"
-        android:layout_toRightOf="@+id/imageView101"
-        android:src="@drawable/icon_102"
-        android:tag="icon_102" />
-
-    <ImageView
-        android:id="@+id/imageView102b"
-        style="@style/iped_pictogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView102"
-        android:layout_toRightOf="@+id/imageView102"
-        android:src="@drawable/icon_102b"
-        android:tag="icon_102b" />
-
-    <ImageView
-        android:id="@+id/imageView103"
-        style="@style/iped_pictogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView102b"
-        android:layout_toRightOf="@+id/imageView102b"
-        android:src="@drawable/icon_103"
-        android:tag="icon_103" />
-
-    <ImageView
-        android:id="@+id/imageView104"
-        style="@style/iped_pictogram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView7"
-        android:layout_toEndOf="@+id/imageView103"
-        android:layout_toRightOf="@+id/imageView103"
-        android:src="@drawable/icon_104"
-        android:tag="icon_104" />
-
     <TextView
-        android:layout_width="600px"
+        android:layout_width="384dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32px"
-        android:layout_below="@id/imageView101"
+        android:layout_marginTop="32dp"
+        android:layout_below="@id/icon007ImageView"
         android:layout_centerHorizontal="true"
-        android:text="これらのピクトグラムおよびアイコンは、日本学術振興会科学研究費助成事業（科研費）挑戦的萌芽研究「患者の気持ちを医療者に伝えるソーシャル・アプリの開発と評価」（代表：日紫喜光良（東邦大学），期間：平成25~26年度）で制作されました。"/>
+        android:text="@string/pictogram_description"/>
 </RelativeLayout>

@@ -4,5 +4,6 @@
     <string name="app_name">iPED</string>
     <string name="server_baseurl">http://ipedsystem.appspot.com</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pictogram_description">これらのピクトグラムおよびアイコンは、日本学術振興会科学研究費助成事業（科研費）挑戦的萌芽研究「患者の気持ちを医療者に伝えるソーシャル・アプリの開発と評価」（代表：日紫喜光良（東邦大学），期間：平成25~26年度）で制作されました。</string>
 
 </resources>
