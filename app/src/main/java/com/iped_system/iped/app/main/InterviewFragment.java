@@ -67,6 +67,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     @Override
     public void onStart() {
         super.onStart();
+        this.reloadTalks();
         this.reloadTimer = new Timer(true);
         this.reloadTimer.schedule(new ReloadTask(), 5000, 5000);
     }
