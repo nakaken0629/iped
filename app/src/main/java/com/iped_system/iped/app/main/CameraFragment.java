@@ -38,6 +38,7 @@ public class CameraFragment extends DialogFragment {
     public static final String FROM_REMARK_DIALOG = "fromRemarkDialog";
     private Camera camera;
     private boolean fromRemarkDialog;
+    private boolean isFacingBack;
 
     public interface CameraListener {
         public void onTakePicture(byte[] bitmapBytes);
@@ -52,11 +53,13 @@ public class CameraFragment extends DialogFragment {
                 Camera.getCameraInfo(i, info);
                 if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                     parent.camera = Camera.open(i);
+                    parent.isFacingBack = true;
                     break;
                 }
             }
             if (parent.camera == null) {
                 parent.camera = Camera.open(0);
+                parent.isFacingBack = false;
             }
             try {
                 parent.camera.setPreviewDisplay(surfaceHolder);
@@ -100,7 +103,7 @@ public class CameraFragment extends DialogFragment {
             previewHeight = tmpHeight;
 
             parameters.setPreviewSize(previewWidth, previewHeight);
-            parameters.setRotation(90);
+            parameters.setRotation(parent.isFacingBack ? 270 : 90);
 
             /* Adjust SurfaceView size */
             ViewGroup.LayoutParams layoutParams = getView().getLayoutParams();
