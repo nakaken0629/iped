@@ -145,7 +145,9 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                     lastUpdate = talkValue.getCreatedAt();
                 }
             }
-            interviewListView.setSelection(interviewListView.getCount() - 1);
+            if (talksResponse.getTalkValues().size() > 0) {
+                interviewListView.setSelection(interviewListView.getCount() - 1);
+            }
             self.isReloading = false;
         }
 
