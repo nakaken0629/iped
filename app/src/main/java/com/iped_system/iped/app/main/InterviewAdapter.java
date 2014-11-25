@@ -81,7 +81,6 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
         String mePictogramKey = item.getMePictogramKey();
         Long mePictureId = item.getMePictureId();
         if ((youText != null && youText.length() > 0) || (youPictogramKey != null && youPictogramKey.length() > 0) || youPictureId != null) {
-            Log.d(TAG, "about you");
             holder.meLayout.setVisibility(View.GONE);
             holder.youLayout.setVisibility(View.VISIBLE);
             holder.youLayout.setVisibility(View.VISIBLE);
@@ -103,7 +102,6 @@ public class InterviewAdapter extends ArrayAdapter<TalkItem> {
                 faceTask.execute(item.getFaceId());
             }
         } else {
-            Log.d(TAG, "about me");
             holder.youLayout.setVisibility(View.GONE);
             holder.meLayout.setVisibility(View.VISIBLE);
             holder.meTextTextView.setVisibility(meText != null && meText.length() > 0 ? View.VISIBLE : View.GONE);

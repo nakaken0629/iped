@@ -46,5 +46,5 @@
         android:layout_height="match_parent"
         android:id="@+id/interviewListView"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/postEditText" />
+        android:layout_above="@id/cameraButton" />
 </RelativeLayout>

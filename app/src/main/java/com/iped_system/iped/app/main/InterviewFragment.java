@@ -38,6 +38,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     private ListView interviewListView;
     private Timer reloadTimer;
     private Handler handler = new Handler();
+    private boolean isReloading = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +47,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
         /* 変数初期化 */
         this.lastUpdate = null;
+        this.isReloading = false;
 
         /* コマンド */
         Button cameraButton = (Button) rootView.findViewById(R.id.cameraButton);
@@ -99,6 +101,10 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     }
 
     private void reloadTalks() {
+        if (this.isReloading) {
+            return;
+        }
+        this.isReloading = true;
         ReloadTalksAsyncTask task = new ReloadTalksAsyncTask(getActivity());
         TalksRequest request = new TalksRequest();
         request.setLastUpdate(this.lastUpdate);
@@ -140,11 +146,18 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 }
             }
             interviewListView.setSelection(interviewListView.getCount() - 1);
+            self.isReloading = false;
         }
 
         @Override
         protected void onDisconnected() {
             /* don't show dialog */
+        }
+
+        @Override
+        protected void onPostExecuteOnFailure(TalksResponse talksResponse) {
+            super.onPostExecuteOnFailure(talksResponse);
+            self.isReloading = false;
         }
     }
 
