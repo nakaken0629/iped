@@ -26,7 +26,7 @@ public final class TalkDomain {
         /* nop */
     }
 
-    public Entity insert(String userId, String patientId, String text, String pictogramKey) {
+    public Entity insert(String userId, String patientId, String text, String pictogramKey, Long pictureId) {
         Date createdAt = new Date();
 
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
@@ -35,6 +35,7 @@ public final class TalkDomain {
         entity.setProperty("patientId", patientId);
         entity.setProperty("text", text);
         entity.setProperty("pictogramKey", pictogramKey);
+        entity.setProperty("pictureId", pictureId);
         entity.setProperty("createdAt", createdAt);
         service.put(entity);
         return entity;

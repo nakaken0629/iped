@@ -13,6 +13,7 @@ public class Talk extends EntityWrapper {
     @EntityProperty private Date createdAt;
     @EntityProperty private String text;
     @EntityProperty private String pictogramKey;
+    @EntityProperty private Long pictureId;
 
     public Talk() {
         super();
@@ -62,5 +63,13 @@ public class Talk extends EntityWrapper {
 
     public void setPictogramKey(String pictogramKey) {
         this.pictogramKey = pictogramKey;
+    }
+
+    public Long getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(Long pictureId) {
+        this.pictureId = pictureId;
     }
 }

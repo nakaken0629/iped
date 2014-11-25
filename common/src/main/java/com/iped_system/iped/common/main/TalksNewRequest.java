@@ -14,6 +14,7 @@ public class TalksNewRequest extends BaseRequest {
     private Date lastUpdate;
     private String text;
     private String pictogramKey;
+    private Long pictureId;
 
     @Override
     @JSONHint(ignore=true)
@@ -44,5 +45,13 @@ public class TalksNewRequest extends BaseRequest {
 
     public void setPictogramKey(String pictogramKey) {
         this.pictogramKey = pictogramKey;
+    }
+
+    public Long getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(Long pictureId) {
+        this.pictureId = pictureId;
     }
 }

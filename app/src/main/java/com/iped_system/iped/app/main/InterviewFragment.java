@@ -14,8 +14,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
+import com.iped_system.iped.app.common.os.UploadAsyncTask;
+import com.iped_system.iped.common.main.RemarksNewRequest;
 import com.iped_system.iped.common.main.TalkValue;
 import com.iped_system.iped.common.main.TalksNewRequest;
 import com.iped_system.iped.common.main.TalksNewResponse;
@@ -23,10 +26,11 @@ import com.iped_system.iped.common.main.TalksRequest;
 import com.iped_system.iped.common.main.TalksResponse;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener {
+public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener, CameraFragment.CameraListener {
     private static final String TAG = InterviewFragment.class.getName();
     private final InterviewFragment self = this;
 
@@ -44,6 +48,8 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         this.lastUpdate = null;
 
         /* コマンド */
+        Button cameraButton = (Button) rootView.findViewById(R.id.cameraButton);
+        cameraButton.setOnClickListener(new CameraListener());
         Button postButton = (Button) rootView.findViewById(R.id.postButton);
         postButton.setOnClickListener(new PostListener());
         Button pictogramButton = (Button) rootView.findViewById(R.id.pictogramButton);
@@ -159,6 +165,45 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         protected void onPostExecuteOnSuccess(TalksNewResponse talksNewResponse) {
             self.reloadTalks();
         }
+    }
+
+    class CameraListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            CameraFragment fragment = CameraFragment.newInstance(self);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(CameraFragment.FROM_REMARK_DIALOG, false);
+            fragment.setArguments(bundle);
+            fragment.show(transaction, null);
+        }
+    }
+
+    @Override
+    public void onTakePicture(byte[] bitmapBytes) {
+        Picture picture = new Picture(bitmapBytes);
+        IpedApplication application = (IpedApplication) getActivity().getApplicationContext();
+        PhotoUploadTask task = new PhotoUploadTask(getActivity(), application.getPatientId());
+        task.execute(picture);
+    }
+
+    private class PhotoUploadTask extends UploadAsyncTask {
+        private PhotoUploadTask(Activity activity, String patientId) {
+            super(activity, patientId);
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(List<Long> pictureIdList) {
+            TalksNewRequest request = new TalksNewRequest();
+            request.setPictureId(pictureIdList.get(0));
+            TalkTask task = new TalkTask(getActivity());
+            task.execute(request);
+        }
+    }
+
+    @Override
+    public void backToRemark() {
+        /* nop */
     }
 
     class PostListener implements View.OnClickListener {

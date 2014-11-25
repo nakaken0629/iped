@@ -29,7 +29,8 @@ public class TalksNewServlet extends BaseServlet {
         String patientId = authInfo.getPatientId();
         String text = request.getText();
         String pictogramKey = request.getPictogramKey();
-        TalkDomain.getInstance().insert(userId, patientId, text, pictogramKey);
+        Long pictureId = request.getPictureId();
+        TalkDomain.getInstance().insert(userId, patientId, text, pictogramKey, pictureId);
 
         TalksNewResponse response = new TalksNewResponse();
         return response;
