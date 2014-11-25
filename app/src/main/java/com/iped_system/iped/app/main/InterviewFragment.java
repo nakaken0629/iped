@@ -18,7 +18,6 @@ import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.app.RetainFragment;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UploadAsyncTask;
-import com.iped_system.iped.common.main.RemarksNewRequest;
 import com.iped_system.iped.common.main.TalkValue;
 import com.iped_system.iped.common.main.TalksNewRequest;
 import com.iped_system.iped.common.main.TalksNewResponse;
@@ -38,6 +37,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     private ListView interviewListView;
     private Timer reloadTimer;
     private Handler handler = new Handler();
+    private Object reloadLock = new Object();
     private boolean isReloading = false;
 
     @Override
@@ -75,9 +75,10 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     @Override
     public void onStart() {
         super.onStart();
-        this.reloadTalks();
-        this.reloadTimer = new Timer(true);
-        this.reloadTimer.schedule(new ReloadTask(), 5000, 5000);
+        if (this.reloadTimer == null) {
+            this.reloadTimer = new Timer(true);
+            this.reloadTimer.schedule(new ReloadTask(), 0, 5000);
+        }
     }
 
     @Override
@@ -101,10 +102,12 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     }
 
     private void reloadTalks() {
-        if (this.isReloading) {
-            return;
+        synchronized (this.reloadLock) {
+            if (this.isReloading) {
+                return;
+            }
+            this.isReloading = true;
         }
-        this.isReloading = true;
         ReloadTalksAsyncTask task = new ReloadTalksAsyncTask(getActivity());
         TalksRequest request = new TalksRequest();
         request.setLastUpdate(this.lastUpdate);
@@ -129,7 +132,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         @Override
         protected void onPostExecuteOnSuccess(TalksResponse talksResponse) {
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
-            for(TalkValue talkValue : talksResponse.getTalkValues()) {
+            for (TalkValue talkValue : talksResponse.getTalkValues()) {
                 TalkItem item = new TalkItem();
                 item.setFaceId(talkValue.getFaceId());
                 item.setAuthorName(talkValue.getAuthorName());
@@ -148,7 +151,9 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             if (talksResponse.getTalkValues().size() > 0) {
                 interviewListView.setSelection(interviewListView.getCount() - 1);
             }
-            self.isReloading = false;
+            synchronized (self.reloadLock) {
+                self.isReloading = false;
+            }
         }
 
         @Override
@@ -159,7 +164,9 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         @Override
         protected void onPostExecuteOnFailure(TalksResponse talksResponse) {
             super.onPostExecuteOnFailure(talksResponse);
-            self.isReloading = false;
+            synchronized (self.reloadLock) {
+                self.isReloading = false;
+            }
         }
     }
 
@@ -265,6 +272,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     public void refresh() {
         this.lastUpdate = null;
         ((InterviewAdapter) this.interviewListView.getAdapter()).clear();
-        reloadTalks();
+        /* HACK: this code occurs duplicate */
+//        reloadTalks();
     }
 }
