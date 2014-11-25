@@ -37,8 +37,6 @@ public class ImageAsyncTask extends AsyncTask<Long, Void, Bitmap> {
     protected Bitmap doInBackground(Long... imageIdList) {
         try {
             return doInBackgroundInner(imageIdList);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "error", e);
         } catch (IOException e) {
             Log.e(TAG, "error", e);
         }
@@ -46,7 +44,7 @@ public class ImageAsyncTask extends AsyncTask<Long, Void, Bitmap> {
         return null;
     }
 
-    private Bitmap doInBackgroundInner(Long... imageIdList) throws MalformedURLException, IOException {
+    private Bitmap doInBackgroundInner(Long... imageIdList) throws IOException {
         this.imageId = imageIdList[0];
         if (imageId == null) {
             cancel(true);

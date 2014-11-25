@@ -46,6 +46,13 @@
             android:layout_alignLeft="@id/authorNameTextView"
             android:layout_below="@id/youTextTextView"
             android:src="@drawable/icon_001" />
+
+        <ImageView
+            android:id="@+id/youPictureImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/authorNameTextView"
+            android:layout_below="@id/youPictogramImageView" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -71,6 +78,13 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/meTextTextView"
             android:src="@drawable/icon_001" />
+
+        <ImageView
+            android:id="@+id/mePictureImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/mePictogramImageView" />
     </RelativeLayout>
 
     <TextView

@@ -130,8 +130,10 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 item.setCreatedAt(talkValue.getCreatedAt());
                 item.setMeText(talkValue.getMeText());
                 item.setMePictogramKey(talkValue.getMePictogramKey());
+                item.setMePictureId(talkValue.getMePictureId());
                 item.setYouText(talkValue.getYouText());
                 item.setYouPictogramKey(talkValue.getYouPictogramKey());
+                item.setYouPictureId(talkValue.getYouPictureId());
                 adapter.add(item);
                 if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
                     lastUpdate = talkValue.getCreatedAt();

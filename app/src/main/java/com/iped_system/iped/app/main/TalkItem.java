@@ -9,9 +9,11 @@ public class TalkItem {
     private long faceId;
     private String youText;
     private String youPictogramKey;
+    private Long youPictureId;
     private String authorName;
     private String meText;
     private String mePictogramKey;
+    private Long mePictureId;
     private Date createdAt;
 
     public long getFaceId() {
@@ -38,6 +40,14 @@ public class TalkItem {
         this.youPictogramKey = youPictogramKey;
     }
 
+    public Long getYouPictureId() {
+        return youPictureId;
+    }
+
+    public void setYouPictureId(Long youPictureId) {
+        this.youPictureId = youPictureId;
+    }
+
     public String getAuthorName() {
         return authorName;
     }
@@ -60,6 +70,14 @@ public class TalkItem {
 
     public void setMePictogramKey(String mePictogramKey) {
         this.mePictogramKey = mePictogramKey;
+    }
+
+    public Long getMePictureId() {
+        return mePictureId;
+    }
+
+    public void setMePictureId(Long mePictureId) {
+        this.mePictureId = mePictureId;
     }
 
     public Date getCreatedAt() {
