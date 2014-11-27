@@ -1,5 +1,7 @@
 package com.iped_system.iped.common.main;
 
+import net.arnx.jsonic.JSONHint;
+
 import java.util.Date;
 
 /**
@@ -88,5 +90,13 @@ public class TalkValue {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @JSONHint(ignore = true)
+    public boolean isYour() {
+        return (this.youText != null && this.youText.length() > 0)
+                || (this.youPictogramKey != null && this.youPictogramKey.length() > 0)
+                || this.youPictureId != null
+                ;
     }
 }

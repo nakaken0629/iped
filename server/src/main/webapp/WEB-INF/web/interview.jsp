@@ -23,7 +23,7 @@
 <c:forEach var="talk" items="${talks}">
   <div class="panel">
     <div class="panel-body">
-      <c:if test='${!empty talk.youText}'>
+      <c:if test='${talk.your}'>
       　<div>
           <c:if test='${!empty talk.faceId}'>
             <img class="face" src='/web/face/<c:out value="${talk.faceId}" />' />
@@ -35,13 +35,13 @@
         <div style="margin-left: 70px;">
           <b><c:out value="${talk.authorName}"/></b><br />
           <div class="you_box"><c:out value="${talk.youText}"/></div>
-          <p><fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" /></p>
+          <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" />
         </div>
       </c:if>
-      <c:if test='${!empty talk.meText}'>
+      <c:if test='${!talk.your}'>
         <div class="text-right" style="margin-right: 30px;">
           <div class="me_box text-left"><c:out value="${talk.meText}"/></div>
-          <p class="text-left"><fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" /></p>
+          <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" />
         </div>
       </c:if>
     </div>

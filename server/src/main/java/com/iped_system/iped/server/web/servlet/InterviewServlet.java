@@ -34,11 +34,13 @@ public class InterviewServlet extends HttpServlet {
             if (talk.getUserId().equals(userId)) {
                 talkValue.setMeText(talk.getText());
                 talkValue.setMePictogramKey(talk.getPictogramKey());
+                talkValue.setMePictureId(talk.getPictureId());
             } else {
                 User user = userDomain.getUser(talk.getUserId());
                 talkValue.setFaceId(user.getFaceId());
                 talkValue.setYouText(talk.getText());
                 talkValue.setYouPictogramKey(talk.getPictogramKey());
+                talkValue.setYouPictureId(talk.getPictureId());
                 talkValue.setAuthorName(user.getName());
             }
             talkValue.setCreatedAt(talk.getCreatedAt());
