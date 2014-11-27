@@ -11,6 +11,7 @@ import com.iped_system.iped.server.web.filter.AuthFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -51,6 +52,7 @@ public class MeetingServlet extends HttpServlet {
         req.setAttribute("remarks", remarkValues);
         req.setAttribute("tokenId", req.getSession().getAttribute(AuthFilter.TOKEN_KEY));
         req.setAttribute("patientId", req.getSession().getAttribute(AuthFilter.PATIENT_ID_KEY));
+        req.setAttribute("patients", UserDomain.getInstance().getPatients(authInfo.getPatientIdList()));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/web/meeting.jsp");
         dispatcher.forward(req, resp);
     }

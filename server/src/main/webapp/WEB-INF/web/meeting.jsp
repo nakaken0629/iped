@@ -8,9 +8,7 @@
     <title>iPED - メイン画面</title>
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-  <p class="navbar-text">iPED - メイン画面</p>
-</nav>
+<jsp:include page="/WEB-INF/web/partial/menu.jsp"/>
 <ul class="nav nav-tabs" role="tablist">
   <li role="presentation" class="active"><a href="#">ミーティング</a></li>
   <li role="presentation"><a href="/web/secure/interview">インタビュー</a></li>

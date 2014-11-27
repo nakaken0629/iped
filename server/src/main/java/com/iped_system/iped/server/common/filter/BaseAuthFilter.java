@@ -102,12 +102,7 @@ public abstract class BaseAuthFilter implements Filter {
         service.put(token);
 
         /* store user information in a request attribute */
-        AuthInfo authInfo = new AuthInfo();
-        authInfo.setUserId(userId);
-        authInfo.setFirstName(user.getFirstName());
-        authInfo.setLastName(user.getLastName());
-        authInfo.setPatientId(getPatientId(request));
-        authInfo.setRole(user.getRole());
+        AuthInfo authInfo = new AuthInfo(user, getPatientId(request));
         request.setAttribute(AUTH_INFO_KEY, authInfo);
     }
 
