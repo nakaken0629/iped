@@ -33,14 +33,34 @@
           </c:if>
         </div>
         <div style="margin-left: 70px;">
-          <b><c:out value="${talk.authorName}"/></b><br />
-          <div class="you_box"><c:out value="${talk.youText}"/></div>
+          <b><c:out value="${talk.authorName}" /></b><br />
+          <c:if test='${!empty talk.youText}'>
+            <div class="you_box"><c:out value="${talk.youText}" /></div>
+          </c:if>
+          <c:if test='${!empty talk.youPictogramKey}'>
+            <img class="pictogram" src='/web/image/<c:out value="${talk.youPictogramKey}" />.png' /><br />
+          </c:if>
+          <c:if test='${!empty talk.youPictureId}'>
+            <div style="overflow: scroll">
+              <img class="picture" src='/web/face/<c:out value="${talk.youPictureId}" />' />
+            </div>
+          </c:if>
           <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" />
         </div>
       </c:if>
       <c:if test='${!talk.your}'>
         <div class="text-right" style="margin-right: 30px;">
-          <div class="me_box text-left"><c:out value="${talk.meText}"/></div>
+          <c:if test='${!empty talk.meText}'>
+            <div class="me_box text-left"><c:out value="${talk.meText}" /></div>
+          </c:if>
+          <c:if test='${!empty talk.mePictogramKey}'>
+            <img class="pictogram" src='/web/image/<c:out value="${talk.mePictogramKey}" />.png' /><br />
+          </c:if>
+          <c:if test='${!empty talk.mePictureId}'>
+            <div style="overflow: scroll">
+              <img class="picture" src='/web/face/<c:out value="${talk.mePictureId}" />' />
+            </div>
+          </c:if>
           <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" />
         </div>
       </c:if>
