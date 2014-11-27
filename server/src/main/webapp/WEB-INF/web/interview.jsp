@@ -9,9 +9,7 @@
     <title>iPED - メイン画面</title>
 </head>
 <body>
-<nav class="navbar navbar-default" role="navigation">
-  <p class="navbar-text">iPED - メイン画面</p>
-</nav>
+<jsp:include page="/WEB-INF/web/partial/menu.jsp"/>
 <ul class="nav nav-tabs" role="tablist">
   <c:set var="PATIENT" value="<%= RoleType.PATIENT %>" />
   <c:if test="${authInfo.role != PATIENT}">
@@ -71,7 +69,6 @@
 <div class="container">
 <form id="talkForm" class="form-inline" role="form" action="/web/interview" method="post">
   <input id="tokenId" type="hidden" value='<c:out value="${tokenId}" />' />
-  <input id="patientId" type="hidden" value='<c:out value="${patientId}" />' />
   <div class="form-group">
     <label class="sr-only" for="talk">発言</label>
     <textarea id="talk" class="form-control" rows="2" name="talk"></textarea>
@@ -81,5 +78,6 @@
 </div>
 <jsp:include page="/WEB-INF/web/partial/footer.jsp"/>
 <script src="/web/js/interview.js"></script>
+<script src="/web/js/menu.js"></script>
 </body>
 </html>

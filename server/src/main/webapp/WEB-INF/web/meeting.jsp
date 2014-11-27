@@ -16,7 +16,6 @@
 <div class="container">
 <form id="remarkForm" class="form-inline" role="form" action="/web/meeting" method="post">
   <input id="tokenId" type="hidden" value='<c:out value="${tokenId}" />' />
-  <input id="patientId" type="hidden" value='<c:out value="${patientId}" />' />
   <div class="form-group">
     <label class="sr-only" for="remark">発言</label>
     <textarea id="remark" class="form-control" rows="2" name="remark"></textarea>
@@ -52,5 +51,6 @@
 </div>
 <jsp:include page="/WEB-INF/web/partial/footer.jsp"/>
 <script src="/web/js/meeting.js"></script>
+<script src="/web/js/menu.js"></script>
 </body>
 </html>
