@@ -17,7 +17,8 @@
 </ul>
 <div class="container">
 <form id="remarkForm" class="form-inline" role="form" action="/web/meeting" method="post">
-  <input id="tokenId" type="hidden" value='<c:out value="${token}" />' />
+  <input id="tokenId" type="hidden" value='<c:out value="${tokenId}" />' />
+  <input id="patientId" type="hidden" value='<c:out value="${patientId}" />' />
   <div class="form-group">
     <label class="sr-only" for="remark">発言</label>
     <textarea id="remark" class="form-control" rows="2" name="remark"></textarea>

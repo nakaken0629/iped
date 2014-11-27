@@ -32,10 +32,10 @@ public class AuthFilter extends BaseAuthFilter {
 
     @Override
     protected long getTokenId(ServletRequest request) throws UnauthorizedException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletRequest req = (HttpServletRequest) request;
 
         try {
-            return Long.valueOf(httpServletRequest.getHeader("X-IPED-TOKEN-ID"));
+            return Long.valueOf(req.getHeader("X-IPED-TOKEN-ID"));
         } catch (NumberFormatException e) {
             throw new UnauthorizedException("invalid token id", e);
         }
@@ -43,8 +43,8 @@ public class AuthFilter extends BaseAuthFilter {
 
     @Override
     protected String getPatientId(ServletRequest request) throws UnauthorizedException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        return httpServletRequest.getHeader("X-IPED-PATIENT-ID");
+        HttpServletRequest req = (HttpServletRequest) request;
+        return req.getHeader("X-IPED-PATIENT-ID");
     }
 
     @Override

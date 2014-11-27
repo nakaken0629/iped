@@ -49,6 +49,8 @@ public class MeetingServlet extends HttpServlet {
         }
 
         req.setAttribute("remarks", remarkValues);
+        req.setAttribute("tokenId", req.getSession().getAttribute(AuthFilter.TOKEN_KEY));
+        req.setAttribute("patientId", req.getSession().getAttribute(AuthFilter.PATIENT_ID_KEY));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/web/meeting.jsp");
         dispatcher.forward(req, resp);
     }
