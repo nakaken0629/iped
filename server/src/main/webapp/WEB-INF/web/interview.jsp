@@ -35,23 +35,23 @@
         <div style="margin-left: 70px;">
           <b><c:out value="${talk.authorName}"/></b><br />
           <div class="you_box"><c:out value="${talk.youText}"/></div>
+          <p><fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" /></p>
         </div>
       </c:if>
       <c:if test='${!empty talk.meText}'>
         <div class="text-right" style="margin-right: 30px;">
           <div class="me_box text-left"><c:out value="${talk.meText}"/></div>
+          <p class="text-left"><fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" /></p>
         </div>
       </c:if>
-    </div>
-    <div class="panel-footer">
-      <p><fmt:formatDate value="${talk.createdAt}" pattern="yyyy/M/d H:mm" timeZone="Asia/Tokyo" /></p>
     </div>
   </div>
 </c:forEach>
 </div>
 <div class="container">
 <form id="talkForm" class="form-inline" role="form" action="/web/interview" method="post">
-  <input id="tokenId" type="hidden" value='<c:out value="${token}" />' />
+  <input id="tokenId" type="hidden" value='<c:out value="${tokenId}" />' />
+  <input id="patientId" type="hidden" value='<c:out value="${patientId}" />' />
   <div class="form-group">
     <label class="sr-only" for="talk">発言</label>
     <textarea id="talk" class="form-control" rows="2" name="talk"></textarea>

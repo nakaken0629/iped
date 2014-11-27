@@ -5,6 +5,7 @@ $(function() {
       return false;
     }
     var tokenId = $("#tokenId").val();
+    var patientId = $("#patientId").val();
 
     var request = {
         text: talk
@@ -14,6 +15,7 @@ $(function() {
       method: "POST",
       headers: {
         'X-IPED-TOKEN-ID': tokenId,
+        'X-IPED-PATIENT-ID': patientId,
       },
       data: {parameter: JSON.stringify(request)},
       dataType: "json",

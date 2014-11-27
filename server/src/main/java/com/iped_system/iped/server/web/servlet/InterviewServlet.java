@@ -46,6 +46,8 @@ public class InterviewServlet extends HttpServlet {
         }
 
         req.setAttribute("talks", talks);
+        req.setAttribute("tokenId", req.getSession().getAttribute(AuthFilter.TOKEN_KEY));
+        req.setAttribute("patientId", req.getSession().getAttribute(AuthFilter.PATIENT_ID_KEY));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/web/interview.jsp");
         dispatcher.forward(req, resp);
     }
