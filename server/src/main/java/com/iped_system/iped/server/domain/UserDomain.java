@@ -53,7 +53,7 @@ public final class UserDomain {
             Entity token = new Entity("Token");
             token.setProperty("userId", userId);
             Calendar calendar = Calendar.getInstance();
-            token.setProperty(BaseAuthFilter.TOKEN_EXPIRE_KEY, calendar.getTime());
+            token.setProperty("refreshDate", calendar.getTime());
             DatastoreService service = DatastoreServiceFactory.getDatastoreService();
             service.put(token);
             return new LoginResult(user, token.getKey().getId());

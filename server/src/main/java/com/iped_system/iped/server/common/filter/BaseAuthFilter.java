@@ -30,7 +30,6 @@ public abstract class BaseAuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(BaseAuthFilter.class.getName());
     private static final int TOKEN_EXPIRE_TIME = 10 * 24 * 60 * 60 * 1000;    /* 10 days */
 
-    public static final String TOKEN_EXPIRE_KEY = BaseAuthFilter.class.getName() + ":TOKEN_EXPIRE_KEY";
     public static final String AUTH_INFO_KEY = BaseAuthFilter.class.getName() + ":AUTH_INFO_KEY";
 
     public class UnauthorizedException extends Exception {
@@ -81,7 +80,7 @@ public abstract class BaseAuthFilter implements Filter {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MILLISECOND, -TOKEN_EXPIRE_TIME);
-        if (calendar.getTime().compareTo((Date) token.getProperty(TOKEN_EXPIRE_KEY)) >= 0) {
+        if (calendar.getTime().compareTo((Date) token.getProperty("refreshDate")) >= 0) {
             throw new UnauthorizedException("expired token");
         }
 
@@ -98,7 +97,7 @@ public abstract class BaseAuthFilter implements Filter {
         }
 
         /* refresh token */
-        token.setProperty(TOKEN_EXPIRE_KEY, new Date());
+        token.setProperty("refreshDate", new Date());
         service.put(token);
 
         /* store user information in a request attribute */
