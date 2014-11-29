@@ -14,8 +14,8 @@
         <ImageView
             android:id="@+id/profileImageView"
             style="@style/iped_remark_image"
-            android:layout_width="96px"
-            android:layout_height="96px"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/anonymous" />
