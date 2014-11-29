@@ -28,7 +28,7 @@ import javax.servlet.ServletResponse;
  */
 public abstract class BaseAuthFilter implements Filter {
     private static final Logger logger = Logger.getLogger(BaseAuthFilter.class.getName());
-    private static final int TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
+    private static final int TOKEN_EXPIRE_TIME = 10 * 24 * 60 * 60 * 1000;    /* 10 days */
 
     public static final String TOKEN_EXPIRE_KEY = BaseAuthFilter.class.getName() + ":TOKEN_EXPIRE_KEY";
     public static final String AUTH_INFO_KEY = BaseAuthFilter.class.getName() + ":AUTH_INFO_KEY";
