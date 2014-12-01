@@ -1,4 +1,8 @@
 $(function() {
+  $(window).load(function() {
+    $("html, body").animate({ scrollTop: $(document).height() }, 100);
+  });
+
   $("#talkButton").click(function() {
     var talk = $("#talk").val().trim();
     if (talk == "") {

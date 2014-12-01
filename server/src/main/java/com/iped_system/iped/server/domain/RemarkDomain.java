@@ -48,7 +48,6 @@ public final class RemarkDomain {
                 .setFilter(filter)
                 .addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
-        UserDomain userDomain = UserDomain.getInstance();
         ArrayList<Remark> remarks = new ArrayList<Remark>();
         for(Entity entity : pq.asIterable(FetchOptions.Builder.withLimit(FETCH_SIZE))) {
             Remark remark = new Remark(entity);

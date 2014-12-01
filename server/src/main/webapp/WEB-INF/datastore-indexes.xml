@@ -11,6 +11,6 @@
     <!-- Used 1 time in query history -->
     <datastore-index kind="Talk" ancestor="false" source="auto">
         <property name="patientId" direction="asc"/>
-        <property name="createdAt" direction="asc"/>
+        <property name="createdAt" direction="desc"/>
     </datastore-index>
 </datastore-indexes>
