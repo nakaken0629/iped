@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.management.relation.Role;
-
 /**
  * Created by kenji on 2014/10/11.
  */

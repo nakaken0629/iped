@@ -10,7 +10,7 @@
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="localDebug" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleLocalDebug" />
-        <option name="COMPILE_JAVA_TASK_NAME" value="compileLocalDebugJava" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileLocalDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleLocalDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateLocalDebugSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateLocalDebugTestSources" />
@@ -31,6 +31,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/local/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/local/debug" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/local/debug" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/local/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/localDebug/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/localDebug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/localDebug/assets" type="java-resource" />
@@ -43,6 +44,7 @@
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/test/local/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/test/local/debug" isTestSource="true" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/test/local/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/generated/test/local/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/local/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/local/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/local/assets" type="java-resource" />
@@ -98,8 +100,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 20 Platform (1)" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 20 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="httpmime-4.4-alpha1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3" level="project" />
