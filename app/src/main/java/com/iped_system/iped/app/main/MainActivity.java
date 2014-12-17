@@ -27,7 +27,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         public void refresh();
     }
 
-    private LruCache<String, Bitmap> imageCache;
     private FragmentTabHost host;
     private HashMap<String, RefreshObserver> observers = new HashMap<String, RefreshObserver>();
     private String currentTab;
@@ -39,15 +38,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final int maxMemory = (int) Runtime.getRuntime().maxMemory() / 1024;
-        final int cacheSize = maxMemory / 8;
-        this.imageCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getByteCount() / 1024;
-            }
-        };
 
         preparePatientSpinner();
 

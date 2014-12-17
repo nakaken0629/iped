@@ -11,7 +11,7 @@ import android.util.LruCache;
  */
 public class RetainFragment extends Fragment {
     private static final String TAG = RetainFragment.class.getName();
-    private LruCache cache;
+    private LruCache<String, Bitmap> cache;
 
     public static RetainFragment findOrCreateRetainFragment(FragmentManager fm) {
         RetainFragment fragment = (RetainFragment) fm.findFragmentByTag(TAG);
@@ -45,6 +45,6 @@ public class RetainFragment extends Fragment {
     }
 
     public Bitmap getBitmapFromMemCache(long imageId) {
-        return (Bitmap)this.cache.get(Long.toString(imageId));
+        return this.cache.get(Long.toString(imageId));
     }
 }
