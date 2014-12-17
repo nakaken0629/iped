@@ -26,6 +26,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     private static final String TAG = MainActivity.class.getName();
     private final MainActivity parent = this;
     private MenuItem updateItem;
+    private MainVersionTask versionTask;
 
     /* TODO: FragmentTabHostから現在のfragmentが取得できれば、このインターフェイスは不要 */
     public interface RefreshObserver {
@@ -38,6 +39,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     private IpedApplication getIpedApplication() {
         return (IpedApplication) getApplication();
+    }
+
+    private class MainVersionTask extends VersionTask {
+        private MainVersionTask(Activity activity) {
+            super(activity);
+            parent.updateItem.setVisible(false);
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
+            if (getVersionCode() < versionResponse.getVersionCode()) {
+                parent.updateItem.setVisible(true);
+            }
+        }
     }
 
     @Override
@@ -91,15 +106,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "execute onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
-        this.updateItem = menu.findItem(R.id.updateMenu);
-        Log.d(TAG, "updateItem is " + (this.updateItem == null ? "null" : "not null"));
 
-        MainVersionTask task = new MainVersionTask(this);
+        this.updateItem = menu.findItem(R.id.updateMenu);
+        this.versionTask = new MainVersionTask(this);
         VersionRequest request = new VersionRequest();
-        task.execute(request);
+        this.versionTask.execute(request);
 
         return true;
     }
@@ -115,19 +136,4 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     public void addObserver(String key, RefreshObserver observer) {
         this.observers.put(key, observer);
     }
-
-    private class MainVersionTask extends VersionTask {
-        private MainVersionTask(Activity activity) {
-            super(activity);
-             parent.updateItem.setVisible(false);
-        }
-
-        @Override
-        protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
-            if (getVersionCode() < versionResponse.getVersionCode()) {
-                parent.updateItem.setVisible(true);
-            }
-        }
-    }
-
 }
