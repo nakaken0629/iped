@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/iped_actionbar_style</item>
+        <item name="android:actionDropDownStyle">@style/iped_dropdown_style</item>
     </style>
 
     <style name="iped_actionbar_style" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -11,6 +12,12 @@
         <item name="android:icon">@android:color/transparent</item>
     </style>
 
+    <style name="iped_dropdown_style" parent="android:style/Widget.Holo.Light.Spinner">
+        <item name="android:popupBackground">#ffcccccc</item>
+        <item name="android:dropDownSelector">#ff006600</item>
+    </style>
+
+    <!-- style the list navigation -->
     <style name="iped_title_style" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textStyle">bold</item>
