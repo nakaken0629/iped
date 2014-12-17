@@ -1,33 +1,41 @@
 package com.iped_system.iped.app.main;
 
 import android.app.ActionBar;
-import android.graphics.Bitmap;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.util.LruCache;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.app.common.os.UpdateAsyncTask;
+import com.iped_system.iped.app.common.os.VersionTask;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
+import com.iped_system.iped.common.login.VersionRequest;
+import com.iped_system.iped.common.login.VersionResponse;
 
 import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String TAG = MainActivity.class.getName();
     private final MainActivity parent = this;
+    private MenuItem updateItem;
+    private MainVersionTask versionTask;
+    private String updateUrl;
 
     /* TODO: FragmentTabHostから現在のfragmentが取得できれば、このインターフェイスは不要 */
     public interface RefreshObserver {
         public void refresh();
     }
 
-    private LruCache<String, Bitmap> imageCache;
     private FragmentTabHost host;
     private HashMap<String, RefreshObserver> observers = new HashMap<String, RefreshObserver>();
     private String currentTab;
@@ -36,18 +44,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         return (IpedApplication) getApplication();
     }
 
+    private class MainVersionTask extends VersionTask {
+        private MainVersionTask(Activity activity) {
+            super(activity);
+            parent.updateItem.setVisible(false);
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
+            if (getVersionCode() < versionResponse.getVersionCode()) {
+                parent.updateUrl = versionResponse.getUrl();
+                parent.updateItem.setVisible(true);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final int maxMemory = (int) Runtime.getRuntime().maxMemory() / 1024;
-        final int cacheSize = maxMemory / 8;
-        this.imageCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                return bitmap.getByteCount() / 1024;
-            }
-        };
 
         preparePatientSpinner();
 
@@ -96,10 +110,31 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "execute onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        this.updateItem = menu.findItem(R.id.updateMenu);
+        this.updateItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                UpdateAsyncTask task = new UpdateAsyncTask(parent);
+                task.execute(parent.updateUrl);
+                return false;
+            }
+        });
+        this.versionTask = new MainVersionTask(this);
+        VersionRequest request = new VersionRequest();
+        this.versionTask.execute(request);
+
+        return true;
     }
 
     @Override
