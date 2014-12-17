@@ -1,24 +1,31 @@
 package com.iped_system.iped.app.main;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.app.common.os.VersionTask;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
+import com.iped_system.iped.common.login.VersionRequest;
+import com.iped_system.iped.common.login.VersionResponse;
 
 import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String TAG = MainActivity.class.getName();
     private final MainActivity parent = this;
+    private MenuItem updateItem;
 
     /* TODO: FragmentTabHostから現在のfragmentが取得できれば、このインターフェイスは不要 */
     public interface RefreshObserver {
@@ -87,7 +94,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
-        return super.onCreateOptionsMenu(menu);
+        this.updateItem = menu.findItem(R.id.updateMenu);
+        Log.d(TAG, "updateItem is " + (this.updateItem == null ? "null" : "not null"));
+
+        MainVersionTask task = new MainVersionTask(this);
+        VersionRequest request = new VersionRequest();
+        task.execute(request);
+
+        return true;
     }
 
     @Override
@@ -101,4 +115,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     public void addObserver(String key, RefreshObserver observer) {
         this.observers.put(key, observer);
     }
+
+    private class MainVersionTask extends VersionTask {
+        private MainVersionTask(Activity activity) {
+            super(activity);
+             parent.updateItem.setVisible(false);
+        }
+
+        @Override
+        protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
+            if (getVersionCode() < versionResponse.getVersionCode()) {
+                parent.updateItem.setVisible(true);
+            }
+        }
+    }
+
 }
