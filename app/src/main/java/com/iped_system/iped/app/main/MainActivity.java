@@ -9,11 +9,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
+import com.iped_system.iped.app.common.os.UpdateAsyncTask;
 import com.iped_system.iped.app.common.os.VersionTask;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
@@ -27,6 +29,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     private final MainActivity parent = this;
     private MenuItem updateItem;
     private MainVersionTask versionTask;
+    private String updateUrl;
 
     /* TODO: FragmentTabHostから現在のfragmentが取得できれば、このインターフェイスは不要 */
     public interface RefreshObserver {
@@ -50,6 +53,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         @Override
         protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
             if (getVersionCode() < versionResponse.getVersionCode()) {
+                parent.updateUrl = versionResponse.getUrl();
                 parent.updateItem.setVisible(true);
             }
         }
@@ -118,6 +122,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         inflater.inflate(R.menu.main_activity_actions, menu);
 
         this.updateItem = menu.findItem(R.id.updateMenu);
+        this.updateItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                UpdateAsyncTask task = new UpdateAsyncTask(parent);
+                task.execute(parent.updateUrl);
+                return false;
+            }
+        });
         this.versionTask = new MainVersionTask(this);
         VersionRequest request = new VersionRequest();
         this.versionTask.execute(request);
