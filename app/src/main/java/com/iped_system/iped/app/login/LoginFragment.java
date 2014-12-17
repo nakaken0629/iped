@@ -17,8 +17,8 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UpdateAsyncTask;
+import com.iped_system.iped.app.common.os.VersionTask;
 import com.iped_system.iped.app.common.widget.EditTextEx;
-import com.iped_system.iped.common.BaseResponse;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.common.login.LoginRequest;
@@ -76,24 +76,12 @@ public class LoginFragment extends Fragment {
         super.onAttach(activity);
         this.onLoginListener = (OnLoginListener) activity;
 
-        VersionTask task = new VersionTask(activity);
+        LoginVersionTask task = new LoginVersionTask(activity);
         VersionRequest request = new VersionRequest();
         task.execute(request);
     }
 
-    private int getVersionCode() {
-        PackageManager pm = getActivity().getPackageManager();
-        int versionCode = 0;
-        try {
-            PackageInfo packageInfo = pm.getPackageInfo(getActivity().getPackageName(), 0);
-            versionCode = packageInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "バージョン番号を取得できませんでした", e);
-        }
-        return versionCode;
-    }
-
-    private String getVersionName() {
+    protected String getVersionName() {
         PackageManager pm = getActivity().getPackageManager();
         String versionName = "";
         try {
@@ -105,19 +93,9 @@ public class LoginFragment extends Fragment {
         return versionName;
     }
 
-    class VersionTask extends ApiAsyncTask<VersionRequest, VersionResponse> {
-        private VersionTask(Activity activity) {
+    private class LoginVersionTask extends VersionTask {
+        private LoginVersionTask(Activity activity) {
             super(activity);
-        }
-
-        @Override
-        protected boolean isSecure() {
-            return false;
-        }
-
-        @Override
-        protected String getApiName() {
-            return "version";
         }
 
         @Override
@@ -143,7 +121,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    class UpdateButtonListener implements  View.OnClickListener {
+    class UpdateButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             UpdateAsyncTask task = new UpdateAsyncTask(parent.getActivity());

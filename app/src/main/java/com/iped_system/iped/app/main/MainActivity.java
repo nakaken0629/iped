@@ -1,11 +1,9 @@
 package com.iped_system.iped.app.main;
 
 import android.app.ActionBar;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.util.LruCache;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ArrayAdapter;
