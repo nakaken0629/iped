@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
 
@@ -47,14 +46,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     private class MainVersionTask extends VersionTask {
         private MainVersionTask(Activity activity) {
             super(activity);
-            parent.updateItem.setVisible(false);
+            parent.updateItem.setEnabled(false);
+            parent.updateItem.setTitle("更新不要です");
         }
 
         @Override
         protected void onPostExecuteOnSuccess(VersionResponse versionResponse) {
             if (getVersionCode() < versionResponse.getVersionCode()) {
                 parent.updateUrl = versionResponse.getUrl();
-                parent.updateItem.setVisible(true);
+                parent.updateItem.setEnabled(true);
+                parent.updateItem.setTitle("ここを押して更新");
+                parent.updateItem.setIcon(android.R.drawable.ic_dialog_info);
             }
         }
     }

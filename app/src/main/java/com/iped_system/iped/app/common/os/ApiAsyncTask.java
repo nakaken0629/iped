@@ -41,6 +41,7 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     private String baseUrl;
     private WeakReference<Activity> activityRef;
     private String patientId;
+    private int httpStatus;
 
     private boolean isConnected = true;
 
@@ -54,14 +55,15 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         }
     }
 
-    private boolean isConnected(Context context){
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    private boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if( ni != null ){
+        if (ni != null) {
             return cm.getActiveNetworkInfo().isConnected();
         }
         return false;
     }
+
     protected boolean isSecure() {
         return true;
     }
@@ -109,8 +111,8 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
 
         /* access server */
         HttpResponse response = client.execute(post);
-        int status = response.getStatusLine().getStatusCode();
-        if (status != HttpStatus.SC_OK) {
+        this.httpStatus = response.getStatusLine().getStatusCode();
+        if (this.httpStatus != HttpStatus.SC_OK) {
             throw new IOException("network error: " + response.getStatusLine().toString());
         }
         InputStreamReader reader = new InputStreamReader(response.getEntity().getContent());
@@ -143,9 +145,20 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         dialog.show();
     }
 
+    @Override
+    protected void onCancelled() {
+        if (this.httpStatus == HttpStatus.SC_FORBIDDEN) {
+            onExpireToken();
+        }
+    }
+
     protected abstract void onPostExecuteOnSuccess(T2 t2);
 
     protected void onPostExecuteOnFailure(T2 t2) {
+        /* nop */
+    }
+
+    protected void onExpireToken() {
         /* nop */
     }
 }
