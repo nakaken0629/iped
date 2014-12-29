@@ -3,6 +3,7 @@ package com.iped_system.iped.app.common.os;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -58,10 +59,7 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     private boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni != null) {
-            return cm.getActiveNetworkInfo().isConnected();
-        }
-        return false;
+        return ni != null && cm.getActiveNetworkInfo().isConnected();
     }
 
     protected boolean isSecure() {
@@ -88,7 +86,6 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         try {
             return doInBackgroundInner(requests);
         } catch (IOException e) {
-            cancel(true);
             return null;
         }
     }
@@ -112,8 +109,9 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         /* access server */
         HttpResponse response = client.execute(post);
         this.httpStatus = response.getStatusLine().getStatusCode();
-        if (this.httpStatus != HttpStatus.SC_OK) {
-            throw new IOException("network error: " + response.getStatusLine().toString());
+        Log.d(TAG, "httpStatus : " + this.httpStatus);
+        if (this.httpStatus == HttpStatus.SC_UNAUTHORIZED) {
+            return null;
         }
         InputStreamReader reader = new InputStreamReader(response.getEntity().getContent());
         BaseResponse baseResponse = BaseResponse.fromJSON(reader, request.getResponseClass());
@@ -129,10 +127,16 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         }
         if (!this.isConnected) {
             onDisconnected();
+            return;
+        } else if (this.httpStatus == HttpStatus.SC_UNAUTHORIZED) {
+            onExpireToken();
+            return;
         } else if (t2.getStatus() == ResponseStatus.SUCCESS) {
             onPostExecuteOnSuccess(t2);
+            return;
         } else {
             onPostExecuteOnFailure(t2);
+            return;
         }
     }
 
@@ -145,13 +149,6 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
         dialog.show();
     }
 
-    @Override
-    protected void onCancelled() {
-        if (this.httpStatus == HttpStatus.SC_FORBIDDEN) {
-            onExpireToken();
-        }
-    }
-
     protected abstract void onPostExecuteOnSuccess(T2 t2);
 
     protected void onPostExecuteOnFailure(T2 t2) {
@@ -159,6 +156,16 @@ public abstract class ApiAsyncTask<T1 extends BaseRequest, T2 extends BaseRespon
     }
 
     protected void onExpireToken() {
-        /* nop */
+        Log.d(TAG, "call onExpireToken");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = builder.setTitle("メッセージ")
+                .setMessage("時間が空いたので、ログイン画面からやり直してください")
+                .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getActivity().finish();
+                    }
+                }).create();
+        dialog.show();
     }
 }
