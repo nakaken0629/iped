@@ -10,17 +10,17 @@
         android:id="@+id/pictogramButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="スタンプ"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:text="スタンプ" />
 
     <Button
         android:id="@+id/postButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="投稿する"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/pictogramButton"
-        android:layout_alignParentBottom="true" />
+        android:text="投稿する" />
 
     <Button
         android:id="@+id/cameraButton"
@@ -29,22 +29,27 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:drawableLeft="@android:drawable/ic_menu_camera"
-        android:text="写真"/>
+        android:text="写真" />
 
     <EditText
         android:id="@+id/postEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
         android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/postButton"
         android:layout_toRightOf="@id/cameraButton"
-        android:layout_toLeftOf="@id/postButton" />
+        android:ems="10"
+        android:inputType="textMultiLine" />
 
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/interviewRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/interviewListView"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/cameraButton" />
+        android:layout_above="@id/cameraButton"
+        android:layout_alignParentTop="true">
+        <ListView
+            android:id="@+id/interviewListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

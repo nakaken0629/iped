@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +34,13 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     private static final String TAG = InterviewFragment.class.getName();
     private final InterviewFragment self = this;
 
+    private Date firstUpdate;
     private Date lastUpdate;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ListView interviewListView;
     private Timer reloadTimer;
     private Handler handler = new Handler();
-    private Object reloadLock = new Object();
+    final private Object reloadLock = new Object();
     private boolean isReloading = false;
 
     @Override
@@ -46,6 +49,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         View rootView = inflater.inflate(R.layout.fragment_interview, container, false);
 
         /* 変数初期化 */
+        this.firstUpdate = null;
         this.lastUpdate = null;
         this.isReloading = false;
 
@@ -58,6 +62,8 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         pictogramButton.setOnClickListener(new PictogramListener());
 
         /* リストビュー */
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.interviewRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new HistoryListener());
         this.interviewListView = (ListView) rootView.findViewById(R.id.interviewListView);
         RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
         InterviewAdapter adapter = new InterviewAdapter(getActivity(), 0, retainFragment);
@@ -108,14 +114,32 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             }
             this.isReloading = true;
         }
-        ReloadTalksAsyncTask task = new ReloadTalksAsyncTask(getActivity());
+        FetchTalksAsyncTask task = new FetchTalksAsyncTask(getActivity());
         TalksRequest request = new TalksRequest();
         request.setLastUpdate(this.lastUpdate);
         task.execute(request);
     }
 
-    class ReloadTalksAsyncTask extends ApiAsyncTask<TalksRequest, TalksResponse> {
-        ReloadTalksAsyncTask(Activity context) {
+    private class HistoryListener implements SwipeRefreshLayout.OnRefreshListener {
+        private InterviewFragment parent = InterviewFragment.this;
+
+        @Override
+        public void onRefresh() {
+            synchronized (parent.reloadLock) {
+                if (parent.isReloading) {
+                    return;
+                }
+                parent.isReloading = true;
+            }
+            FetchTalksAsyncTask task = new FetchTalksAsyncTask(getActivity());
+            TalksRequest request = new TalksRequest();
+            request.setFirstUpdate(parent.firstUpdate);
+            task.execute(request);
+        }
+    }
+
+    class FetchTalksAsyncTask extends ApiAsyncTask<TalksRequest, TalksResponse> {
+        FetchTalksAsyncTask(Activity context) {
             super(context);
         }
 
@@ -131,6 +155,10 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
         @Override
         protected void onPostExecuteOnSuccess(TalksResponse talksResponse) {
+            Date firstUpdate = null;
+            Date lastUpdate = null;
+            boolean goLast = false;
+
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
             for (TalkValue talkValue : talksResponse.getTalkValues()) {
                 TalkItem item = new TalkItem();
@@ -143,12 +171,33 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 item.setYouText(talkValue.getYouText());
                 item.setYouPictogramKey(talkValue.getYouPictogramKey());
                 item.setYouPictureId(talkValue.getYouPictureId());
-                adapter.add(item);
+
+                for (int index = 0; index < adapter.getCount() + 1; index++) {
+                    if (index == adapter.getCount()) {
+                        adapter.add(item);
+                        break;
+                    }
+                    TalkItem currentItem = adapter.getItem(index);
+                    if (currentItem.getCreatedAt().after(item.getCreatedAt())) {
+                        adapter.insert(item, index);
+                        break;
+                    }
+                }
+                if (firstUpdate == null || firstUpdate.after(talkValue.getCreatedAt())) {
+                    firstUpdate = talkValue.getCreatedAt();
+                }
                 if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
                     lastUpdate = talkValue.getCreatedAt();
+                    goLast = true;
                 }
             }
-            if (talksResponse.getTalkValues().size() > 0) {
+            if (self.firstUpdate == null || (firstUpdate != null && firstUpdate.before(self.firstUpdate))) {
+                self.firstUpdate = firstUpdate;
+            }
+            if (self.lastUpdate == null || (lastUpdate != null && lastUpdate.after(self.lastUpdate))) {
+                self.lastUpdate = lastUpdate;
+            }
+            if (goLast) {
                 interviewListView.setSelection(interviewListView.getCount() - 1);
             }
             synchronized (self.reloadLock) {
@@ -235,7 +284,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         public void onClick(View view) {
             EditText postEditText = (EditText) getView().findViewById(R.id.postEditText);
             String text = postEditText.getText().toString().trim();
-            if (text == null || text.length() == 0) {
+            if (text.length() == 0) {
                 return;
             }
 

@@ -11,12 +11,21 @@ import java.util.Date;
  * Created by kenji on 2014/08/25.
  */
 public class TalksRequest extends BaseRequest {
+    private Date firstUpdate;
     private Date lastUpdate;
 
     @Override
     @JSONHint(ignore=true)
     public Class<? extends BaseResponse> getResponseClass() {
         return TalksResponse.class;
+    }
+
+    public Date getFirstUpdate() {
+        return firstUpdate;
+    }
+
+    public void setFirstUpdate(Date firstUpdate) {
+        this.firstUpdate = firstUpdate;
     }
 
     public Date getLastUpdate() {
