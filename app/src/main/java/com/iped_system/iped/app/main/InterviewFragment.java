@@ -325,6 +325,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
     @Override
     public void refresh() {
+        this.firstUpdate = null;
         this.lastUpdate = null;
         ((InterviewAdapter) this.interviewListView.getAdapter()).clear();
         /* HACK: this code occurs duplicate */

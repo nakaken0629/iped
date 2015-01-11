@@ -31,8 +31,8 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     private static final String TAG = MeetingFragment.class.getName();
     private final MeetingFragment parent = this;
 
-    private Date lastDate;
     private Date firstDate;
+    private Date lastDate;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView meetingListView;
     private String text;
@@ -44,13 +44,13 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
         View rootView = inflater.inflate(R.layout.fragment_meeting, container, false);
 
         /* 変数初期化 */
-        this.lastDate = null;
         this.firstDate = null;
+        this.lastDate = null;
 
         /* コマンド */
         RemarkListener remarkListener = new RemarkListener();
         rootView.findViewById(R.id.remarkImageView).setOnClickListener(remarkListener);
-        rootView.findViewById(R.id.RemarkTextView).setOnClickListener(remarkListener);
+        rootView.findViewById(R.id.remarkTextView).setOnClickListener(remarkListener);
 
         PhotoListener photoListener = new PhotoListener();
         rootView.findViewById(R.id.pictureImageView).setOnClickListener(photoListener);
@@ -74,10 +74,9 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     }
 
     private void reloadRemarks() {
-        RemarksAsyncTask task = new RemarksAsyncTask(getActivity(), 0);
+        RemarksAsyncTask task = new RemarksAsyncTask(getActivity());
         RemarksRequest request = new RemarksRequest();
         request.setLastDate(this.lastDate);
-        request.setFirstDate(this.firstDate);
         task.execute(request);
     }
 
@@ -92,11 +91,9 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
 
     private class RemarksAsyncTask extends ApiAsyncTask<RemarksRequest, RemarksResponse> {
         private MeetingFragment parent = MeetingFragment.this;
-        private int index;
 
-        private RemarksAsyncTask(Activity activity, int index) {
+        private RemarksAsyncTask(Activity activity) {
             super(activity);
-            this.index = index;
         }
 
         @Override
@@ -106,6 +103,9 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
 
         @Override
         protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
+            Date firstDate = null;
+            Date lastDate = null;
+
             MeetingAdapter adapter = (MeetingAdapter) parent.meetingListView.getAdapter();
             for (RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
@@ -114,9 +114,29 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
                 item.setCreatedAt(value.getCreatedAt());
                 item.setText(value.getText());
                 item.setPictureIdList(value.getPictureIdList());
-                adapter.insert(item, index++);
+                for (int index = 0; index < adapter.getCount() + 1; index++) {
+                    if (index == adapter.getCount()) {
+                        adapter.add(item);
+                        break;
+                    }
+                    MeetingItem currentItem = adapter.getItem(index);
+                    if (currentItem.getCreatedAt().before(item.getCreatedAt())) {
+                        adapter.insert(item, index);
+                        break;
+                    }
+                }
+                if (firstDate == null || firstDate.after(value.getCreatedAt())) {
+                    firstDate = value.getCreatedAt();
+                }
                 if (lastDate == null || lastDate.before(value.getCreatedAt())) {
                     lastDate = value.getCreatedAt();
+                }
+
+                if (parent.firstDate == null || (firstDate != null && firstDate.before(parent.firstDate))) {
+                    parent.firstDate = firstDate;
+                }
+                if (parent.lastDate == null || (lastDate != null && lastDate.after(parent.lastDate))) {
+                    parent.lastDate = lastDate;
                 }
             }
             parent.meetingListView.setSelection(0);
@@ -253,8 +273,8 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
 
     @Override
     public void refresh() {
-        this.lastDate = null;
         this.firstDate = null;
+        this.lastDate = null;
         ((MeetingAdapter) this.meetingListView.getAdapter()).clear();
         reloadRemarks();
     }

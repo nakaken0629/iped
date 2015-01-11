@@ -34,15 +34,18 @@ public final class RemarkDomain {
     }
 
     public List<Remark> search(String patientId) {
-        return search(patientId, null);
+        return search(patientId, null, null);
     }
 
-    public List<Remark> search(String patientId, Date lastDate) {
+    public List<Remark> search(String patientId, Date firstDate, Date lastDate) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);
-        if (lastDate != null) {
-            Query.Filter lastDateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastDate);
-            filter = Query.CompositeFilterOperator.and(filter, lastDateFilter);
+        if (firstDate != null) {
+            Query.Filter dateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.LESS_THAN, firstDate);
+            filter = Query.CompositeFilterOperator.and(filter, dateFilter);
+        } else if (lastDate != null) {
+            Query.Filter dateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastDate);
+            filter = Query.CompositeFilterOperator.and(filter, dateFilter);
         }
         Query query = new Query("Remark")
                 .setFilter(filter)

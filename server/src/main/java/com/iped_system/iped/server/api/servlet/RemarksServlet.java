@@ -30,12 +30,13 @@ public class RemarksServlet extends BaseServlet {
         AuthInfo authInfo = getAuthInfo();
         String patientId = authInfo.getPatientId();
         RemarksRequest request = (RemarksRequest) baseRequest;
+        Date firstDate = request.getFirstDate();
         Date lastDate = request.getLastDate();
 
         RemarksResponse response = new RemarksResponse();
         RemarkDomain remarkDomain = RemarkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
-        for(Remark remark : remarkDomain.search(patientId, lastDate)) {
+        for(Remark remark : remarkDomain.search(patientId, firstDate, lastDate)) {
             User user = userDomain.getUser(remark.getUserId());
             RemarkValue value = new RemarkValue();
             value.setId(remark.getId());

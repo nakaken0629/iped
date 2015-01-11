@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="発言"
-                android:id="@+id/RemarkTextView"
+                android:id="@+id/remarkTextView"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/remarkImageView" />
         </RelativeLayout>
