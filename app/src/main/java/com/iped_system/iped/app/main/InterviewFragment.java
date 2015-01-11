@@ -158,6 +158,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             Date firstUpdate = null;
             Date lastUpdate = null;
             boolean goLast = false;
+            int oldItemCount = 0;
 
             InterviewAdapter adapter = (InterviewAdapter) InterviewFragment.this.interviewListView.getAdapter();
             for (TalkValue talkValue : talksResponse.getTalkValues()) {
@@ -175,11 +176,13 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 for (int index = 0; index < adapter.getCount() + 1; index++) {
                     if (index == adapter.getCount()) {
                         adapter.add(item);
+                        goLast = true;
                         break;
                     }
                     TalkItem currentItem = adapter.getItem(index);
                     if (currentItem.getCreatedAt().after(item.getCreatedAt())) {
                         adapter.insert(item, index);
+                        oldItemCount++;
                         break;
                     }
                 }
@@ -188,7 +191,6 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
                 }
                 if (lastUpdate == null || lastUpdate.before(talkValue.getCreatedAt())) {
                     lastUpdate = talkValue.getCreatedAt();
-                    goLast = true;
                 }
             }
             if (self.firstUpdate == null || (firstUpdate != null && firstUpdate.before(self.firstUpdate))) {
@@ -197,17 +199,20 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             if (self.lastUpdate == null || (lastUpdate != null && lastUpdate.after(self.lastUpdate))) {
                 self.lastUpdate = lastUpdate;
             }
-            if (goLast) {
+            if (oldItemCount > 0) {
+                interviewListView.setSelectionFromTop(oldItemCount - 1, 0);
+            } else if (goLast) {
                 interviewListView.setSelection(interviewListView.getCount() - 1);
             }
             synchronized (self.reloadLock) {
                 self.isReloading = false;
             }
+            self.swipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
         protected void onDisconnected() {
-            /* don't show dialog */
+            self.swipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -216,6 +221,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             synchronized (self.reloadLock) {
                 self.isReloading = false;
             }
+            self.swipeRefreshLayout.setRefreshing(false);
         }
     }
 

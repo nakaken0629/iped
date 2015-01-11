@@ -29,7 +29,7 @@ public class TalksServlet extends BaseServlet {
         TalksResponse response = new TalksResponse();
         TalkDomain talkDomain = TalkDomain.getInstance();
         UserDomain userDomain = UserDomain.getInstance();
-        for(Talk talk : talkDomain.search(patientId, request.getLastUpdate())) {
+        for(Talk talk : talkDomain.search(patientId, request.getFirstUpdate(), request.getLastUpdate())) {
             TalkValue talkValue = new TalkValue();
             if (talk.getUserId().equals(userId)) {
                 talkValue.setMeText(talk.getText());

@@ -46,15 +46,19 @@ public final class TalkDomain {
     }
 
     public List<Talk> search(String patientId) {
-        return search(patientId, null);
+        return search(patientId, null, null);
     }
 
-    public List<Talk> search(String patientId, Date lastUpdate) {
+    public List<Talk> search(String patientId, Date firstUpdate, Date lastUpdate) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
         Query.Filter filter = new Query.FilterPredicate("patientId", Query.FilterOperator.EQUAL, patientId);
-        if (lastUpdate != null) {
-            Query.Filter lastUpdateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastUpdate);
-            filter = Query.CompositeFilterOperator.and(filter, lastUpdateFilter);
+        if (firstUpdate != null) {
+            Query.Filter updateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.LESS_THAN, firstUpdate);
+            filter = Query.CompositeFilterOperator.and(filter, updateFilter);
+        }
+        else if (lastUpdate != null) {
+            Query.Filter updateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastUpdate);
+            filter = Query.CompositeFilterOperator.and(filter, updateFilter);
         }
         Query query = new Query("Talk")
                 .setFilter(filter)
