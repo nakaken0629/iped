@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.iped_system.iped.R;
@@ -35,17 +37,23 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     private Date lastDate;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView meetingListView;
+    private View meetingFooter;
     private String text;
     private ArrayList<Picture> pictures = new ArrayList<Picture>();
+    private boolean isLoadOldPost;
+    private boolean hasOldPost;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_meeting, container, false);
+        this.meetingFooter = inflater.inflate(R.layout.footer_meeting, null);
 
         /* 変数初期化 */
         this.firstDate = null;
         this.lastDate = null;
+        this.isLoadOldPost = false;
+        this.hasOldPost = false;
 
         /* コマンド */
         RemarkListener remarkListener = new RemarkListener();
@@ -57,14 +65,22 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
         rootView.findViewById(R.id.pictureTextView).setOnClickListener(photoListener);
 
         /* リストビュー */
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
-        swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
+        this.swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
+        this.swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
+
         this.meetingListView = (ListView) rootView.findViewById(R.id.meetingListView);
+        this.meetingListView.addFooterView(meetingFooter);
+        this.meetingListView.setOnScrollListener(new ScrollListener());
         RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
         MeetingAdapter adapter = new MeetingAdapter(getActivity(), 0, retainFragment);
         this.meetingListView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private MeetingAdapter getAdapter(ListView listView) {
+        HeaderViewListAdapter adapter = (HeaderViewListAdapter) listView.getAdapter();
+        return (MeetingAdapter) adapter.getWrappedAdapter();
     }
 
     @Override
@@ -78,6 +94,27 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
         RemarksRequest request = new RemarksRequest();
         request.setLastDate(this.lastDate);
         task.execute(request);
+    }
+
+    private class ScrollListener implements AbsListView.OnScrollListener {
+        @Override
+        public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            if (hasOldPost && totalItemCount == firstVisibleItem + visibleItemCount) {
+                isLoadOldPost = true;
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+            if (!(isLoadOldPost && scrollState == SCROLL_STATE_IDLE)) {
+                return;
+            }
+            isLoadOldPost = false;
+            RemarksAsyncTask task = new RemarksAsyncTask(getActivity());
+            RemarksRequest request = new RemarksRequest();
+            request.setFirstDate(firstDate);
+            task.execute(request);
+        }
     }
 
     private void showCamera(boolean fromRemarkDialog) {
@@ -105,8 +142,9 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
         protected void onPostExecuteOnSuccess(RemarksResponse remarksResponse) {
             Date firstDate = null;
             Date lastDate = null;
+            hasOldPost = false;
 
-            MeetingAdapter adapter = (MeetingAdapter) parent.meetingListView.getAdapter();
+            MeetingAdapter adapter = getAdapter(parent.meetingListView);
             for (RemarkValue value : remarksResponse.getRemarkValues()) {
                 MeetingItem item = new MeetingItem();
                 item.setFaceId(value.getFaceId());
@@ -134,12 +172,15 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
 
                 if (parent.firstDate == null || (firstDate != null && firstDate.before(parent.firstDate))) {
                     parent.firstDate = firstDate;
+                    hasOldPost = true;
                 }
                 if (parent.lastDate == null || (lastDate != null && lastDate.after(parent.lastDate))) {
                     parent.lastDate = lastDate;
                 }
             }
-            parent.meetingListView.setSelection(0);
+            if (!hasOldPost) {
+                meetingListView.removeFooterView(meetingFooter);
+            }
             MeetingFragment.this.swipeRefreshLayout.setRefreshing(false);
         }
 
@@ -275,7 +316,8 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     public void refresh() {
         this.firstDate = null;
         this.lastDate = null;
-        ((MeetingAdapter) this.meetingListView.getAdapter()).clear();
+        MeetingAdapter adapter = getAdapter(this.meetingListView);
+        adapter.clear();
         reloadRemarks();
     }
 }
