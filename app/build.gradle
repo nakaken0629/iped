@@ -8,8 +8,8 @@ android {
         applicationId "com.iped_system.iped"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 6
-        versionName "1.1"
+        versionCode 7
+        versionName "1.2"
     }
     buildTypes {
         release {
