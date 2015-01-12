@@ -137,11 +137,22 @@
         android:src="@drawable/icon_012"
         android:tag="icon_012" />
 
+    <ImageView
+        android:id="@+id/icon013ImageView"
+        style="@style/iped_pictogram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/icon007ImageView"
+        android:src="@drawable/icon_013"
+        android:tag="icon_013" />
+
     <TextView
         android:layout_width="384dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_below="@id/icon007ImageView"
+        android:layout_below="@id/icon013ImageView"
         android:layout_centerHorizontal="true"
         android:text="@string/pictogram_description"/>
 </RelativeLayout>

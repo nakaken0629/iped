@@ -14,9 +14,23 @@ import com.iped_system.iped.R;
 
 public class PictogramFragment extends DialogFragment {
     private static final String TAG = PictogramFragment.class.getName();
+    private static final int[] pictogramIdList = {
+            R.id.icon001ImageView,
+            R.id.icon002ImageView,
+            R.id.icon003ImageView,
+            R.id.icon004ImageView,
+            R.id.icon005ImageView,
+            R.id.icon006ImageView,
+            R.id.icon007ImageView,
+            R.id.icon008ImageView,
+            R.id.icon009ImageView,
+            R.id.icon010ImageView,
+            R.id.icon011ImageView,
+            R.id.icon012ImageView,
+            R.id.icon013ImageView,
+    };
 
     private final PictogramFragment self = this;
-    private OnFragmentInteractionListener mListener;
 
     public static PictogramFragment newInstance(Fragment fragment) {
         if (!(fragment instanceof OnFragmentInteractionListener)) {
@@ -39,18 +53,9 @@ public class PictogramFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pictogram, container, false);
-        rootView.findViewById(R.id.icon001ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon002ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon003ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon004ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon005ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon006ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon007ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon008ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon009ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon010ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon011ImageView).setOnClickListener(new PictogramListener());
-        rootView.findViewById(R.id.icon012ImageView).setOnClickListener(new PictogramListener());
+        for (int id : pictogramIdList) {
+            rootView.findViewById(id).setOnClickListener(new PictogramListener());
+        }
         return rootView;
     }
 
@@ -74,7 +79,6 @@ public class PictogramFragment extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**
