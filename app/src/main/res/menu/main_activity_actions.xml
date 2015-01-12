@@ -8,5 +8,5 @@
         android:title="更新不要です" />
     <item
         android:id="@+id/logoutMenu"
-        android:title="ログアウト（準備中）" />
+        android:title="ログアウト" />
 </menu>

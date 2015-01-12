@@ -14,6 +14,8 @@ import java.util.List;
 public class IpedApplication extends Application {
     private static final String TAG = IpedApplication.class.getName();
 
+    public static final int REQUEST_LOGIN = 100;
+
     private long tokenId;
     private String userId;
     private String lastName;

@@ -81,6 +81,13 @@ public class LoginFragment extends Fragment {
         task.execute(request);
     }
 
+    public void resetTextView() {
+        this.userIdEditText.setText(null);
+        this.passwordEditText.setText(null);
+
+        this.userIdEditText.requestFocus();
+    }
+
     protected String getVersionName() {
         PackageManager pm = getActivity().getPackageManager();
         String versionName = "";

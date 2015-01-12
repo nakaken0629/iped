@@ -2,6 +2,7 @@ package com.iped_system.iped.app.main;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -16,6 +17,7 @@ import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.os.UpdateAsyncTask;
 import com.iped_system.iped.app.common.os.VersionTask;
+import com.iped_system.iped.app.login.LoginActivity;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
 import com.iped_system.iped.common.login.VersionRequest;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String TAG = MainActivity.class.getName();
+
     private final MainActivity parent = this;
     private MenuItem updateItem;
     private MainVersionTask versionTask;
@@ -145,6 +148,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         RefreshObserver observer = this.observers.get(this.currentTab);
         observer.refresh();
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logoutMenu:
+                Intent intent = new Intent();
+                intent.putExtra(LoginActivity.KEY_LOGOUT, true);
+                setResult(RESULT_OK, intent);
+                finish();
+                return false;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void addObserver(String key, RefreshObserver observer) {
