@@ -1,5 +1,6 @@
 package com.iped_system.iped.app.main;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -32,10 +33,15 @@ public class RemarkFragment extends DialogFragment {
 
     public interface RemarkListener {
         public String getText();
+
         public List<Picture> getPictures();
+
         public void onNewPicture(String text);
+
         public void onGalleryPicture(String text);
+
         public void onRegister(String text);
+
         public void onCancel();
     }
 
@@ -63,7 +69,7 @@ public class RemarkFragment extends DialogFragment {
         this.galleryPictureTextView = (TextView) rootView.findViewById(R.id.galleryPictureTextView);
 
         this.remarkEditText.setText(getRemarkListener().getText());
-        for(Picture picture : getRemarkListener().getPictures()) {
+        for (Picture picture : getRemarkListener().getPictures()) {
             ImageView imageView = new ImageView(this.getActivity());
             imageView.setImageBitmap(picture.getThumbnailBitmap());
             this.pictureLayout.addView(imageView);
@@ -91,6 +97,16 @@ public class RemarkFragment extends DialogFragment {
         public void onClick(View view) {
             String text = parent.remarkEditText.getTrimmedValue();
             if (text == null || text.length() == 0) {
+                return;
+            }
+            int maxLength = 500;
+            if (text.length() >= maxLength) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog dialog = builder.setTitle("メッセージ")
+                        .setMessage("投稿できるのは" + maxLength + "文字未満まで（現在" + text.length() + "文字)")
+                        .setPositiveButton("確認", null)
+                        .create();
+                dialog.show();
                 return;
             }
 

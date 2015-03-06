@@ -1,6 +1,7 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -343,6 +344,16 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             EditText postEditText = (EditText) getView().findViewById(R.id.postEditText);
             String text = postEditText.getText().toString().trim();
             if (text.length() == 0) {
+                return;
+            }
+            int maxLength = 500;
+            if (text.length() >= maxLength) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog dialog = builder.setTitle("メッセージ")
+                        .setMessage("投稿できるのは" + maxLength + "文字未満まで（現在" + text.length() + "文字)")
+                        .setPositiveButton("確認", null)
+                        .create();
+                dialog.show();
                 return;
             }
 
