@@ -2,8 +2,12 @@ package com.iped_system.iped.app.main;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -18,8 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
+import com.iped_system.iped.app.common.net.StreamUtility;
 import com.iped_system.iped.app.common.widget.EditTextEx;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class RemarkFragment extends DialogFragment {
@@ -36,9 +42,9 @@ public class RemarkFragment extends DialogFragment {
 
         public List<Picture> getPictures();
 
-        public void onNewPicture(String text);
+        public void addPicture(Picture picture);
 
-        public void onGalleryPicture(String text);
+        public void onNewPicture(String text);
 
         public void onRegister(String text);
 
@@ -92,6 +98,18 @@ public class RemarkFragment extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.REQUEST_CODE_GALLERY_FROM_REMARK:
+                addPictureFromGallery(resultCode, data);
+                break;
+            default:
+                /* nop */
+        }
+    }
+
     private class RemarkButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -127,9 +145,32 @@ public class RemarkFragment extends DialogFragment {
     private class GalleryPictureListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String text = parent.remarkEditText.getTrimmedValue();
-            getRemarkListener().onGalleryPicture(text);
-            parent.dismiss();
+            Intent i = new Intent();
+            i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
+            i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
+            startActivityForResult(i, MainActivity.REQUEST_CODE_GALLERY_FROM_REMARK);
+        }
+    }
+
+    private void addPictureFromGallery(int resultCode, Intent data) {
+        if (resultCode == 0) {
+            return;
+        }
+        try {
+            ContentResolver cr = getActivity().getContentResolver();
+            String[] columns = {MediaStore.Images.Media.DATA};
+            Cursor c = cr.query(data.getData(), columns, null, null, null);
+            c.moveToFirst();
+            InputStream is = cr.openInputStream(data.getData());
+            byte[] bitmapBytes = StreamUtility.readAll(is);
+            is.close();
+            Picture picture = new Picture(bitmapBytes, false);
+            this.getRemarkListener().addPicture(picture);
+            ImageView imageView = new ImageView(this.getActivity());
+            imageView.setImageBitmap(picture.getThumbnailBitmap());
+            this.pictureLayout.addView(imageView);
+        } catch (Exception e) {
+            Log.e(TAG, "error", e);
         }
     }
 

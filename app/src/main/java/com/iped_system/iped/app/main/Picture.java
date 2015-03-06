@@ -14,10 +14,6 @@ public class Picture implements Serializable {
     private Bitmap displayBitmap;
     private Bitmap thumbnailBitmap;
 
-    public Picture(byte[] original) {
-        this(original, true);
-    }
-
     public Picture(byte[] original, boolean isRotate) {
         this.original = original;
         this.displayBitmap = convertTo(original, 800, isRotate);
