@@ -105,6 +105,10 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
             case MainActivity.REQUEST_CODE_GALLERY_FROM_MEETING:
                 addPictureFromGallery(resultCode, data);
                 break;
+            case MainActivity.REQUEST_CODE_GALLERY_FROM_REMARK:
+                addPictureFromGallery(resultCode, data);
+                backToRemark();
+                break;
             default:
                 /* nop */
         }
@@ -251,6 +255,12 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     }
 
     @Override
+    public void onGalleryPicture(String text) {
+        this.text = text;
+        showGallery(MainActivity.REQUEST_CODE_GALLERY_FROM_REMARK);
+    }
+
+    @Override
     public void onRegister(String text) {
         IpedApplication application = (IpedApplication) getActivity().getApplicationContext();
         PhotoUploadTask task = new PhotoUploadTask(getActivity(), application.getPatientId(), text);
@@ -327,11 +337,15 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     private class GalleryListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent i = new Intent();
-            i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
-            i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
-            startActivityForResult(i, MainActivity.REQUEST_CODE_GALLERY_FROM_MEETING);
+            showGallery(MainActivity.REQUEST_CODE_GALLERY_FROM_MEETING);
         }
+    }
+
+    private void showGallery(int requestCode) {
+        Intent i = new Intent();
+        i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
+        i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
+        startActivityForResult(i, requestCode);
     }
 
     private void addPictureFromGallery(int resultCode, Intent data) {

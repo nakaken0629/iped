@@ -1,6 +1,5 @@
 package com.iped_system.iped.app.main;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,10 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.widget.EditTextEx;
-import com.iped_system.iped.common.main.RemarksNewRequest;
-import com.iped_system.iped.common.main.RemarksNewResponse;
 
 import java.util.List;
 
@@ -32,11 +28,13 @@ public class RemarkFragment extends DialogFragment {
     private EditTextEx remarkEditText;
     private LinearLayout pictureLayout;
     private TextView newPictureTextView;
+    private TextView galleryPictureTextView;
 
     public interface RemarkListener {
         public String getText();
         public List<Picture> getPictures();
         public void onNewPicture(String text);
+        public void onGalleryPicture(String text);
         public void onRegister(String text);
         public void onCancel();
     }
@@ -62,6 +60,7 @@ public class RemarkFragment extends DialogFragment {
         this.remarkEditText = (EditTextEx) rootView.findViewById(R.id.remarkEditText);
         this.pictureLayout = (LinearLayout) rootView.findViewById(R.id.thumbnailLayout);
         this.newPictureTextView = (TextView) rootView.findViewById(R.id.newPictureTextView);
+        this.galleryPictureTextView = (TextView) rootView.findViewById(R.id.galleryPictureTextView);
 
         this.remarkEditText.setText(getRemarkListener().getText());
         for(Picture picture : getRemarkListener().getPictures()) {
@@ -70,6 +69,7 @@ public class RemarkFragment extends DialogFragment {
             this.pictureLayout.addView(imageView);
         }
         this.newPictureTextView.setOnClickListener(new NewPictureListener());
+        this.galleryPictureTextView.setOnClickListener(new GalleryPictureListener());
 
         rootView.findViewById(R.id.remarkButton).setOnClickListener(new RemarkButtonListener());
 
@@ -104,6 +104,15 @@ public class RemarkFragment extends DialogFragment {
         public void onClick(View view) {
             String text = parent.remarkEditText.getTrimmedValue();
             getRemarkListener().onNewPicture(text);
+            parent.dismiss();
+        }
+    }
+
+    private class GalleryPictureListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String text = parent.remarkEditText.getTrimmedValue();
+            getRemarkListener().onGalleryPicture(text);
             parent.dismiss();
         }
     }
