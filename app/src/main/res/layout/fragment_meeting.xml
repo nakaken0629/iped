@@ -62,6 +62,36 @@
                 android:layout_toRightOf="@id/pictureImageView" />
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/galleryLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/galleryImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_gallery" />
+
+            <TextView
+                android:id="@+id/galleryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="アルバム"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/galleryImageView" />
+
+        </RelativeLayout>
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

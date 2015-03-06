@@ -27,6 +27,8 @@ import java.util.HashMap;
 
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
     private static final String TAG = MainActivity.class.getName();
+    public static final int REQUEST_CODE_GALLERY_FROM_MEETING = 1;
+    public static final int REQUEST_CODE_GALLERY_FROM_INTERVIEW = 2;
 
     private final MainActivity parent = this;
     private MenuItem updateItem;

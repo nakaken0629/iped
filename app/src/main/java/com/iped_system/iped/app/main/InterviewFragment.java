@@ -21,6 +21,7 @@ import android.widget.ListView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.app.RetainFragment;
+import com.iped_system.iped.app.common.net.StreamUtility;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UploadAsyncTask;
 import com.iped_system.iped.common.main.TalkValue;
@@ -29,8 +30,6 @@ import com.iped_system.iped.common.main.TalksNewResponse;
 import com.iped_system.iped.common.main.TalksRequest;
 import com.iped_system.iped.common.main.TalksResponse;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +38,6 @@ import java.util.TimerTask;
 
 public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener, CameraFragment.CameraListener {
     private static final String TAG = InterviewFragment.class.getName();
-    private static final int REQUEST_CODE_GALLERY = 1;
     private final InterviewFragment self = this;
 
     private Date firstUpdate;
@@ -101,7 +99,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_CODE_GALLERY:
+            case MainActivity.REQUEST_CODE_GALLERY_FROM_INTERVIEW:
                 addPictureFromGallery(resultCode, data);
                 break;
             default:
@@ -312,7 +310,7 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             Intent i = new Intent();
             i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
             i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
-            startActivityForResult(i, REQUEST_CODE_GALLERY);
+            startActivityForResult(i, MainActivity.REQUEST_CODE_GALLERY_FROM_INTERVIEW);
         }
     }
 
@@ -326,25 +324,12 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             Cursor c = cr.query(data.getData(), columns, null, null, null);
             c.moveToFirst();
             InputStream is = cr.openInputStream(data.getData());
-            byte[] bitmapBytes = readAll(is);
+            byte[] bitmapBytes = StreamUtility.readAll(is);
             is.close();
             uploadPicture(bitmapBytes, false);
         } catch (Exception e) {
             Log.e(TAG, "error", e);
         }
-    }
-
-    private byte[] readAll(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        byte [] buffer = new byte[1024];
-        while(true) {
-            int len = inputStream.read(buffer);
-            if(len < 0) {
-                break;
-            }
-            bout.write(buffer, 0, len);
-        }
-        return bout.toByteArray();
     }
 
     @Override

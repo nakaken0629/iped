@@ -1,8 +1,11 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +20,7 @@ import android.widget.ListView;
 import com.iped_system.iped.R;
 import com.iped_system.iped.app.IpedApplication;
 import com.iped_system.iped.app.common.app.RetainFragment;
+import com.iped_system.iped.app.common.net.StreamUtility;
 import com.iped_system.iped.app.common.os.ApiAsyncTask;
 import com.iped_system.iped.app.common.os.UploadAsyncTask;
 import com.iped_system.iped.common.main.RemarkValue;
@@ -25,6 +29,7 @@ import com.iped_system.iped.common.main.RemarksNewResponse;
 import com.iped_system.iped.common.main.RemarksRequest;
 import com.iped_system.iped.common.main.RemarksResponse;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,6 +69,10 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
         rootView.findViewById(R.id.pictureImageView).setOnClickListener(photoListener);
         rootView.findViewById(R.id.pictureTextView).setOnClickListener(photoListener);
 
+        GalleryListener galleryListener = new GalleryListener();
+        rootView.findViewById(R.id.galleryImageView).setOnClickListener(galleryListener);
+        rootView.findViewById(R.id.galleryTextView).setOnClickListener(galleryListener);
+
         /* リストビュー */
         this.swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.meetingRefresh);
         this.swipeRefreshLayout.setOnRefreshListener(new RefreshListener());
@@ -87,6 +96,18 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).addObserver("meeting", this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case MainActivity.REQUEST_CODE_GALLERY_FROM_MEETING:
+                addPictureFromGallery(resultCode, data);
+                break;
+            default:
+                /* nop */
+        }
     }
 
     private void reloadRemarks() {
@@ -214,12 +235,6 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "RequestCode = " + requestCode + ", resultCode = " + resultCode);
-    }
-
-    @Override
     public String getText() {
         return this.text;
     }
@@ -298,11 +313,43 @@ public class MeetingFragment extends Fragment implements MainActivity.RefreshObs
 
     @Override
     public void onTakePicture(byte[] bitmapBytes) {
-        this.pictures.add(new Picture(bitmapBytes));
+        addPicture(bitmapBytes, true);
+    }
+
+    private void addPicture(byte[] bitmapBytes, boolean isRotate) {
+        this.pictures.add(new Picture(bitmapBytes, isRotate));
 
         RemarkFragment fragment = RemarkFragment.newInstance(parent);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         fragment.show(transaction, null);
+    }
+
+    private class GalleryListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent();
+            i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
+            i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
+            startActivityForResult(i, MainActivity.REQUEST_CODE_GALLERY_FROM_MEETING);
+        }
+    }
+
+    private void addPictureFromGallery(int resultCode, Intent data) {
+        if (resultCode == 0) {
+            return;
+        }
+        try {
+            ContentResolver cr = getActivity().getContentResolver();
+            String[] columns = {MediaStore.Images.Media.DATA};
+            Cursor c = cr.query(data.getData(), columns, null, null, null);
+            c.moveToFirst();
+            InputStream is = cr.openInputStream(data.getData());
+            byte[] bitmapBytes = StreamUtility.readAll(is);
+            is.close();
+            addPicture(bitmapBytes, false);
+        } catch (Exception e) {
+            Log.e(TAG, "error", e);
+        }
     }
 
     @Override
