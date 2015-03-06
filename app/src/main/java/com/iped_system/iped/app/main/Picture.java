@@ -13,7 +13,6 @@ public class Picture implements Serializable {
     private byte[] original;
     private Bitmap displayBitmap;
     private Bitmap thumbnailBitmap;
-    private boolean isRotate;
 
     public Picture(byte[] original) {
         this(original, true);
@@ -21,12 +20,11 @@ public class Picture implements Serializable {
 
     public Picture(byte[] original, boolean isRotate) {
         this.original = original;
-        this.displayBitmap = convertTo(original, 800);
-        this.thumbnailBitmap = convertTo(original, 128);
-        this.isRotate = isRotate;
+        this.displayBitmap = convertTo(original, 800, isRotate);
+        this.thumbnailBitmap = convertTo(original, 128, isRotate);
     }
 
-    private Bitmap convertTo(byte[] original, int size) {
+    private Bitmap convertTo(byte[] original, int size, boolean isRotate) {
         /* check size */
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -42,7 +40,7 @@ public class Picture implements Serializable {
         options.inJustDecodeBounds = false;
         Bitmap workBitmap = BitmapFactory.decodeByteArray(original, 0, original.length, options);
         Matrix matrix = new Matrix();
-        if (this.isRotate) {
+        if (isRotate) {
             matrix.postRotate(180);
         }
         return Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
