@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -15,11 +13,17 @@ public class Picture implements Serializable {
     private byte[] original;
     private Bitmap displayBitmap;
     private Bitmap thumbnailBitmap;
+    private boolean isRotate;
 
     public Picture(byte[] original) {
+        this(original, true);
+    }
+
+    public Picture(byte[] original, boolean isRotate) {
         this.original = original;
         this.displayBitmap = convertTo(original, 800);
         this.thumbnailBitmap = convertTo(original, 128);
+        this.isRotate = isRotate;
     }
 
     private Bitmap convertTo(byte[] original, int size) {
@@ -38,7 +42,9 @@ public class Picture implements Serializable {
         options.inJustDecodeBounds = false;
         Bitmap workBitmap = BitmapFactory.decodeByteArray(original, 0, original.length, options);
         Matrix matrix = new Matrix();
-        matrix.postRotate(180);
+        if (this.isRotate) {
+            matrix.postRotate(180);
+        }
         return Bitmap.createBitmap(workBitmap, 0, 0, workBitmap.getWidth(), workBitmap.getHeight(), matrix, false);
     }
 

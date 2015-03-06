@@ -1,8 +1,12 @@
 package com.iped_system.iped.app.main;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,6 +29,9 @@ import com.iped_system.iped.common.main.TalksNewResponse;
 import com.iped_system.iped.common.main.TalksRequest;
 import com.iped_system.iped.common.main.TalksResponse;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -32,6 +39,7 @@ import java.util.TimerTask;
 
 public class InterviewFragment extends Fragment implements MainActivity.RefreshObserver, PictogramFragment.OnFragmentInteractionListener, CameraFragment.CameraListener {
     private static final String TAG = InterviewFragment.class.getName();
+    private static final int REQUEST_CODE_GALLERY = 1;
     private final InterviewFragment self = this;
 
     private Date firstUpdate;
@@ -56,6 +64,8 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         /* コマンド */
         Button cameraButton = (Button) rootView.findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new CameraListener());
+        Button albumButton = (Button) rootView.findViewById(R.id.albumButton);
+        albumButton.setOnClickListener(new AlbumListener());
         Button postButton = (Button) rootView.findViewById(R.id.postButton);
         postButton.setOnClickListener(new PostListener());
         Button pictogramButton = (Button) rootView.findViewById(R.id.pictogramButton);
@@ -84,6 +94,18 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
         if (this.reloadTimer == null) {
             this.reloadTimer = new Timer(true);
             this.reloadTimer.schedule(new ReloadTask(), 0, 5000);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_GALLERY:
+                addPictureFromGallery(resultCode, data);
+                break;
+            default:
+                /* nop */
         }
     }
 
@@ -260,7 +282,11 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
 
     @Override
     public void onTakePicture(byte[] bitmapBytes) {
-        Picture picture = new Picture(bitmapBytes);
+        uploadPicture(bitmapBytes, true);
+    }
+
+    private void uploadPicture(byte[] bitmapBytes, boolean isRotate) {
+        Picture picture = new Picture(bitmapBytes, isRotate);
         IpedApplication application = (IpedApplication) getActivity().getApplicationContext();
         PhotoUploadTask task = new PhotoUploadTask(getActivity(), application.getPatientId());
         task.execute(picture);
@@ -278,6 +304,47 @@ public class InterviewFragment extends Fragment implements MainActivity.RefreshO
             TalkTask task = new TalkTask(getActivity());
             task.execute(request);
         }
+    }
+
+    class AlbumListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent();
+            i.setType("image/*"); // 画像のみが表示されるようにフィルターをかける
+            i.setAction(Intent.ACTION_GET_CONTENT); // ギャラリーを取得するアプリをすべて開く
+            startActivityForResult(i, REQUEST_CODE_GALLERY);
+        }
+    }
+
+    private void addPictureFromGallery(int resultCode, Intent data) {
+        if (resultCode == 0) {
+            return;
+        }
+        try {
+            ContentResolver cr = getActivity().getContentResolver();
+            String[] columns = {MediaStore.Images.Media.DATA};
+            Cursor c = cr.query(data.getData(), columns, null, null, null);
+            c.moveToFirst();
+            InputStream is = cr.openInputStream(data.getData());
+            byte[] bitmapBytes = readAll(is);
+            is.close();
+            uploadPicture(bitmapBytes, false);
+        } catch (Exception e) {
+            Log.e(TAG, "error", e);
+        }
+    }
+
+    private byte[] readAll(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        byte [] buffer = new byte[1024];
+        while(true) {
+            int len = inputStream.read(buffer);
+            if(len < 0) {
+                break;
+            }
+            bout.write(buffer, 0, len);
+        }
+        return bout.toByteArray();
     }
 
     @Override
