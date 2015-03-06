@@ -51,6 +51,12 @@
         <item name="android:layout_margin">4dp</item>
     </style>
 
+    <style name="iped_thumbnail_half" parent="iped_thumbnail">
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
     <style name="iped_talk">
         <item name="android:layout_margin">4px</item>
     </style>
