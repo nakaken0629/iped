@@ -14,6 +14,7 @@ public class Talk extends EntityWrapper {
     @EntityProperty private String text;
     @EntityProperty private String pictogramKey;
     @EntityProperty private Long pictureId;
+    @EntityProperty private boolean isRecorded;
 
     public Talk() {
         super();
@@ -32,7 +33,6 @@ public class Talk extends EntityWrapper {
     }
 
     public String getPatientId() {
-
         return patientId;
     }
 
@@ -49,7 +49,6 @@ public class Talk extends EntityWrapper {
     }
 
     public String getText() {
-
         return text;
     }
 
@@ -71,5 +70,13 @@ public class Talk extends EntityWrapper {
 
     public void setPictureId(Long pictureId) {
         this.pictureId = pictureId;
+    }
+
+    public boolean isRecorded() {
+        return isRecorded;
+    }
+
+    public void setRecorded(boolean isRecorded) {
+        this.isRecorded = isRecorded;
     }
 }

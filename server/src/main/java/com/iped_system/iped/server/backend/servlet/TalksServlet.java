@@ -7,12 +7,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.server.domain.UserDomain;
 import com.iped_system.iped.server.domain.model.Talk;
-import com.iped_system.iped.server.domain.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

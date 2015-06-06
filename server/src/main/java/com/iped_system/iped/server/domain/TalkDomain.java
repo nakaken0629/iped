@@ -6,15 +6,14 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.iped_system.iped.common.main.TalkValue;
 import com.iped_system.iped.server.domain.model.Talk;
-import com.iped_system.iped.server.domain.model.User;
+import com.iped_system.iped.server.domain.model.TalkSummary;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kenji on 2014/08/25.
@@ -30,19 +29,44 @@ public final class TalkDomain {
         /* nop */
     }
 
-    public Entity insert(String userId, String patientId, String text, String pictogramKey, Long pictureId) {
-        Date createdAt = new Date();
-
+    public void insert(Talk talk) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        Entity entity = new Entity("Talk");
-        entity.setProperty("userId", userId);
-        entity.setProperty("patientId", patientId);
-        entity.setProperty("text", text);
-        entity.setProperty("pictogramKey", pictogramKey);
-        entity.setProperty("pictureId", pictureId);
-        entity.setProperty("createdAt", createdAt);
-        service.put(entity);
-        return entity;
+        talk.setRecorded(true);
+        talk.save(service);
+        updateTalkSummary(service, talk);
+    }
+
+    private void updateTalkSummary(DatastoreService service, Talk talk) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(talk.getCreatedAt());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date talkDate = calendar.getTime();
+        Query.Filter filter = new Query.FilterPredicate("userId", Query.FilterOperator.EQUAL, talk.getUserId());
+        Query.Filter talkDateFilter = new Query.FilterPredicate("talkDate", Query.FilterOperator.EQUAL, talkDate);
+        filter = Query.CompositeFilterOperator.and(filter, talkDateFilter);
+        Query query = new Query("TalkSummary")
+                .setFilter(filter);
+        PreparedQuery pq = service.prepare(query);
+        Entity entity = pq.asSingleEntity();
+        TalkSummary talkSummary;
+        if (entity == null) {
+            talkSummary = new TalkSummary();
+            talkSummary.setUserId(talk.getUserId());
+            talkSummary.setTalkDate(talkDate);
+        } else {
+            talkSummary = new TalkSummary(entity);
+        }
+        if (talk.getText() != null) {
+            talkSummary.incrementTalkCount();
+        } else if (talk.getPictogramKey() != null) {
+            talkSummary.incrementPictogram();
+        } else if (talk.getPictureId() != null) {
+            talkSummary.incrementPicture();
+        }
+        talkSummary.save(service);
     }
 
     public List<Talk> search(String patientId) {
