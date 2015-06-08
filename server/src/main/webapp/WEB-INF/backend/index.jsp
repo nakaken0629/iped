@@ -14,7 +14,6 @@
             <li><a href="/backend/users">ユーザ一覧</a></li>
             <li><a href="/backend/remarks">ミーティング投稿一覧</a></li>
             <li><a href="/backend/talks">インタビュー投稿一覧</a></li>
-            <li><a href="/backend/talksummaries/">インタビュー統計情報更新</a></li>
         </ul>
     </div>
 </div>

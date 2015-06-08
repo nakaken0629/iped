@@ -99,10 +99,6 @@
         <servlet-class>com.iped_system.iped.server.backend.servlet.TalksServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Backend/TalkSummariesServlet</servlet-name>
-        <servlet-class>com.iped_system.iped.server.backend.servlet.TalkSummariesServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Backend/FaceServlet</servlet-name>
         <servlet-class>com.iped_system.iped.server.common.servlet.FaceServlet</servlet-class>
     </servlet>
@@ -204,10 +200,6 @@
     <servlet-mapping>
         <servlet-name>Backend/TalksServlet</servlet-name>
         <url-pattern>/backend/talks</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Backend/TalkSummariesServlet</servlet-name>
-        <url-pattern>/backend/talksummaries/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Backend/FaceServlet</servlet-name>
