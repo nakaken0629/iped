@@ -7,7 +7,6 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.iped_system.iped.common.Patient;
 import com.iped_system.iped.common.RoleType;
-import com.iped_system.iped.server.common.filter.BaseAuthFilter;
 import com.iped_system.iped.server.domain.model.User;
 
 import java.util.ArrayList;
@@ -60,6 +59,17 @@ public final class UserDomain {
         } else {
             return null;
         }
+    }
+
+    public List<User> getUsers() {
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("User");
+        PreparedQuery pq = service.prepare(query);
+        ArrayList<User> users = new ArrayList<User>();
+        for (Entity entity : pq.asIterable()) {
+            users.add(new User(entity));
+        }
+        return users;
     }
 
     public User getUser(String userId) {

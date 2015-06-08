@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by kenji on 2014/08/25.
@@ -37,7 +38,8 @@ public final class TalkDomain {
     }
 
     private void updateTalkSummary(DatastoreService service, Talk talk) {
-        Calendar calendar = Calendar.getInstance();
+        TimeZone tz = TimeZone.getTimeZone("Asia/Tokyo");
+        Calendar calendar = Calendar.getInstance(tz);
         calendar.setTime(talk.getCreatedAt());
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -79,8 +81,7 @@ public final class TalkDomain {
         if (firstUpdate != null) {
             Query.Filter updateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.LESS_THAN, firstUpdate);
             filter = Query.CompositeFilterOperator.and(filter, updateFilter);
-        }
-        else if (lastUpdate != null) {
+        } else if (lastUpdate != null) {
             Query.Filter updateFilter = new Query.FilterPredicate("createdAt", Query.FilterOperator.GREATER_THAN, lastUpdate);
             filter = Query.CompositeFilterOperator.and(filter, updateFilter);
         }
@@ -89,12 +90,43 @@ public final class TalkDomain {
                 .addSort("createdAt", Query.SortDirection.DESCENDING);
         PreparedQuery pq = service.prepare(query);
         ArrayList<Talk> talks = new ArrayList<Talk>();
-        for(Entity entity : pq.asIterable(FetchOptions.Builder.withLimit(FETCH_SIZE))) {
+        for (Entity entity : pq.asIterable(FetchOptions.Builder.withLimit(FETCH_SIZE))) {
             Talk talk = new Talk(entity);
             talks.add(talk);
         }
         Collections.reverse(talks);
 
         return talks;
+    }
+
+    public int refreshSummaries() {
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("Talk");
+        PreparedQuery pq = service.prepare(query);
+        int count = 0;
+        for (Entity entity : pq.asIterable()) {
+            Talk talk = new Talk(entity);
+            if (talk.isRecorded()) {
+                continue;
+            }
+            talk.setRecorded(true);
+            talk.save(service);
+            updateTalkSummary(service, talk);
+            count++;
+        }
+        return count;
+    }
+
+    public List<TalkSummary> getSummaries() {
+        DatastoreService service = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("TalkSummary")
+            .addSort("talkDate")
+            .addSort("userId");
+        PreparedQuery pq = service.prepare(query);
+        ArrayList<TalkSummary> summaries = new ArrayList<TalkSummary>();
+        for (Entity entity : pq.asIterable()) {
+            summaries.add(new TalkSummary(entity));
+        }
+        return summaries;
     }
 }

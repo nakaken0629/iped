@@ -13,4 +13,9 @@
         <property name="patientId" direction="asc"/>
         <property name="createdAt" direction="desc"/>
     </datastore-index>
+
+    <datastore-index kind="TalkSummary" ancestor="false" source="auto">
+        <property name="talkDate" direction="asc"/>
+        <property name="userId" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>
