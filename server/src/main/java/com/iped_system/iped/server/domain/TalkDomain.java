@@ -29,7 +29,7 @@ public final class TalkDomain {
 
     public void insert(Talk talk) {
         DatastoreService service = DatastoreServiceFactory.getDatastoreService();
-        talk.setRecorded(true);
+        talk.setRecorded(false);
         talk.save(service);
     }
 
