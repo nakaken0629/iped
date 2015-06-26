@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,6 +19,8 @@
             <th>患者ID</th>
             <th>投稿日</th>
             <th>テキスト</th>
+            <th>スタンプ</th>
+            <th>写真</th>
         </tr>
         <c:forEach var="talk" items="${talks}">
             <tr>
@@ -28,10 +31,16 @@
                     <c:out value="${talk.patientId}"/>
                 </td>
                 <td>
-                    <c:out value="${talk.createdAt}"/>
+                    <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST" />
                 </td>
                 <td>
                     <c:out value="${talk.text}"/>
+                </td>
+                <td>
+                    <c:out value="${talk.pictogramKey}"/>
+                </td>
+                <td>
+                    <c:out value="${talk.pictureId}"/>
                 </td>
             </tr>
         </c:forEach>
