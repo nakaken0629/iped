@@ -30,7 +30,7 @@
                     <c:out value="${remark.userId}"/>
                 </td>
                 <td>
-                    <fmt:formatDate value="${talk.createdAt}" pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST" />
+                    <fmt:formatDate value="${remark.createdAt}" pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST" />
                 </td>
                 <td>
                     <c:out value="${remark.text}"/>
