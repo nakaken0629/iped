@@ -2,9 +2,11 @@ package com.iped_system.iped.app.login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +35,8 @@ import java.util.List;
  */
 public class LoginFragment extends Fragment {
     private static final String TAG = LoginFragment.class.getName();
+    private static final String PREFERENCE_USER_ID = "PREFERENCE_USER_ID";
+    private static final String PREFERENCE_PASSWORD = "PREFERENCE_PASSWORD";
     private final LoginFragment parent = this;
 
     private TextView versionNameTextView;
@@ -67,6 +71,10 @@ public class LoginFragment extends Fragment {
         this.updateButton.setOnClickListener(new UpdateButtonListener());
         this.loginButton = (Button) rootView.findViewById(R.id.loginButton);
         this.loginButton.setOnClickListener(new LoginButtonListener());
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        this.userIdEditText.setText(preferences.getString(PREFERENCE_USER_ID, ""));
+        this.passwordEditText.setText(preferences.getString(PREFERENCE_PASSWORD, ""));
 
         return rootView;
     }
@@ -143,6 +151,11 @@ public class LoginFragment extends Fragment {
         public void onClick(View view) {
             String userId = parent.userIdEditText.getTrimmedValue();
             String password = parent.passwordEditText.getTrimmedValue();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginFragment.this.getActivity());
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(PREFERENCE_USER_ID, userId);
+            editor.putString(PREFERENCE_PASSWORD, password);
+            editor.commit();
             LoginRequest request = new LoginRequest();
             request.setUserId(userId);
             request.setPassword(password);
