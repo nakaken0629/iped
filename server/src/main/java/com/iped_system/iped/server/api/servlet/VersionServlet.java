@@ -14,8 +14,8 @@ public class VersionServlet extends BaseServlet {
     @Override
     protected BaseResponse execute(BaseRequest baseRequest) {
         VersionResponse response = new VersionResponse();
-        response.setVersionCode(8);
-        response.setUrl("https://raw.github.com/wiki/nakaken0629/iped/apk/app-server-debug-1.3.apk");
+        response.setVersionCode(9);
+        response.setUrl("https://raw.github.com/wiki/nakaken0629/iped/apk/app-server-debug-1.4.apk");
         return response;
     }
 }
