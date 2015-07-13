@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
-import android.view.View;
 
 import com.iped_system.iped.common.login.VersionRequest;
 import com.iped_system.iped.common.login.VersionResponse;

@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion '21.1.2'
-
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
     defaultConfig {
         applicationId "com.iped_system.iped"
-        minSdkVersion 15
-        targetSdkVersion 20
+        minSdkVersion 10
+        targetSdkVersion 22
         versionCode 9
         versionName '1.4'
     }
@@ -18,16 +17,12 @@ android {
         }
     }
     productFlavors {
-        emu {
-            applicationId "com.iped_system.iped.emu"
-        }
         local {
-            applicationId "com.iped_system.iped.local"
+            applicationId 'com.iped_system.iped.local'
         }
         server {}
     }
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
     }
@@ -35,9 +30,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile project(':common')
-    compile 'org.apache.httpcomponents:httpmime:4.4-alpha1@jar'
-    compile 'org.apache.httpcomponents:httpcore:4.3@jar'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5'
+    compile('org.apache.httpcomponents:httpmime:4.3.5') {
+        exclude module: "httpclient"
+    }
 }

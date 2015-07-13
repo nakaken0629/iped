@@ -13,7 +13,6 @@ import com.iped_system.iped.app.common.app.RetainFragment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
