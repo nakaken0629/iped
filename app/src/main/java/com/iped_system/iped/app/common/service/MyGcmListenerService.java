@@ -28,7 +28,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.iped_system.iped.R;
-import com.iped_system.iped.app.main.MainActivity;
+import com.iped_system.iped.app.login.LoginActivity;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -69,7 +69,7 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
